@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panacea — Shopping Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f6f3;
+            color: #1e2a2e;
+        }
+        
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e2e4e0;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #2c7a6e, #3b82b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5b5e;
+            font-weight: 500;
+        }
+        .nav-links a:hover { color: #2c7a6e; }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .cart-header h1 { font-size: 28px; }
+        
+        .cart-items {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #e2e4e0;
+            overflow: hidden;
+        }
+        .cart-item {
+            display: flex;
+            padding: 20px;
+            border-bottom: 1px solid #e2e4e0;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .cart-item-info { flex: 2; }
+        .cart-item-name { font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+        .cart-item-meta { font-size: 12px; color: #8b9a9e; margin-bottom: 8px; }
+        .rx-warning { background: #fff3cd; padding: 4px 10px; border-radius: 20px; font-size: 11px; display: inline-block; }
+        .cart-item-price { font-weight: 700; color: #2c7a6e; font-size: 18px; min-width: 100px; }
+        .cart-item-quantity { display: flex; align-items: center; gap: 12px; }
+        .cart-item-quantity input { width: 60px; padding: 8px; border: 1px solid #e2e4e0; border-radius: 8px; text-align: center; }
+        .remove-btn { background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 20px; }
+        
+        .cart-summary {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #e2e4e0;
+            padding: 24px;
+            margin-top: 24px;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e4e0;
+        }
+        .summary-total {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c7a6e;
+            padding-top: 16px;
+        }
+        .checkout-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2c7a6e, #3b82b6);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .checkout-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .doctor-selection {
+            background: #f0f7f5;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .doctor-select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #e2e4e0;
+            margin: 12px 0;
+        }
+        .share-cart-btn {
+            background: #1e2a2e;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 24px;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1e2a2e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .navbar { padding: 12px 20px; }
+            .cart-item { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">panacea</a>
+        <div class="nav-links">
+            <a href="assessment.html">Symptom Checker</a>
+            <a href="pharmacy.html">Pharmacy</a>
+            <a href="consultation.html">Consult Doctor</a>
+            <a href="patient-dashboard.html">My Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="cart-header">
+            <h1>🛒 Your Cart</h1>
+            <button onclick="location.href='pharmacy.html'" style="background:none;border:1px solid #e2e4e0;padding:10px 20px;border-radius:40px;cursor:pointer;">Continue Shopping →</button>
+        </div>
+        
+        <div id="cartContainer"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let sessionToken = localStorage.getItem('panacea_session_token');
+        let currentUser = null;
+        let cartItems = [];
+        let doctors = [];
+
+        async function loadUser() {
+            if (!sessionToken) {
+                showToast('Please login to view cart');
+                setTimeout(() => location.href = 'index.html', 2000);
+                return;
+            }
+            try {
+                const res = await fetch(`${API_BASE}/api/auth/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_token: sessionToken })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.valid) currentUser = data.user;
+                }
+            } catch(e) {}
+            loadCart();
+            loadDoctors();
+        }
+
+        async function loadCart() {
+            try {
+                const res = await fetch(`${API_BASE}/api/cart`, {
+                    headers: { 'X-Session-Token': sessionToken }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    cartItems = data.items;
+                    renderCart();
+                }
+            } catch(e) {
+                showToast('Error loading cart');
+            }
+        }
+
+        async function loadDoctors() {
+            try {
+                const res = await fetch(`${API_BASE}/api/doctors`);
+                const data = await res.json();
+                doctors = data.doctors;
+            } catch(e) {}
+        }
+
+        async function updateQuantity(itemId, quantity) {
+            if (quantity < 1) return;
+            try {
+                await fetch(`${API_BASE}/api/cart/update/${itemId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Session-Token': sessionToken },
+                    body: JSON.stringify({ quantity })
+                });
+                loadCart();
+            } catch(e) {}
+        }
+
+        async function removeItem(itemId) {
+            try {
+                await fetch(`${API_BASE}/api/cart/remove/${itemId}`, {
+                    method: 'DELETE',
+                    headers: { 'X-Session-Token': sessionToken }
+                });
+                loadCart();
+            } catch(e) {}
+        }
+
+        async function shareCartWithDoctor(doctorId) {
+            if (!doctorId) {
+                showToast('Please select a doctor');
+                return;
+            }
+            
+            const hasRxItems = cartItems.some(item => item.requires_prescription);
+            if (!hasRxItems) {
+                showToast('No prescription items in cart. You can checkout directly.');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/cart/share`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Session-Token': sessionToken },
+                    body: JSON.stringify({ doctor_id: doctorId, message: 'Please approve my prescription medicines' })
+                });
+                if (res.ok) {
+                    showToast('Request sent to doctor. You will be notified when approved.');
+                } else {
+                    showToast('Failed to send request');
+                }
+            } catch(e) {
+                showToast('Error sending request');
+            }
+        }
+
+        async function checkout() {
+            const hasRxItems = cartItems.some(item => item.requires_prescription);
+            if (hasRxItems) {
+                showToast('This cart contains prescription medicines. Please get a doctor\'s approval first by sharing cart with a doctor.');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/orders/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-Session-Token': sessionToken },
+                    body: JSON.stringify({ payment_method: 'COD', shipping_address: 'Address' })
+                });
+                if (res.ok) {
+                    showToast('Order placed successfully!');
+                    setTimeout(() => location.href = 'patient-dashboard.html', 1500);
+                } else {
+                    const err = await res.json();
+                    showToast(err.detail || 'Checkout failed');
+                }
+            } catch(e) {
+                showToast('Error during checkout');
+            }
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartContainer');
+            
+            if (!cartItems.length) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <div style="font-size: 64px; margin-bottom: 20px;">🛒</div>
+                        <h3>Your cart is empty</h3>
+                        <p style="color:#8b9a9e; margin: 16px 0;">Browse our pharmacy to add medicines</p>
+                        <button onclick="location.href='pharmacy.html'" style="padding:12px 32px;background:#2c7a6e;color:white;border:none;border-radius:40px;cursor:pointer;">Browse Medicines →</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            const total = cartItems.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+            const hasRxItems = cartItems.some(item => item.requires_prescription);
+            
+            container.innerHTML = `
+                <div class="cart-items">
+                    ${cartItems.map(item => `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">${escapeHtml(item.name)}</div>
+                                <div class="cart-item-meta">${item.generic_name || ''}</div>
+                                ${item.requires_prescription ? '<div class="rx-warning">🔒 Prescription Required</div>' : ''}
+                            </div>
+                            <div class="cart-item-price">₹${(item.price * item.quantity).toFixed(2)}</div>
+                            <div class="cart-item-quantity">
+                                <input type="number" min="1" value="${item.quantity}" 
+                                       onchange="updateQuantity(${item.id}, this.value)">
+                                <button class="remove-btn" onclick="removeItem(${item.id})">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>₹${total.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total</span>
+                        <span>₹${total.toFixed(2)}</span>
+                    </div>
+                    
+                    ${hasRxItems ? `
+                        <div class="doctor-selection">
+                            <h4 style="margin-bottom: 8px;">🔒 Prescription Required</h4>
+                            <p style="font-size: 13px; color: #856404; margin-bottom: 12px;">
+                                This cart contains prescription-only medicines. Please share with a doctor for approval.
+                            </p>
+                            <select id="doctorSelect" class="doctor-select">
+                                <option value="">Select a doctor...</option>
+                                ${doctors.map(d => `<option value="${d.id}">Dr. ${d.name} (${d.specialization})</option>`).join('')}
+                            </select>
+                            <button class="share-cart-btn" onclick="shareCartWithDoctor(document.getElementById('doctorSelect').value)">
+                                📤 Request Prescription Approval
+                            </button>
+                        </div>
+                    ` : `
+                        <button class="checkout-btn" onclick="checkout()">
+                            Proceed to Checkout →
+                        </button>
+                    `}
+                </div>
+            `;
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        loadUser();
+    </script>
+</body>
+</html>

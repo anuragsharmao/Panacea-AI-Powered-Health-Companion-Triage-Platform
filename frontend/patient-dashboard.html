@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panacea — My Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f6f3;
+            color: #1e2a2e;
+        }
+        
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e2e4e0;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #2c7a6e, #3b82b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a { text-decoration: none; color: #4a5b5e; font-weight: 500; }
+        .nav-links a:hover, .nav-links a.active { color: #2c7a6e; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 32px 40px; }
+        
+        .welcome-section {
+            background: linear-gradient(135deg, #0d2226, #1a3d45);
+            border-radius: 32px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 32px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid #e2e4e0;
+        }
+        .stat-number { font-size: 32px; font-weight: 700; color: #2c7a6e; }
+        
+        .section-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e4e0;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e4e0;
+        }
+        
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e4e0; }
+        th { color: #4a5b5e; font-weight: 600; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-approved, .status-active { background: #d4e6d9; color: #2d6a4f; }
+        .status-delivered { background: #cce5ff; color: #004085; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e2e4e0;
+        }
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: #4a5b5e;
+        }
+        .tab.active {
+            color: #2c7a6e;
+            border-bottom: 2px solid #2c7a6e;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1e2a2e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .navbar { padding: 12px 20px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">panacea</a>
+        <div class="nav-links">
+            <a href="assessment.html">Symptom Checker</a>
+            <a href="pharmacy.html">Pharmacy</a>
+            <a href="consultation.html">Consult Doctor</a>
+            <a href="patient-dashboard.html" class="active">My Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-section">
+            <h1 id="welcomeName">Welcome back!</h1>
+            <p>Your health journey at a glance</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-number" id="orderCount">-</div><div>Orders</div></div>
+            <div class="stat-card"><div class="stat-number" id="prescriptionCount">-</div><div>Prescriptions</div></div>
+            <div class="stat-card"><div class="stat-number" id="consultCount">-</div><div>Consultations</div></div>
+            <div class="stat-card"><div class="stat-number" id="assessmentCount">-</div><div>Assessments</div></div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" data-tab="orders">📦 Orders</button>
+            <button class="tab" data-tab="prescriptions">📋 Prescriptions</button>
+            <button class="tab" data-tab="consultations">👨‍⚕️ Consultations</button>
+            <button class="tab" data-tab="assessments">🩺 Assessments</button>
+        </div>
+        
+        <div id="ordersTab" class="tab-content active">
+            <div class="section-card">
+                <div class="section-title">Recent Orders</div>
+                <div id="ordersList">Loading...</div>
+            </div>
+        </div>
+        
+        <div id="prescriptionsTab" class="tab-content">
+            <div class="section-card">
+                <div class="section-title">My Prescriptions</div>
+                <div id="prescriptionsList">Loading...</div>
+            </div>
+        </div>
+        
+        <div id="consultationsTab" class="tab-content">
+            <div class="section-card">
+                <div class="section-title">Consultation History</div>
+                <div id="consultationsList">Loading...</div>
+            </div>
+        </div>
+        
+        <div id="assessmentsTab" class="tab-content">
+            <div class="section-card">
+                <div class="section-title">Symptom Assessments</div>
+                <div id="assessmentsList">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let sessionToken = localStorage.getItem('panacea_session_token');
+        let currentUser = null;
+        
+        async function loadUser() {
+            if (!sessionToken) {
+                showToast('Please login to view dashboard');
+                setTimeout(() => location.href = 'index.html', 2000);
+                return;
+            }
+            try {
+                const res = await fetch(`${API_BASE}/api/auth/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_token: sessionToken })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.valid) {
+                        currentUser = data.user;
+                        document.getElementById('welcomeName').innerHTML = `Welcome back, ${escapeHtml(currentUser.name || 'User')}!`;
+                    }
+                }
+            } catch(e) {}
+            loadAllData();
+        }
+        
+        async function loadAllData() {
+            await Promise.all([
+                loadOrders(),
+                loadPrescriptions(),
+                loadConsultations(),
+                loadAssessments()
+            ]);
+        }
+        
+        async function loadOrders() {
+            try {
+                const res = await fetch(`${API_BASE}/api/orders`, {
+                    headers: { 'X-Session-Token': sessionToken }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const orders = data.orders;
+                    document.getElementById('orderCount').innerText = orders.length;
+                    renderOrders(orders);
+                }
+            } catch(e) {
+                document.getElementById('ordersList').innerHTML = '<p>Failed to load orders</p>';
+            }
+        }
+        
+        function renderOrders(orders) {
+            if (!orders.length) {
+                document.getElementById('ordersList').innerHTML = '<p>No orders yet. <a href="pharmacy.html">Shop now →</a></p>';
+                return;
+            }
+            
+            const html = `
+                <table>
+                    <thead>
+                        <tr><th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        ${orders.map(order => `
+                            <tr>
+                                <td>#${order.id}</td>
+                                <td>${new Date(order.order_date).toLocaleDateString()}</td>
+                                <td>${order.item_count || 0} items</td>
+                                <td>₹${order.total_amount.toFixed(2)}</td>
+                                <td><span class="status-badge status-${order.status}">${order.status}</span></td>
+                                <td><button onclick="viewOrder(${order.id})" style="background:none;border:none;color:#2c7a6e;cursor:pointer;">View</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('ordersList').innerHTML = html;
+        }
+        
+        async function loadPrescriptions() {
+            try {
+                const res = await fetch(`${API_BASE}/api/prescriptions`, {
+                    headers: { 'X-Session-Token': sessionToken }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const prescriptions = data.prescriptions;
+                    document.getElementById('prescriptionCount').innerText = prescriptions.length;
+                    renderPrescriptions(prescriptions);
+                }
+            } catch(e) {
+                document.getElementById('prescriptionsList').innerHTML = '<p>Failed to load prescriptions</p>';
+            }
+        }
+        
+        function renderPrescriptions(prescriptions) {
+            if (!prescriptions.length) {
+                document.getElementById('prescriptionsList').innerHTML = '<p>No prescriptions yet. Consult a doctor to get one.</p>';
+                return;
+            }
+            
+            const html = `
+                <table>
+                    <thead><tr><th>Date</th><th>Doctor</th><th>Status</th><th>Valid Until</th><th></th></tr></thead>
+                    <tbody>
+                        ${prescriptions.map(p => `
+                            <tr>
+                                <td>${new Date(p.created_at).toLocaleDateString()}</td>
+                                <td>Dr. ${escapeHtml(p.doctor_name || '')}</td>
+                                <td><span class="status-badge status-${p.status}">${p.status}</span></td>
+                                <td>${p.valid_until ? new Date(p.valid_until).toLocaleDateString() : 'N/A'}</td>
+                                <td><button onclick="viewPrescription(${p.id})" style="background:none;border:none;color:#2c7a6e;cursor:pointer;">Details</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('prescriptionsList').innerHTML = html;
+        }
+        
+        async function loadConsultations() {
+            try {
+                const res = await fetch(`${API_BASE}/api/consultations`, {
+                    headers: { 'X-Session-Token': sessionToken }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const consultations = data.consultations;
+                    document.getElementById('consultCount').innerText = consultations.length;
+                    renderConsultations(consultations);
+                }
+            } catch(e) {
+                document.getElementById('consultationsList').innerHTML = '<p>Failed to load consultations</p>';
+            }
+        }
+        
+        function renderConsultations(consultations) {
+            if (!consultations.length) {
+                document.getElementById('consultationsList').innerHTML = '<p>No consultations yet. <a href="consultation.html">Book one now →</a></p>';
+                return;
+            }
+            
+            const html = `
+                <table>
+                    <thead><tr><th>Date</th><th>Doctor</th><th>Predicted Disease</th><th>Status</th><th>Response</th></tr></thead>
+                    <tbody>
+                        ${consultations.map(c => `
+                            <tr>
+                                <td>${new Date(c.created_at).toLocaleDateString()}</td>
+                                <td>Dr. ${escapeHtml(c.doctor_name || '')} <br><small>${c.specialization || ''}</small></td>
+                                <td>${escapeHtml(c.top_disease || c.predicted_disease || '-')}</td>
+                                <td><span class="status-badge status-${c.status}">${c.status}</span></td>
+                                <td><small>${escapeHtml((c.doctor_response || '').substring(0, 50))}</small></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('consultationsList').innerHTML = html;
+        }
+        
+        async function loadAssessments() {
+            try {
+                const res = await fetch(`${API_BASE}/api/profile/${currentUser?.id}/assessments`, {
+                    headers: { 'X-Session-Token': sessionToken }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const assessments = data.history || [];
+                    document.getElementById('assessmentCount').innerText = assessments.length;
+                    renderAssessments(assessments);
+                }
+            } catch(e) {
+                document.getElementById('assessmentsList').innerHTML = '<p>Failed to load assessments</p>';
+            }
+        }
+        
+        function renderAssessments(assessments) {
+            if (!assessments.length) {
+                document.getElementById('assessmentsList').innerHTML = '<p>No assessments yet. <a href="assessment.html">Start symptom checker →</a></p>';
+                return;
+            }
+            
+            const html = `
+                <table>
+                    <thead><tr><th>Date</th><th>Symptoms</th><th>Top Disease</th><th>Confidence</th><th>Specialist</th></tr></thead>
+                    <tbody>
+                        ${assessments.map(a => `
+                            <tr>
+                                <td>${new Date(a.created_at).toLocaleDateString()}</td>
+                                <td><small>${a.symptoms?.slice(0, 3).join(', ')}${a.symptoms?.length > 3 ? '...' : ''}</small></td>
+                                <td>${escapeHtml(a.top_disease)}</td>
+                                <td>${(a.confidence * 100).toFixed(1)}%</td>
+                                <td>${escapeHtml(getSpecialistFromDisease(a.top_disease))}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('assessmentsList').innerHTML = html;
+        }
+        
+        function getSpecialistFromDisease(disease) {
+            if (!disease) return 'General Physician';
+            const d = disease.toLowerCase();
+            if (d.includes('cardiac') || d.includes('heart')) return 'Cardiologist';
+            if (d.includes('lung') || d.includes('asthma')) return 'Pulmonologist';
+            if (d.includes('gastro')) return 'Gastroenterologist';
+            if (d.includes('neuro')) return 'Neurologist';
+            if (d.includes('skin')) return 'Dermatologist';
+            if (d.includes('joint') || d.includes('arthritis')) return 'Rheumatologist';
+            if (d.includes('diabetes')) return 'Diabetologist';
+            return 'General Physician';
+        }
+        
+        function viewOrder(orderId) {
+            window.location.href = `cart.html?order=${orderId}`;
+        }
+        
+        function viewPrescription(prescriptionId) {
+            showToast('Prescription details coming soon');
+        }
+        
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.dataset.tab;
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabId}Tab`).classList.add('active');
+            });
+        });
+        
+        loadUser();
+    </script>
+</body>
+</html>
