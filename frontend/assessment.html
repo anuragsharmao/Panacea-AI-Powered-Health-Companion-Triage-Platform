@@ -8,36 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="stylesheet" href="style.css">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-
-:root {
-  --bg:           #f7f6f3;
-  --card:         #ffffff;
-  --dark:         #0d2226;
-  --dark2:        #132c31;
-  --teal:         #2c7a6e;
-  --teal-l:       #e0f0ec;
-  --blue:         #3b82b6;
-  --blue-l:       #eef2fc;
-  --gold:         #c6a15b;
-  --border:       #e2e4df;
-  --border-light: #e2e4e0;
-  --text:         #1e2a2e;
-  --text2:        #4a5b5e;
-  --text3:        #9aabb0;
-  --text-tertiary:#8b9a9e;
-  --r:            26px;
-  --shadow:       0 12px 32px -8px rgba(0,0,0,0.08);
-  --shadow-sm:    0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.03);
-}
-
-/* ── SEVERITY ── */
-.severity-mild             { background:#d4e6d9; color:#2d6a4f; }
-.severity-moderate         { background:#fff3cd; color:#856404; }
-.severity-severe           { background:#f8d7da; color:#721c24; }
-.severity-life_threatening { background:#d1c4e9; color:#4a148c; }
-
 body {
   background: var(--bg);
   color: var(--text);
@@ -47,42 +19,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ══════════════════════════════════════════
-   SIDEBAR
-   ══════════════════════════════════════════ */
-.sidebar {
-  width: 340px;
-  background: linear-gradient(145deg, #0f2a2e 0%, #091d21 100%);
-  min-height: 100vh;
-  position: fixed;
-  top:0; left:0; bottom:0;
-  padding: 40px 28px 32px;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid rgba(68,130,158,0.25);
-  box-shadow: 10px 0 28px rgba(0,0,0,0.15);
-  z-index: 10;
-}
-
-.strip-logo {
-  margin-bottom: 40px;
-  border-bottom: 1px solid rgba(255,255,255,0.12);
-  padding-bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.logo-image { width:48px; height:48px; object-fit:contain; filter:brightness(0) invert(1); }
-.strip-logo .logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 34px; font-weight: 500; letter-spacing:-0.2px;
-  background: linear-gradient(135deg,#ffffff 0%,#c7e2ec 100%);
-  background-clip:text; -webkit-background-clip:text; color:transparent;
-}
-.strip-logo .logo-sub { font-size:12px; color:#8fb2bd; margin-top:6px; letter-spacing:0.4px; width:100%; }
-
-/* ── Sidebar live badge ── */
+/* ── Sidebar live status ── */
 .sidebar-live {
   background: rgba(44,122,110,0.15);
   border: 1px solid rgba(44,122,110,0.3);
@@ -96,116 +33,57 @@ body {
 /* ── Step tracker ── */
 .step-tracker { flex:1; }
 .step-tracker h5 {
-  font-size:11px; text-transform:uppercase; letter-spacing:1.5px;
-  color:#8fb5be; margin-bottom:20px; font-family:'Inter',sans-serif;
+  font-size:10px; text-transform:uppercase; letter-spacing:1.8px;
+  color:#5a8a94; margin-bottom:22px; font-family:'Inter',sans-serif;
 }
+
 .step {
   display:flex; align-items:flex-start; gap:14px;
-  margin-bottom:4px; opacity:0.4; transition:opacity 0.35s, transform 0.35s;
+  margin-bottom:4px; opacity:0.35; transition:opacity 0.35s, transform 0.35s;
 }
 .step.active  { opacity:1; transform:translateX(4px); }
-.step.done    { opacity:0.65; }
+.step.done    { opacity:0.6; }
+
 .step-dot {
-  width:30px; height:30px; border-radius:50%;
-  background:rgba(255,255,255,0.07);
-  border:1.5px solid rgba(255,255,255,0.13);
+  width:32px; height:32px; border-radius:10px;
+  background:rgba(255,255,255,0.05);
+  border:1.5px solid rgba(255,255,255,0.1);
   display:flex; align-items:center; justify-content:center;
-  font-size:11px; color:#8fb5be; flex-shrink:0;
-  transition:all 0.35s;
+  font-size:13px; color:#5a8a94; flex-shrink:0;
+  transition:all 0.35s; font-weight:600; font-family:'Inter',sans-serif;
 }
 .step.active .step-dot {
   background:var(--teal); border-color:var(--teal); color:#fff;
-  box-shadow:0 0 0 7px rgba(44,122,110,0.18);
+  box-shadow:0 0 0 6px rgba(44,122,110,0.15);
+  border-radius:10px;
 }
-.step.done .step-dot { background:#2c7a6e44; border-color:#2c7a6e88; color:#a8d8d2; }
+.step.done .step-dot {
+  background:rgba(44,122,110,0.25);
+  border-color:rgba(44,122,110,0.5);
+  color:#4ade80;
+  font-size:14px;
+}
+
 .step-line {
-  width:2px; height:18px; background:rgba(255,255,255,0.07);
-  margin-left:14px; border-radius:2px; transition:background 0.35s;
+  width:2px; height:20px; background:rgba(255,255,255,0.06);
+  margin-left:15px; border-radius:2px; transition:background 0.35s;
 }
-.step.done ~ .step .step-line { background: rgba(44,122,110,0.35); }
+.step.done + .step-line { background: rgba(44,122,110,0.3); }
+
 .step-info h6 { color:#d8eef2; font-size:13px; font-weight:500; line-height:1.3; }
 .step-info p  { color:#7aabb5; font-size:11px; margin-top:2px; }
 
-.sidebar-footer { margin-top:auto; padding-top:28px; font-size:11px; color:#8fb2bd; }
+.sidebar-footer { margin-top:auto; padding-top:28px; font-size:11px; color:#4a7a85; line-height:1.6; }
 
-/* ══════════════════════════════════════════
-   MAIN AREA
-   ══════════════════════════════════════════ */
-.main { margin-left:340px; flex:1; display:flex; flex-direction:column; min-height:100vh; }
+/* Sidebar starts from top:0 — covers logo zone (see style.css) */
 
-/* ── Top nav (matching landing page) ── */
-.top-nav {
-  background:var(--card);
-  border-bottom:1px solid var(--border-light);
-  padding:18px 48px;
-  display:flex; justify-content:space-between; align-items:center;
-  flex-wrap:wrap; gap:20px;
-}
-.nav-links {
-  display:flex; gap:40px;
-  font-family:'Inter',sans-serif; font-weight:450; font-size:15px;
-  align-items:center; flex-wrap:wrap;
-}
-.nav-links a {
-  text-decoration:none; color:var(--text2);
-  transition:color 0.2s ease; letter-spacing:-0.2px;
-  position:relative; cursor:pointer;
-}
-.nav-links a:hover { color:var(--teal); }
-.nav-links a::after {
-  content:''; position:absolute; bottom:-6px; left:0;
-  width:0; height:2px;
-  background:linear-gradient(90deg,var(--teal),var(--blue));
-  transition:width 0.2s ease;
-}
-.nav-links a:hover::after { width:100%; }
-.nav-links a.active { color:var(--teal); font-weight:600; }
-.nav-links a.active::after { width:100%; }
+/* ── Main layout — WIDER chat ── */
+.main { margin-left:var(--sidebar-width); flex:1; display:flex; flex-direction:column; min-height:100vh; padding-top:var(--nav-height); }
 
-/* ── Profile pill ── */
-.profile-section {
-  display:flex; align-items:center; gap:16px;
-  background:var(--card); padding:6px 12px 6px 8px;
-  border-radius:60px; box-shadow:var(--shadow-sm);
-  border:1px solid var(--border-light); cursor:pointer;
-  transition:all 0.2s ease; position:relative;
-}
-.profile-section:hover { border-color:var(--teal); box-shadow:0 4px 12px rgba(0,0,0,0.04); }
-.profile-avatar {
-  width:40px; height:40px;
-  background:linear-gradient(135deg,var(--teal),var(--blue));
-  border-radius:50%; display:flex; align-items:center; justify-content:center;
-  color:white; font-family:'Inter',sans-serif; font-weight:600; font-size:16px;
-  box-shadow:0 2px 8px rgba(44,122,110,0.2);
-}
-.profile-info { text-align:left; }
-.profile-name  { font-family:'Inter',sans-serif; font-size:14px; font-weight:600; color:var(--text); line-height:1.2; }
-.profile-role  { font-family:'Inter',sans-serif; font-size:11px; color:var(--text-tertiary); }
-.dropdown-icon { font-size:12px; color:var(--text-tertiary); transition:transform 0.2s; }
-.profile-section.active .dropdown-icon { transform:rotate(180deg); }
+/* .top-nav styles handled by style.css */
 
-.profile-dropdown {
-  position:absolute; top:calc(100% + 8px); right:0;
-  background:white; border-radius:20px;
-  box-shadow:0 20px 35px -10px rgba(0,0,0,0.1);
-  width:210px; padding:8px 0;
-  opacity:0; visibility:hidden; transform:translateY(-6px);
-  transition:all 0.2s ease; z-index:20;
-  border:1px solid var(--border-light);
-}
-.profile-section.active .profile-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
-.profile-dropdown a {
-  display:block; padding:10px 20px;
-  font-family:'Inter',sans-serif; font-size:13px;
-  color:var(--text2); text-decoration:none;
-  transition:background 0.15s; cursor:pointer;
-}
-.profile-dropdown a:hover { background:#f5f3f0; color:var(--teal); }
-.dropdown-divider { height:1px; background:var(--border-light); margin:6px 0; }
-
-/* ── Progress bar ── */
 .progress-wrap {
-  background:var(--card); padding:10px 48px;
+  background:var(--card); padding:10px 56px;
   border-bottom:1px solid var(--border);
 }
 .progress-bar { height:3px; background:var(--border); border-radius:10px; overflow:hidden; }
@@ -220,15 +98,17 @@ body {
   font-family:'Inter',sans-serif;
 }
 
-/* ── Chat area ── */
+/* ── WIDER chat area ── */
 .chat-area {
-  flex:1; padding:36px 48px 8px;
-  max-width:960px; margin:0 auto; width:100%;
+  flex:1; padding:40px 56px 8px;
+  max-width:1100px; margin:0 auto; width:100%;
   display:flex; flex-direction:column; gap:0;
+  box-sizing: border-box;
 }
 .interaction {
-  padding:0 48px 36px;
-  max-width:960px; margin:0 auto; width:100%;
+  padding:0 56px 40px;
+  max-width:1100px; margin:0 auto; width:100%;
+  box-sizing: border-box;
 }
 
 /* ── Messages ── */
@@ -253,22 +133,24 @@ body {
 .msg-bubble {
   background:var(--card); border:1px solid var(--border);
   border-radius:20px 20px 20px 4px;
-  padding:15px 20px; max-width:680px;
-  box-shadow:var(--shadow); font-size:15px; line-height:1.65;
+  padding:16px 22px; max-width:820px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.04);
+  font-size:15px; line-height:1.65;
 }
 .msg.user .msg-bubble {
   background:linear-gradient(135deg,var(--dark),#1a3840);
   color:#e8f4f7; border-radius:20px 4px 20px 20px; border:none;
+  max-width:620px;
+  box-shadow:0 4px 16px rgba(13,34,38,0.2);
 }
 
-/* ── Timestamps ── */
 .msg-time {
   font-size:10px; color:var(--text3); margin-top:5px;
   font-family:'Inter',sans-serif; padding-left:4px;
 }
 .msg.user .msg-time { text-align:right; padding-right:4px; padding-left:0; }
 
-/* ── Typing dots ── */
+/* ── Thinking dots ── */
 .thinking { display:flex; gap:5px; padding:6px 0 2px; }
 .thinking span {
   width:7px; height:7px; border-radius:50%;
@@ -278,7 +160,6 @@ body {
 .thinking span:nth-child(3){animation-delay:.3s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}}
 
-/* ── Typewriter cursor ── */
 .typewriter-cursor {
   display:inline-block; width:2px; height:1em;
   background:var(--teal); margin-left:2px;
@@ -287,10 +168,38 @@ body {
 }
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* ── Symptom picker panel ── */
+/* ── Analysis status banner ── */
+.analysis-banner {
+  display:flex; align-items:center; gap:14px;
+  background:linear-gradient(135deg,rgba(44,122,110,0.08),rgba(59,130,182,0.05));
+  border:1px solid rgba(44,122,110,0.2);
+  border-radius:20px; padding:18px 22px; margin-bottom:20px;
+  box-shadow:0 4px 16px rgba(44,122,110,0.08);
+  position:relative; overflow:hidden;
+}
+.analysis-banner::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:linear-gradient(180deg,var(--teal),var(--blue)); border-radius:2px 0 0 2px;
+}
+.analysis-banner-icon {
+  width:44px; height:44px; border-radius:14px;
+  background:linear-gradient(135deg,var(--teal),var(--blue));
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
+  box-shadow:0 4px 12px rgba(44,122,110,0.25);
+}
+.analysis-banner-text h4 { font-size:14px; font-weight:600; color:var(--text); margin-bottom:4px; }
+.analysis-banner-text p  { font-size:12px; color:var(--text3); }
+.analysis-banner-spinner {
+  margin-left:auto; width:24px; height:24px;
+  border:2.5px solid rgba(44,122,110,0.15); border-top-color:var(--teal);
+  border-radius:50%; animation:spin 0.7s linear infinite; flex-shrink:0;
+}
+
+/* ── Symptom picker ── */
 .symptom-panel {
   background:var(--card); border:1px solid var(--border);
-  border-radius:24px; overflow:hidden;
+  border-radius:24px; overflow:visible;
   box-shadow:var(--shadow); margin-top:4px;
 }
 .symptom-panel-header {
@@ -299,22 +208,25 @@ body {
   border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
   flex-wrap:wrap; gap:10px;
+  border-radius:24px 24px 0 0;
 }
 .symptom-panel-header h4 { font-size:14px; font-weight:600; color:var(--text); }
 .symptom-panel-header span { font-size:12px; color:var(--text3); }
 
 .sym-search {
-  width:100%; padding:13px 18px;
+  width:100%; padding:13px 18px 13px 44px;
   border:none; border-bottom:1px solid var(--border);
   font-size:14px; background:#fafaf8; outline:none;
   font-family:'DM Sans',sans-serif; color:var(--text);
-  transition:background 0.2s;
+  transition:background 0.2s; box-sizing:border-box;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238b9a9e' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:16px center;
 }
-.sym-search:focus { background:#fff; }
+.sym-search:focus { background-color:#fff; }
 
 .chip-grid {
   display:flex; flex-wrap:wrap; gap:8px;
-  padding:18px 20px; max-height:400px; overflow-y:auto;
+  padding:18px 20px 24px; max-height:380px; overflow-y:auto; overflow-x:visible;
   scrollbar-width:thin; scrollbar-color:#e2e4e0 transparent;
 }
 .chip-grid::-webkit-scrollbar { width:4px; }
@@ -332,45 +244,74 @@ body {
   box-shadow:0 3px 10px rgba(44,122,110,0.25);
 }
 .chip[data-tooltip]:hover::after {
-  content:attr(data-tooltip);
-  position:absolute; bottom:115%; left:50%; transform:translateX(-50%);
+  display:none; /* Disabled — JS tooltip handles this */
+}
+
+/* JS-driven floating tooltip */
+#chip-tooltip {
+  position:fixed; z-index:9999; pointer-events:none;
   background:#0d2226; color:#e0f0ec;
-  font-size:12px; font-weight:400;
-  width:220px; padding:9px 12px; border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.2); z-index:200;
-  text-align:left; line-height:1.4; pointer-events:none;
-  border:1px solid rgba(44,122,110,0.4); white-space:normal;
+  font-size:12px; font-weight:400; line-height:1.45;
+  width:240px; padding:10px 14px; border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.25);
+  border:1px solid rgba(44,122,110,0.35);
+  font-family:'DM Sans',sans-serif;
+  opacity:0; transition:opacity 0.12s ease;
+  white-space:normal;
 }
 
 .symptom-panel-footer {
-  padding:16px 22px; border-top:1px solid var(--border); background:#fafaf8;
+  padding:16px 22px; border-top:1px solid var(--border);
+  background:linear-gradient(135deg,#f8faf9,#f5f3f0);
   display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  border-radius:0 0 24px 24px;
 }
 .selected-count { font-size:14px; color:var(--text2); font-family:'DM Sans',sans-serif; }
-.selected-count strong { color:var(--teal); }
+.selected-count strong { color:var(--teal); font-size:16px; }
 
-/* ── Yes / No / Skip ── */
+/* ── Yes/No buttons ── */
 .yn-group { display:flex; gap:12px; flex-wrap:wrap; }
 .yn-btn {
   flex:1; padding:15px 22px; border-radius:18px;
   font-size:15px; font-weight:500; cursor:pointer;
   border:1.5px solid var(--border); background:var(--card);
   transition:all 0.2s; font-family:'DM Sans',sans-serif;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  position:relative; overflow:hidden;
 }
-.yn-yes:hover,.yn-yes.selected { background:var(--teal); color:#fff; border-color:var(--teal); transform:translateY(-1px); box-shadow:0 4px 12px rgba(44,122,110,0.25); }
-.yn-no:hover,.yn-no.selected   { background:#e05c5c; color:#fff; border-color:#e05c5c; transform:translateY(-1px); }
-.yn-skip { flex:0.4; font-size:13px; opacity:0.6; }
-.yn-skip:hover { opacity:1; border-color:var(--text3); }
+.yn-btn::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(255,255,255,0.4), transparent);
+  opacity:0; transition:opacity 0.2s;
+}
+.yn-btn:hover::before { opacity:1; }
+.yn-yes:hover,.yn-yes.selected {
+  background:linear-gradient(135deg,var(--teal),#1e6b5f); color:#fff;
+  border-color:var(--teal); transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(44,122,110,0.3);
+}
+.yn-no:hover,.yn-no.selected {
+  background:linear-gradient(135deg,#e05c5c,#c94545); color:#fff;
+  border-color:#e05c5c; transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(224,92,92,0.25);
+}
+.yn-skip {
+  flex:0.4; font-size:13px; opacity:0.6;
+  background:transparent;
+}
+.yn-skip:hover { opacity:1; border-color:var(--text3); transform:none; box-shadow:none; }
 
 /* ── Buttons ── */
 .confirm-btn {
   background:linear-gradient(135deg,var(--dark),#1e3a3f);
   color:#fff; border:none; padding:14px 32px; border-radius:40px;
-  font-size:14px; font-weight:500; cursor:pointer; transition:all 0.2s;
+  font-size:14px; font-weight:500; cursor:pointer; transition:all 0.22s;
   font-family:'DM Sans',sans-serif;
+  box-shadow:0 4px 14px rgba(13,34,38,0.25);
+  letter-spacing:0.2px;
 }
-.confirm-btn:hover { background:linear-gradient(135deg,var(--teal),var(--blue)); transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.12); }
-.confirm-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+.confirm-btn:hover { background:linear-gradient(135deg,var(--teal),var(--blue)); transform:translateY(-2px); box-shadow:0 8px 20px rgba(44,122,110,0.3); }
+.confirm-btn:disabled { opacity:0.35; cursor:not-allowed; transform:none; box-shadow:none; }
 
 .btn-outline {
   background:transparent; border:1.5px solid var(--border);
@@ -394,13 +335,13 @@ body {
 }
 @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.7}}
 
-/* ── Result card ── */
+/* ── Result cards ── */
 .result-card {
   background:var(--card); border:1px solid var(--border);
-  border-radius:var(--r); padding:32px; margin-bottom:20px;
+  border-radius:var(--r); padding:36px; margin-bottom:20px;
 }
 .disease-detail-card {
-  background:#f8f9fa; border-radius:18px; padding:20px;
+  background:#f8f9fa; border-radius:18px; padding:22px;
   margin:16px 0; border-left:4px solid var(--teal);
 }
 .disease-desc { font-size:14px; line-height:1.65; color:var(--text2); margin-top:12px; }
@@ -422,7 +363,23 @@ body {
 .severity-badge-severe           { background:#f8d7da; color:#721c24; }
 .severity-badge-life_threatening { background:#d1c4e9; color:#4a148c; }
 
-/* ── Animations ── */
+/* ── Interaction zone visual improvements ── */
+.interaction {
+  padding:0 56px 40px;
+  max-width:1100px; margin:0 auto; width:100%;
+  box-sizing: border-box;
+}
+
+/* Clarify question context wrapper */
+.yn-context-label {
+  font-size:11px; text-transform:uppercase; letter-spacing:1.2px;
+  color:var(--text3); margin-bottom:10px; font-family:'Inter',sans-serif;
+  display:flex; align-items:center; gap:8px;
+}
+.yn-context-label::before {
+  content:''; display:block; width:20px; height:1.5px;
+  background:var(--border); border-radius:2px;
+}
 .fade-in { animation:fadeIn 0.4s ease; }
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .hidden { display:none !important; }
@@ -434,9 +391,7 @@ body {
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ══════════════════════════════════════════
-   NEARBY CARE MAP
-   ══════════════════════════════════════════ */
+/* ── Nearby care ── */
 .nearby-care-section {
   margin-top:20px; border-radius:24px; overflow:hidden;
   border:1px solid var(--border); box-shadow:var(--shadow);
@@ -506,9 +461,7 @@ body {
 .osm-credit { padding:8px 16px; font-size:10px; color:var(--text3); text-align:right; background:#fafaf8; border-top:1px solid var(--border); }
 .osm-credit a { color:var(--teal); text-decoration:none; }
 
-/* ══════════════════════════════════════════
-   CONSULTATION MODAL
-   ══════════════════════════════════════════ */
+/* ── Consultation modal ── */
 .consult-modal {
   display:none; position:fixed; top:0; left:0;
   width:100%; height:100%; background:rgba(0,0,0,0.5);
@@ -532,7 +485,7 @@ body {
 .consult-textarea {
   width:100%; padding:14px; border:1.5px solid var(--border);
   border-radius:16px; font-size:14px; margin:16px 0; resize:vertical;
-  font-family:'DM Sans',sans-serif;
+  font-family:'DM Sans',sans-serif; box-sizing:border-box;
 }
 .consult-submit-btn {
   width:100%; padding:14px;
@@ -545,7 +498,6 @@ body {
 .consult-loading { text-align:center; padding:20px; color:var(--text3); }
 .consult-success { background:#d4e6d9; color:#2d6a4f; padding:12px; border-radius:12px; margin:16px 0; text-align:center; }
 
-/* ── Toast ── */
 .toast-notification {
   position:fixed; bottom:24px; right:24px;
   background:#1e2a2e; color:white;
@@ -554,11 +506,15 @@ body {
 }
 
 /* ── Responsive ── */
+@media(max-width:1200px){
+  .chat-area,.interaction{padding-left:40px;padding-right:40px;}
+  .progress-wrap{padding-left:40px;padding-right:40px;}
+  .msg-bubble{max-width:700px;}
+}
 @media(max-width:1100px){
   .sidebar{width:280px;}
   .main{margin-left:280px;}
   .chat-area,.interaction{padding-left:32px;padding-right:32px;}
-  .top-nav{padding-left:32px;padding-right:32px;}
   .progress-wrap{padding-left:32px;padding-right:32px;}
 }
 @media(max-width:768px){
@@ -567,12 +523,12 @@ body {
   .strip-logo{margin-bottom:0;padding-bottom:0;border-bottom:none;}
   .step-tracker{display:none;}
   .sidebar-live{display:none!important;}
-  .top-nav{flex-direction:column;align-items:stretch;padding:16px 20px;}
-  .nav-links{gap:20px;}
-  .profile-section{align-self:flex-start;}
+
+  /* .nav-links responsive handled by style.css */
+  /* .profile-section handled by style.css */
   .chat-area,.interaction{padding:16px 20px;}
   .progress-wrap{padding:10px 20px;}
-  .msg-bubble{max-width:100%;}
+  .msg-bubble,.msg.user .msg-bubble{max-width:100%;}
   .msg-avatar-bot{width:40px;}
   .result-card{padding:20px;}
   .map-container{height:280px;}
@@ -580,85 +536,78 @@ body {
 }
 </style>
 </head>
-<body>
+<body class="has-sidebar">
 
 <!-- ══ SIDEBAR ══ -->
 <aside class="sidebar">
-  <div class="strip-logo">
-    <img src="assets/logo.png" alt="Panacea" class="logo-image" onerror="this.style.display='none'">
-    <div>
-      <div class="logo">panacea</div>
-      <div class="logo-sub">intelligent health companion</div>
-    </div>
-  </div>
+  <!-- Logo injected by script.js injectSidebarLogo() -->
+  <div class="strip-logo"></div>
 
-  <!-- Live current-step badge -->
   <div class="sidebar-live" id="sidebarLive">
     <div class="sidebar-live-label">Currently</div>
     <div class="sidebar-live-text" id="sidebarLiveText">Starting session…</div>
   </div>
 
   <div class="step-tracker">
-    <h5>Session Progress</h5>
+    <h5>Assessment Pipeline</h5>
+
     <div class="step active" id="st1">
-      <div class="step-dot">1</div>
-      <div class="step-info"><h6>Select your symptoms</h6><p>Hover over any chip for details</p></div>
+      <div class="step-dot" id="sd1">1</div>
+      <div class="step-info">
+        <h6>Symptom Selection</h6>
+        <p>Choose all presenting symptoms</p>
+      </div>
     </div>
-    <div class="step-line"></div>
+    <div class="step-line" id="sl1"></div>
+
     <div class="step" id="st2">
-      <div class="step-dot">2</div>
-      <div class="step-info"><h6>Clarifying questions</h6><p>Refining the diagnosis</p></div>
+      <div class="step-dot" id="sd2">2</div>
+      <div class="step-info">
+        <h6>Bayesian Clarification</h6>
+        <p>Adaptive follow-up questions</p>
+      </div>
     </div>
-    <div class="step-line"></div>
+    <div class="step-line" id="sl2"></div>
+
     <div class="step" id="st3">
-      <div class="step-dot">3</div>
-      <div class="step-info"><h6>AI analysis</h6><p>XGBoost prediction engine</p></div>
+      <div class="step-dot" id="sd3">3</div>
+      <div class="step-info">
+        <h6>XGBoost Inference</h6>
+        <p>ML model probability scoring</p>
+      </div>
     </div>
-    <div class="step-line"></div>
+    <div class="step-line" id="sl3"></div>
+
     <div class="step" id="st4">
-      <div class="step-dot">4</div>
-      <div class="step-info"><h6>Results &amp; next steps</h6><p>Diagnosis + specialist advice</p></div>
+      <div class="step-dot" id="sd4">4</div>
+      <div class="step-info">
+        <h6>Diagnostic Report</h6>
+        <p>Ranked conditions + specialist</p>
+      </div>
     </div>
-    <div class="step-line"></div>
+    <div class="step-line" id="sl4"></div>
+
     <div class="step" id="st5">
-      <div class="step-dot">📍</div>
-      <div class="step-info"><h6>Find nearby care</h6><p>Clinics, hospitals, pharmacies</p></div>
+      <div class="step-dot" id="sd5">5</div>
+      <div class="step-info">
+        <h6>Post-Analysis Care</h6>
+        <p>Consult · Pharmacy · Nearby clinics</p>
+      </div>
     </div>
   </div>
 
-  <div class="sidebar-footer">🔒 HIPAA-ready · AES-256 encrypted · Maps: OpenStreetMap</div>
+  <div class="sidebar-footer">
+    🔒 HIPAA-ready · AES-256 encrypted<br>
+    Maps: OpenStreetMap · Model: XGBoost v2
+  </div>
 </aside>
+
+<!-- Top nav injected by script.js (shared across all pages).
+     The ⟳ New Session dropdown item is added automatically by
+     injectTopNav() when the current page is assessment.html. -->
 
 <!-- ══ MAIN ══ -->
 <div class="main">
-
-  <!-- TOP NAV -->
-  <div class="top-nav">
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="#" class="active">Symptom Checker</a>
-      <a href="pharmacy.html">Pharmacy</a>
-      <a href="consultation.html">Consult Doctor</a>
-      <a href="patient-dashboard.html">Records</a>
-    </div>
-    <div class="profile-section" id="profileToggle">
-      <div class="profile-avatar" id="profileAvatar">G</div>
-      <div class="profile-info">
-        <div class="profile-name" id="profileName">Guest User</div>
-        <div class="profile-role" id="profileRole">Not logged in</div>
-      </div>
-      <div class="dropdown-icon">▼</div>
-      <div class="profile-dropdown" id="profileDropdownMenu">
-        <a href="#" id="loginMenuItem"   class="dd-guest">🔑 Login</a>
-        <a href="#" id="signupMenuItem"  class="dd-guest">✨ Sign Up</a>
-        <a href="#" id="profileMenuItem" class="dd-user" style="display:none;">👤 View Profile</a>
-        <div class="dropdown-divider dd-user" style="display:none;"></div>
-        <a href="#" id="signOutMenuItem" class="dd-user" style="display:none;">🚪 Sign Out</a>
-        <div class="dropdown-divider"></div>
-        <a href="#" onclick="window.location.reload();return false;">⟳ New Session</a>
-      </div>
-    </div>
-  </div>
 
   <!-- PROGRESS BAR -->
   <div class="progress-wrap">
@@ -681,13 +630,13 @@ body {
   </div>
 </div>
 
+<script src="script.js"></script>
 <script>
 /* ================================================================
-   CONFIG
+   ASSESSMENT PAGE — Full logic
    ================================================================ */
-const API_BASE = 'http://localhost:8000';
 
-let PROFILE = { id:null, email:null, name:'Guest', gender:'female', age_group:'adult', age:null };
+let PROFILE = { id: null, email: null, name: 'Guest', gender: 'female', age_group: 'adult', age: null };
 let sessionToken = null;
 let fullSymptomCatalogue = [];
 
@@ -704,18 +653,75 @@ let STATE = {
   assessmentId: null
 };
 
-let isFinalizing = false;
+let isFinalizing           = false;
 let clarificationCompleted = false;
-let resultsShown = false;
-let assessmentRunning = false;
+let resultsShown           = false;
+let assessmentRunning      = false;
+let assessmentComplete     = false;
+let globalAssessmentLock   = false;
 
-/* ================================================================
-   UTILITIES
-   ================================================================ */
-function escapeHtml(t) {
-  if (!t) return '';
-  const d = document.createElement('div'); d.textContent = t; return d.innerHTML;
+/* ── New Session confirmation ── */
+document.addEventListener('DOMContentLoaded', () => {
+  const newSessionBtn = document.getElementById('newSessionMenuItem');
+  if (newSessionBtn) {
+    newSessionBtn.addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      if (assessmentComplete && resultsShown) {
+        if (confirm('⚠️ Your current assessment results will be lost. Start a new session?')) window.location.reload();
+        return;
+      }
+      if (assessmentRunning || STATE.phase !== 'intro' || clarificationCompleted) {
+        if (confirm('⚠️ Assessment in progress. Discard and start over?')) window.location.reload();
+        return;
+      }
+      window.location.reload();
+    });
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && (assessmentComplete || resultsShown)) e.preventDefault();
+  });
+});
+
+/* ── Helpers ── */
+function getAgeGroupLocal(age) {
+  if (!age) return 'adult';
+  age = parseInt(age);
+  if (age < 2)  return 'infant';
+  if (age < 12) return 'child';
+  if (age < 18) return 'adolescent';
+  if (age < 65) return 'adult';
+  return 'elderly';
 }
+
+async function loadProfileFromSession() {
+  await sessionReady;
+  if (typeof currentUser !== 'undefined' && currentUser && currentUser.id) {
+    const age = currentUser.age || null;
+    PROFILE = { id: currentUser.id, email: currentUser.email, name: currentUser.name,
+      gender: currentUser.gender || 'female', age_group: getAgeGroupLocal(age), age };
+    sessionToken = currentSessionToken;
+    updateNavPill(true);
+  } else {
+    const storedToken  = localStorage.getItem('panacea_session_token');
+    const storedUserId = localStorage.getItem('panacea_user_id');
+    if (storedToken && storedUserId) {
+      const storedAge = localStorage.getItem('panacea_user_age');
+      PROFILE = { id: storedUserId, email: localStorage.getItem('panacea_user_email') || null,
+        name: localStorage.getItem('panacea_user_name') || 'User',
+        gender: localStorage.getItem('panacea_user_gender') || 'female',
+        age_group: getAgeGroupLocal(storedAge), age: storedAge ? parseInt(storedAge) : null };
+      sessionToken = storedToken;
+      updateNavPill(true);
+    } else {
+      PROFILE = { id: null, email: null, name: 'Guest User', gender: 'female', age_group: 'adult', age: null };
+      sessionToken = null;
+      updateNavPill(false);
+    }
+  }
+  return PROFILE;
+}
+
+function escapeHtml(t) { if (!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 function formatSeverityBadge(s) {
   if (!s) return '';
   const l = { mild:'⚠️ Mild', moderate:'⚠️ Moderate', severe:'🔴 Severe', life_threatening:'💀 Life Threatening' };
@@ -724,11 +730,8 @@ function formatSeverityBadge(s) {
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 function scrollBottom() { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }
 function clearZone() { const z = document.getElementById('interactionZone'); if (z) z.innerHTML = ''; }
-function nowTime() {
-  return new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:true });
-}
+function nowTime() { return new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:true }); }
 
-/* Progress */
 function setProgress(pct, label) {
   const f = document.getElementById('progressFill');
   const p = document.getElementById('progressPct');
@@ -739,43 +742,49 @@ function setProgress(pct, label) {
 }
 
 function setStep(n) {
-  ['st1','st2','st3','st4','st5'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (el) el.className = 'step' + (i+1 < n ? ' done' : i+1 === n ? ' active' : '');
-  });
+  /* Update step dots: done = checkmark, active = highlighted number, future = dim number */
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('st' + i);
+    const dot = document.getElementById('sd' + i);
+    if (!el) continue;
+    if (i < n) {
+      el.className = 'step done';
+      if (dot) dot.textContent = '✓';
+    } else if (i === n) {
+      el.className = 'step active';
+      if (dot) dot.textContent = String(i);
+    } else {
+      el.className = 'step';
+      if (dot) dot.textContent = String(i);
+    }
+  }
   const labels = [
     'Selecting symptoms',
-    'Answering clarifying questions',
-    'Running AI analysis',
-    'Reviewing results',
-    'Finding nearby care'
+    'Running Bayesian clarification',
+    'XGBoost inference in progress',
+    'Reviewing diagnostic report',
+    'Post-analysis care options'
   ];
   const live = document.getElementById('sidebarLive');
   const liveText = document.getElementById('sidebarLiveText');
   if (live && liveText && n >= 1 && n <= 5) {
     live.classList.add('visible');
-    liveText.textContent = labels[n-1];
+    liveText.textContent = labels[n - 1];
   }
 }
 
-/* ── Typewriter effect ── */
 async function typewrite(element, text, speed = 16) {
   const isRich = /<[a-z][\s\S]*>/i.test(text);
   if (isRich) {
     element.innerHTML = text;
-    element.style.opacity = '0';
-    element.style.transition = 'opacity 0.3s ease';
-    await delay(50);
-    element.style.opacity = '1';
-    return;
+    element.style.opacity = '0'; element.style.transition = 'opacity 0.3s ease';
+    await delay(50); element.style.opacity = '1'; return;
   }
   element.innerHTML = '';
-  const cursor = document.createElement('span');
-  cursor.className = 'typewriter-cursor';
+  const cursor = document.createElement('span'); cursor.className = 'typewriter-cursor';
   element.appendChild(cursor);
   for (let i = 0; i < text.length; i++) {
-    const char = document.createTextNode(text[i]);
-    element.insertBefore(char, cursor);
+    element.insertBefore(document.createTextNode(text[i]), cursor);
     scrollBottom();
     const pause = '.!?,'.includes(text[i]) ? speed * 4 : text[i] === ' ' ? speed * 0.5 : speed;
     await delay(pause);
@@ -783,161 +792,56 @@ async function typewrite(element, text, speed = 16) {
   cursor.remove();
 }
 
-/* ── Bot avatar ── */
 function createBotAvatar() {
   const c = document.createElement('div'); c.className = 'msg-avatar-bot';
-  const img = document.createElement('img');
-  img.src = 'assets/illustration2.png'; img.alt = 'Panacea AI';
-  img.onerror = () => { img.style.display = 'none'; c.innerHTML = '<span style="font-size:28px;">🧠</span>'; c.style.display='flex'; };
+  const img = document.createElement('img'); img.src = 'assets/illustration2.png'; img.alt = 'Panacea AI';
+  img.onerror = () => { img.style.display = 'none'; c.innerHTML = '<span style="font-size:28px;">🧠</span>'; c.style.display = 'flex'; };
   c.appendChild(img); return c;
 }
 
-/* ── Bot message with typewriter + thinking dots + timestamp ── */
 async function addBotMsg(text, useTypewriter = true) {
   const wrap = document.createElement('div'); wrap.className = 'msg bot fade-in';
   const bubble = document.createElement('div'); bubble.className = 'msg-bubble';
   const isRich = /<[a-z][\s\S]*>/i.test(text);
-
   if (useTypewriter && !isRich) {
     bubble.innerHTML = '<div class="thinking"><span></span><span></span><span></span></div>';
     wrap.appendChild(createBotAvatar()); wrap.appendChild(bubble);
-    document.getElementById('chatArea').appendChild(wrap);
-    scrollBottom();
-    const thinkTime = Math.min(400 + text.length * 2, 1200);
-    await delay(thinkTime);
+    document.getElementById('chatArea').appendChild(wrap); scrollBottom();
+    await delay(Math.min(400 + text.length * 2, 1200));
     bubble.innerHTML = '';
     await typewrite(bubble, text, 16);
   } else {
     bubble.innerHTML = text;
     wrap.appendChild(createBotAvatar()); wrap.appendChild(bubble);
-    document.getElementById('chatArea').appendChild(wrap);
-    scrollBottom();
+    document.getElementById('chatArea').appendChild(wrap); scrollBottom();
   }
-
   const ts = document.createElement('div'); ts.className = 'msg-time'; ts.textContent = nowTime();
-  wrap.appendChild(ts);
-  scrollBottom();
+  wrap.appendChild(ts); scrollBottom(); return wrap;
+}
+
+function addUserMsg(text) {
+  const wrap = document.createElement('div'); wrap.className = 'msg user fade-in';
+  wrap.innerHTML = `<div class="msg-avatar-user">${(PROFILE.name?.charAt(0)||'U').toUpperCase()}</div><div class="msg-bubble">${escapeHtml(text)}</div>`;
+  const ts = document.createElement('div'); ts.className = 'msg-time'; ts.textContent = nowTime();
+  wrap.appendChild(ts); document.getElementById('chatArea').appendChild(wrap); scrollBottom();
+}
+
+/* Show an inline "XGBoost running" analysis banner inside chat */
+function showAnalysisBanner(text, subtext) {
+  const wrap = document.createElement('div'); wrap.className = 'fade-in';
+  wrap.innerHTML = `<div class="analysis-banner">
+    <div class="analysis-banner-icon">⚙️</div>
+    <div class="analysis-banner-text">
+      <h4>${text}</h4>
+      <p>${subtext}</p>
+    </div>
+    <div class="analysis-banner-spinner"></div>
+  </div>`;
+  document.getElementById('chatArea').appendChild(wrap); scrollBottom();
   return wrap;
 }
 
-/* ── User message with timestamp ── */
-function addUserMsg(text) {
-  const wrap = document.createElement('div'); wrap.className = 'msg user fade-in';
-  const initial = (PROFILE.name?.charAt(0) || 'U').toUpperCase();
-  wrap.innerHTML = `<div class="msg-avatar-user">${initial}</div><div class="msg-bubble">${escapeHtml(text)}</div>`;
-  const ts = document.createElement('div'); ts.className = 'msg-time'; ts.textContent = nowTime();
-  wrap.appendChild(ts);
-  document.getElementById('chatArea').appendChild(wrap);
-  scrollBottom();
-}
-
-/* ================================================================
-   PROFILE / SESSION
-   ================================================================ */
-async function loadUserProfile() {
-  const cached = {
-    name:   localStorage.getItem('panacea_user_name'),
-    gender: localStorage.getItem('panacea_user_gender'),
-    age:    localStorage.getItem('panacea_user_age'),
-    id:     localStorage.getItem('panacea_user_id'),
-    email:  localStorage.getItem('panacea_user_email'),
-  };
-  const token = localStorage.getItem('panacea_session_token');
-
-  if (token) {
-    try {
-      const v = await fetch(`${API_BASE}/api/auth/verify`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ session_token: token })
-      });
-      if (v.ok) {
-        const d = await v.json();
-        if (d.valid && d.user) {
-          sessionToken = token;
-          PROFILE.id = d.user.id; PROFILE.email = d.user.email; PROFILE.name = d.user.name || 'User';
-          try {
-            const pr = await fetch(`${API_BASE}/api/profile/${d.user.id}`);
-            if (pr.ok) {
-              const pd = await pr.json();
-              if (pd.profile) {
-                PROFILE.gender    = pd.profile.gender || 'female';
-                PROFILE.age       = pd.profile.age;
-                PROFILE.age_group = getAgeGroup(pd.profile.age);
-              }
-            }
-          } catch (e) {
-            PROFILE.gender    = cached.gender || 'female';
-            PROFILE.age       = cached.age ? parseInt(cached.age) : null;
-            PROFILE.age_group = getAgeGroup(PROFILE.age);
-          }
-          updateNavPill(true); return;
-        }
-      }
-    } catch (e) {}
-  }
-  PROFILE.name      = cached.name   || 'Guest User';
-  PROFILE.gender    = cached.gender || 'female';
-  PROFILE.age       = cached.age ? parseInt(cached.age) : null;
-  PROFILE.age_group = getAgeGroup(PROFILE.age);
-  updateNavPill(!!(token && cached.name));
-}
-
-function getAgeGroup(age) {
-  if (!age) return 'adult'; age = parseInt(age);
-  if (age < 2)  return 'infant';
-  if (age < 12) return 'child';
-  if (age < 18) return 'adolescent';
-  if (age < 65) return 'adult';
-  return 'elderly';
-}
-
-function updateNavPill(isLoggedIn) {
-  const name = PROFILE.name || 'Guest User';
-  document.getElementById('profileName').textContent = name;
-  document.getElementById('profileAvatar').textContent = name.charAt(0).toUpperCase();
-
-  document.querySelectorAll('.dd-guest').forEach(el => el.style.display = isLoggedIn ? 'none'  : 'block');
-  document.querySelectorAll('.dd-user') .forEach(el => el.style.display = isLoggedIn ? 'block' : 'none');
-
-  if (isLoggedIn) {
-    const gLabel = PROFILE.gender === 'male' ? 'Male' : PROFILE.gender === 'female' ? 'Female' : null;
-    const aLabel = PROFILE.age ? `${PROFILE.age} yrs` : null;
-    document.getElementById('profileRole').textContent = [gLabel, aLabel].filter(Boolean).join(' · ') || 'Member';
-    document.getElementById('profileAvatar').style.background = 'linear-gradient(135deg,#2c7a6e,#3b82b6)';
-  } else {
-    document.getElementById('profileRole').textContent = 'Not logged in';
-    document.getElementById('profileAvatar').style.background = 'linear-gradient(135deg,#8b9a9e,#6b7a7e)';
-  }
-}
-
-/* Profile pill toggle */
-const profileToggle = document.getElementById('profileToggle');
-if (profileToggle) {
-  profileToggle.addEventListener('click', e => { e.stopPropagation(); profileToggle.classList.toggle('active'); });
-}
-document.addEventListener('click', e => {
-  if (profileToggle && !profileToggle.contains(e.target)) profileToggle.classList.remove('active');
-});
-
-/* Dropdown actions */
-document.getElementById('loginMenuItem')?.addEventListener('click', e  => { e.preventDefault(); window.location.href = 'index.html'; });
-document.getElementById('signupMenuItem')?.addEventListener('click', e => { e.preventDefault(); window.location.href = 'index.html'; });
-document.getElementById('profileMenuItem')?.addEventListener('click', e => { e.preventDefault(); window.location.href = 'index.html#profile'; });
-document.getElementById('signOutMenuItem')?.addEventListener('click', async e => {
-  e.preventDefault();
-  const token = localStorage.getItem('panacea_session_token');
-  ['panacea_session_token','panacea_user_id','panacea_user_name','panacea_user_email','panacea_user_gender','panacea_user_age'].forEach(k => localStorage.removeItem(k));
-  sessionToken = null;
-  if (token) {
-    try { await fetch(`${API_BASE}/api/auth/logout`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ session_token: token }) }); } catch (e) {}
-  }
-  showToast('You have been signed out.');
-  setTimeout(() => window.location.href = 'index.html', 800);
-});
-
-/* ================================================================
-   SYMPTOMS
-   ================================================================ */
+/* ── Symptoms ── */
 async function loadSymptoms() {
   try {
     const res = await fetch(`${API_BASE}/symptoms/catalogue`);
@@ -954,38 +858,37 @@ function getFilteredSymptoms() {
   });
 }
 
-/* ── Intro ── */
 async function startIntro() {
+  if (assessmentComplete || globalAssessmentLock) return;
   setProgress(5, 'Loading symptom catalogue…');
   await loadSymptoms();
   setStep(1);
-
   const gLabel = PROFILE.gender === 'male' ? 'Male' : PROFILE.gender === 'female' ? 'Female' : 'Not specified';
   const aLabel = PROFILE.age ? `${PROFILE.age} years old` : PROFILE.age_group;
-
   await addBotMsg(`Hello${PROFILE.name && PROFILE.name !== 'Guest User' ? ' ' + PROFILE.name.split(' ')[0] : ''} 👋 Welcome to your health assessment. I've noted your profile — ${gLabel}, ${aLabel}.`);
   await delay(200);
-  await addBotMsg(`Please select all the symptoms you're currently experiencing from the list below. You can scroll through to find them, or use the search bar. Hover over any symptom for a plain-language explanation.`);
+  await addBotMsg(`Please select all the symptoms you're currently experiencing from the list below. Use the search bar to filter, and hover over any chip for a plain-language explanation.`);
   await delay(300);
   showSymptomPicker();
   setProgress(15, 'Step 1 — Select your symptoms');
   STATE.phase = 'select';
 }
 
-/* ── Symptom Picker Panel ── */
 function showSymptomPicker() {
   clearZone();
+  /* Ensure JS tooltip element exists */
+  if (!document.getElementById('chip-tooltip')) {
+    const tt = document.createElement('div'); tt.id = 'chip-tooltip';
+    document.body.appendChild(tt);
+  }
   const filtered = getFilteredSymptoms();
   const panel = document.createElement('div'); panel.className = 'symptom-panel fade-in';
-
   const header = document.createElement('div'); header.className = 'symptom-panel-header';
   const htitle = document.createElement('h4'); htitle.textContent = `${filtered.length} symptoms available`;
   const hSub = document.createElement('span'); hSub.textContent = 'Scroll to see all · hover for details';
   header.appendChild(htitle); header.appendChild(hSub);
-
   const search = document.createElement('input');
   search.type = 'text'; search.placeholder = '🔍  Search symptoms…'; search.className = 'sym-search';
-
   const grid = document.createElement('div'); grid.className = 'chip-grid';
 
   function renderChips(filter = '') {
@@ -994,16 +897,38 @@ function showSymptomPicker() {
     list.forEach(sym => {
       const chip = document.createElement('div'); chip.className = 'chip';
       chip.innerText = sym.symptom_name;
-      if (sym.explanation) chip.setAttribute('data-tooltip', sym.explanation);
+      if (sym.explanation) {
+        chip.setAttribute('data-tooltip', sym.explanation);
+        chip.addEventListener('mouseenter', e => {
+          const tt = document.getElementById('chip-tooltip');
+          if (!tt) return;
+          tt.textContent = sym.explanation;
+          const r = chip.getBoundingClientRect();
+          let left = r.left + r.width / 2 - 120;
+          let top  = r.top - 8;
+          if (left < 8) left = 8;
+          if (left + 240 > window.innerWidth - 8) left = window.innerWidth - 248;
+          tt.style.left = left + 'px';
+          tt.style.top  = (top - tt.offsetHeight || top - 60) + 'px';
+          tt.style.opacity = '1';
+          /* Reposition after paint for accurate height */
+          requestAnimationFrame(() => {
+            const h = tt.offsetHeight;
+            tt.style.top = (r.top - h - 8) + 'px';
+          });
+        });
+        chip.addEventListener('mouseleave', () => {
+          const tt = document.getElementById('chip-tooltip');
+          if (tt) tt.style.opacity = '0';
+        });
+      }
       if (STATE.selectedSymptoms.some(s => s.symptom_name === sym.symptom_name)) chip.classList.add('selected');
       chip.onclick = () => {
         if (STATE.selectedSymptoms.some(s => s.symptom_name === sym.symptom_name)) {
           STATE.selectedSymptoms = STATE.selectedSymptoms.filter(s => s.symptom_name !== sym.symptom_name);
           chip.classList.remove('selected');
-        } else {
-          STATE.selectedSymptoms.push(sym); chip.classList.add('selected');
-        }
-        countEl.innerHTML = `<strong>${STATE.selectedSymptoms.length}</strong> selected`;
+        } else { STATE.selectedSymptoms.push(sym); chip.classList.add('selected'); }
+        countEl.innerHTML = `<strong>${STATE.selectedSymptoms.length}</strong> symptom${STATE.selectedSymptoms.length !== 1 ? 's' : ''} selected`;
         confirmBtn.disabled = STATE.selectedSymptoms.length === 0;
       };
       grid.appendChild(chip);
@@ -1020,16 +945,13 @@ function showSymptomPicker() {
   confirmBtn.textContent = 'Continue →'; confirmBtn.disabled = true;
 
   confirmBtn.onclick = async () => {
-    if (!STATE.selectedSymptoms.length) return;
-    if (assessmentRunning) return;
-    assessmentRunning = true;
-    confirmBtn.disabled = true;
+    if (!STATE.selectedSymptoms.length || assessmentRunning || assessmentComplete) return;
+    assessmentRunning = true; confirmBtn.disabled = true; panel.remove();
     const names = STATE.selectedSymptoms.map(s => s.symptom_name);
     addUserMsg(`My symptoms: ${names.slice(0, 6).join(', ')}${names.length > 6 ? ` + ${names.length - 6} more` : ''}`);
     clearZone();
-    setProgress(28, 'Analysing your symptoms…');
-    setStep(2);
-    await addBotMsg(`Thank you for sharing that. I've noted ${names.length} symptom${names.length > 1 ? 's' : ''}. I'm going to ask you a few focused follow-up questions — this helps me narrow down the likely cause with much greater accuracy. Please answer honestly; there are no wrong answers.`);
+    setProgress(28, 'Analysing symptoms…'); setStep(2);
+    await addBotMsg(`Thank you for sharing that. I've noted ${names.length} symptom${names.length > 1 ? 's' : ''}. I'll now ask a few targeted follow-up questions — this Bayesian clarification step significantly improves diagnostic accuracy. Please answer as honestly as you can.`);
     STATE.phase = 'clarify';
     await startBayesianClarification(names);
   };
@@ -1039,61 +961,96 @@ function showSymptomPicker() {
   document.getElementById('interactionZone').appendChild(panel);
 }
 
-/* ================================================================
-   CLARIFICATION
-   ================================================================ */
+/* ── Clarification ── */
 async function startBayesianClarification(symptomNames) {
+  if (assessmentComplete || globalAssessmentLock) return;
   isFinalizing = false; clarificationCompleted = false; resultsShown = false; assessmentRunning = true;
-  const safeGender = ['male','female'].includes(PROFILE.gender) ? PROFILE.gender : 'female';
+  const safeGender   = ['male','female'].includes(PROFILE.gender) ? PROFILE.gender : 'female';
   const safeAgeGroup = ['infant','child','adolescent','adult','elderly'].includes(PROFILE.age_group) ? PROFILE.age_group : 'adult';
   try {
     const res = await fetch(`${API_BASE}/clarify/start`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ symptoms_present:symptomNames, age_group:safeAgeGroup, gender:safeGender, max_questions:10, confidence_stop:0.75, prior_weight:0.20, fast_mode:false })
+      body: JSON.stringify({ symptoms_present: symptomNames, age_group: safeAgeGroup, gender: safeGender,
+        max_questions: 10, confidence_stop: 0.75, prior_weight: 0.20, fast_mode: false })
     });
     if (!res.ok) throw new Error(`${res.status}`);
     const data = await res.json();
     STATE.clarifySessionId = data.session_id;
+    if (data.ready_for_result) { await fetchAndShowResult(); return; }
     if (data.done) { await finaliseClarification(data); return; }
     STATE.clarifyCurrentQuestion = data.question;
     STATE.clarifyQuestionNumber  = data.question_number;
-    setProgress(30 + data.question_number * 5, `Question ${data.question_number} of up to 10`);
+    setProgress(30 + data.question_number * 5, `Clarification — question ${data.question_number}`);
     await askClarifyQuestion(data.question, data.question_number, data.question_explanation || '');
   } catch (err) {
-    console.error('clarify/start:', err);
-    await addBotMsg(`I encountered a small hiccup connecting to the analysis engine. I'll work with what you've given me and run a direct prediction now — we'll still get a solid result.`);
+    await addBotMsg(`I hit a connectivity issue with the analysis engine. Running a direct prediction instead — results will still be accurate.`);
     await runFallbackPrediction(symptomNames);
   }
 }
 
 async function askClarifyQuestion(questionSymptom, qNumber, explanation) {
-  const explainPart = explanation
-    ? `<div style="margin-top:10px;padding:10px 14px;background:#f0f7f5;border-radius:14px;font-size:13px;color:#4a5b5e;line-height:1.5;">ℹ️ ${escapeHtml(explanation)}</div>`
-    : '';
-  await addBotMsg(
-    `<div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <span style="background:var(--teal-l);color:var(--teal);font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;">Question ${qNumber}</span>
-      </div>
-      <div style="font-size:16px;line-height:1.5;">Are you also experiencing <strong>"${escapeHtml(questionSymptom)}"</strong>?</div>
-      ${explainPart}
-    </div>`,
-    false
-  );
+  if (assessmentComplete || globalAssessmentLock) return;
+
+  /* Step 1 — typewrite the plain question */
+  const questionText = `Are you also experiencing "${questionSymptom}"?`;
+  const botWrap = await addBotMsg(questionText, true);
+
+  /* Step 2 — append badge + explanation BELOW the typed text only.
+     Never prepend or clear — bubble grows downward, avatar stays at bottom, no jump. */
+  const bubble = botWrap?.querySelector('.msg-bubble');
+  if (bubble) {
+    /* Badge fades in below the question text */
+    const badge = document.createElement('div');
+    badge.style.cssText = 'display:flex;align-items:center;gap:8px;margin-top:10px;opacity:0;transition:opacity 0.3s ease;';
+    badge.innerHTML = `<span style="background:var(--teal-l);color:var(--teal);font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;">Question ${qNumber}</span><span style="font-size:11px;color:var(--text3);font-family:'Inter',sans-serif;">Bayesian clarification</span>`;
+    bubble.appendChild(badge);
+    requestAnimationFrame(() => { badge.style.opacity = '1'; });
+
+    /* Explanation expands below badge */
+    if (explanation) {
+      const explainEl = document.createElement('div');
+      explainEl.style.cssText = [
+        'margin-top:8px',
+        'padding:0 14px',
+        'background:#f0f7f5',
+        'border-radius:14px',
+        'font-size:13px',
+        'color:#4a5b5e',
+        'line-height:1.5',
+        'max-height:0',
+        'overflow:hidden',
+        'opacity:0',
+        'transition:max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease'
+      ].join(';');
+      explainEl.innerHTML = `ℹ️ ${escapeHtml(explanation)}`;
+      bubble.appendChild(explainEl);
+      await delay(160);
+      explainEl.style.maxHeight = '200px';
+      explainEl.style.opacity   = '1';
+      explainEl.style.padding   = '10px 14px';
+    }
+  }
   showYesNoSkip(questionSymptom);
 }
 
 function showYesNoSkip(symptomName) {
+  if (assessmentComplete || globalAssessmentLock) return;
   clearZone();
   const div = document.createElement('div'); div.className = 'fade-in';
-  const group = document.createElement('div'); group.className = 'yn-group';
-  const yBtn    = document.createElement('button'); yBtn.className    = 'yn-btn yn-yes';  yBtn.innerHTML = '<span style="margin-right:6px;">✓</span> Yes, I have this';
-  const nBtn    = document.createElement('button'); nBtn.className    = 'yn-btn yn-no';   nBtn.innerHTML = '<span style="margin-right:6px;">✗</span> No, I don\'t';
-  const skipBtn = document.createElement('button'); skipBtn.className = 'yn-btn yn-skip'; skipBtn.textContent = 'Skip →';
+  div.style.cssText = 'padding:4px 0;';
 
+  const label = document.createElement('div'); label.className = 'yn-context-label';
+  label.textContent = 'Your response';
+  div.appendChild(label);
+
+  const group = document.createElement('div'); group.className = 'yn-group';
+  const yBtn    = document.createElement('button'); yBtn.className    = 'yn-btn yn-yes';  yBtn.innerHTML = '<span style="margin-right:6px;font-size:17px;">✓</span> Yes, I have this';
+  const nBtn    = document.createElement('button'); nBtn.className    = 'yn-btn yn-no';   nBtn.innerHTML = '<span style="margin-right:6px;font-size:17px;">✗</span> No, I don\'t';
+  const skipBtn = document.createElement('button'); skipBtn.className = 'yn-btn yn-skip'; skipBtn.textContent = 'Skip →';
   let answered = false;
+
   async function submit(answer, skipped) {
-    if (answered || clarificationCompleted || resultsShown) return;
+    if (answered || clarificationCompleted || resultsShown || assessmentComplete || globalAssessmentLock) return;
     answered = true;
     yBtn.disabled = nBtn.disabled = skipBtn.disabled = true;
     if (!skipped) {
@@ -1112,17 +1069,19 @@ function showYesNoSkip(symptomName) {
       });
       if (!res.ok) throw new Error(`${res.status}`);
       const data = await res.json();
-      if (data.done) {
+      if (data.ready_for_result) {
+        await fetchAndShowResult();
+      } else if (data.done) {
         await finaliseClarification(data);
-      } else if (!clarificationCompleted && !resultsShown) {
+      } else if (!clarificationCompleted && !resultsShown && !assessmentComplete) {
         STATE.clarifyCurrentQuestion = data.question;
         STATE.clarifyQuestionNumber  = data.question_number;
-        setProgress(30 + data.question_number * 5, `Question ${data.question_number} of up to 10`);
+        setProgress(30 + data.question_number * 5, `Clarification — question ${data.question_number}`);
         await delay(300);
         await askClarifyQuestion(data.question, data.question_number, data.question_explanation || '');
       }
     } catch (err) {
-      if (!clarificationCompleted && !resultsShown) await forceFinalize();
+      if (!clarificationCompleted && !resultsShown && !assessmentComplete) await forceFinalize();
     }
   }
 
@@ -1135,7 +1094,7 @@ function showYesNoSkip(symptomName) {
 }
 
 async function forceFinalize() {
-  if (isFinalizing || clarificationCompleted || resultsShown) return;
+  if (isFinalizing || clarificationCompleted || resultsShown || assessmentComplete || globalAssessmentLock) return;
   if (!STATE.clarifySessionId) { await runFallbackPrediction(STATE.selectedSymptoms.map(s => s.symptom_name)); return; }
   isFinalizing = true;
   try {
@@ -1146,20 +1105,53 @@ async function forceFinalize() {
     if (!res.ok) throw new Error(`${res.status}`);
     await finaliseClarification(await res.json());
   } catch (err) {
-    if (!clarificationCompleted && !resultsShown) await runFallbackPrediction(STATE.selectedSymptoms.map(s => s.symptom_name));
+    if (!clarificationCompleted && !resultsShown && !assessmentComplete)
+      await runFallbackPrediction(STATE.selectedSymptoms.map(s => s.symptom_name));
   } finally { isFinalizing = false; }
 }
 
+/* ── fetchAndShowResult: CORRECT flow — show analysis banner FIRST, then call API ── */
+async function fetchAndShowResult() {
+  if (!STATE.clarifySessionId || assessmentComplete || resultsShown || globalAssessmentLock) return;
+
+  /* 1. Tell user clarification is done */
+  await addBotMsg(`Clarification complete — I have enough information to run the diagnostic model now.`);
+
+  /* 2. Move to step 3 and show the analysis banner BEFORE calling the API */
+  setStep(3);
+  setProgress(72, 'XGBoost inference — scoring disease probabilities…');
+  const banner = showAnalysisBanner(
+    'Running XGBoost Inference',
+    'Scoring disease probabilities across the trained model — this takes just a moment…'
+  );
+
+  /* 3. NOW call the API */
+  try {
+    const res = await fetch(`${API_BASE}/clarify/result/${STATE.clarifySessionId}`);
+    if (!res.ok) throw new Error('Result endpoint failed');
+    const data = await res.json();
+
+    /* 4. Remove the banner once we have data */
+    if (banner && banner.parentNode) banner.remove();
+
+    STATE.clarifySessionId = null;
+    await finaliseClarification({ predictions: data.predictions, explanations: data.explanations });
+  } catch (err) {
+    if (banner && banner.parentNode) banner.remove();
+    if (!assessmentComplete && !resultsShown) await runFallbackPrediction(STATE.selectedSymptoms.map(s => s.symptom_name));
+  }
+}
+
 async function finaliseClarification(data) {
-  if (clarificationCompleted || resultsShown) return;
-  clarificationCompleted = true; clearZone();
-  await addBotMsg(`Thank you — that's all the clarifying questions I need. I'm now running your responses through the diagnostic model. This only takes a moment…`);
-  setProgress(75, 'Running AI analysis…'); setStep(3);
-  await delay(400);
-  STATE.predictions    = data.predictions;
-  STATE.explanations   = data.explanations;
+  if (clarificationCompleted || resultsShown || assessmentComplete || globalAssessmentLock) return;
+  clarificationCompleted = true;
+  clearZone();
+  STATE.predictions  = data.predictions;
+  STATE.explanations = data.explanations;
   STATE.clarifySessionId = null;
-  setProgress(90, 'Preparing your results');
+
+  setProgress(90, 'Preparing diagnostic report…');
+
   let topDiseaseDetails = null;
   if (STATE.predictions?.length) {
     try {
@@ -1167,33 +1159,45 @@ async function finaliseClarification(data) {
       if (dr.ok) topDiseaseDetails = await dr.json();
     } catch (e) {}
   }
-  await addBotMsg(`The analysis is complete. Here is your personalised assessment — please read through it carefully.`);
+
+  await addBotMsg(`Analysis complete. Here is your personalised diagnostic report — please review it carefully.`);
   await delay(200);
   await showResults(STATE.predictions, STATE.explanations, topDiseaseDetails);
   setStep(4); setProgress(100, 'Assessment complete');
 }
 
 async function runFallbackPrediction(symptomNames) {
-  if (clarificationCompleted || resultsShown) return;
+  if (clarificationCompleted || resultsShown || assessmentComplete || globalAssessmentLock) return;
   clearZone();
-  const safeGender    = ['male','female'].includes(PROFILE.gender) ? PROFILE.gender : 'female';
-  const safeAgeGroup  = ['infant','child','adolescent','adult','elderly'].includes(PROFILE.age_group) ? PROFILE.age_group : 'adult';
-  await addBotMsg(`Running the diagnostic model on your symptom profile now…`);
-  setProgress(55, 'AI analysis'); setStep(3);
+  const safeGender   = ['male','female'].includes(PROFILE.gender) ? PROFILE.gender : 'female';
+  const safeAgeGroup = ['infant','child','adolescent','adult','elderly'].includes(PROFILE.age_group) ? PROFILE.age_group : 'adult';
+
+  /* Show analysis banner */
+  setStep(3);
+  setProgress(55, 'XGBoost inference…');
+  const banner = showAnalysisBanner(
+    'Running XGBoost Inference',
+    'Scoring your symptom profile against the disease probability model…'
+  );
+
   let predictions = [], explanations = [];
   try {
     const res = await fetch(`${API_BASE}/predict`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ symptoms_present:symptomNames, age_group:safeAgeGroup, gender:safeGender, top_n_final:5, prior_weight:0.2 })
+      body: JSON.stringify({ symptoms_present: symptomNames, age_group: safeAgeGroup, gender: safeGender, top_n_final: 5, prior_weight: 0.2 })
     });
     const d = await res.json(); predictions = d.predictions; explanations = d.explanations || [];
   } catch (err) {
-    predictions = [{ rank:1, disease:'Unable to connect to AI service', confidence:0.50, in_pool:true }];
+    predictions = [{ rank: 1, disease: 'Unable to connect to AI service', confidence: 0.50, in_pool: true }];
   }
+
+  if (banner && banner.parentNode) banner.remove();
+
   STATE.predictions  = predictions;
   STATE.explanations = explanations;
-  setProgress(78, 'Preparing your results');
+  setProgress(78, 'Preparing diagnostic report…');
   clarificationCompleted = true;
+
   let topDiseaseDetails = null;
   if (predictions?.length && predictions[0].disease !== 'Unable to connect to AI service') {
     try {
@@ -1201,114 +1205,113 @@ async function runFallbackPrediction(symptomNames) {
       if (dr.ok) topDiseaseDetails = await dr.json();
     } catch (e) {}
   }
-  await addBotMsg(`Your assessment is ready. Here's what the model found based on your symptoms.`);
+
+  await addBotMsg(`Inference complete. Here's what the model found based on your symptom profile.`);
   await delay(300);
   await showResults(predictions, explanations, topDiseaseDetails);
   setStep(4); setProgress(100, 'Assessment complete');
 }
 
-/* ================================================================
-   RESULTS
-   ================================================================ */
+/* ── Results ── */
 async function showResults(predictions, explanations, diseaseDetails = null) {
-  if (resultsShown) return;
-  resultsShown = true;
-  assessmentRunning = false;
+  if (resultsShown || assessmentComplete || globalAssessmentLock) return;
+  globalAssessmentLock = true;
+  resultsShown         = true;
+  assessmentRunning    = false;
+  assessmentComplete   = true;
   clearZone();
-  if (!predictions?.length) predictions = [{ rank:1, disease:'Unable to determine', confidence:0, in_pool:true }];
+
+  if (!predictions?.length) predictions = [{ rank: 1, disease: 'Unable to determine', confidence: 0, in_pool: true }];
   const top = predictions[0];
-  STATE.topDisease   = top.disease;
-  const specialist   = diseaseDetails?.specialist || getSpecialistFromDisease(top.disease);
+  STATE.topDisease    = top.disease;
+  const specialist    = diseaseDetails?.specialist || getSpecialistFromDisease(top.disease);
   STATE.topSpecialist = specialist;
 
   let diseaseHtml = '';
   if (diseaseDetails?.disease_name) {
     const ps = diseaseDetails.primary_severity   || 'unknown';
     const ss = diseaseDetails.secondary_severity || 'unknown';
-    diseaseHtml = `
-      <div class="disease-detail-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-          <strong style="font-size:15px;">📋 Condition Profile</strong>
-          <div style="display:flex;gap:8px;align-items:center;">${formatSeverityBadge(ps)}<span style="font-size:12px;color:var(--text3);">Untreated: ${ss}</span></div>
-        </div>
-        <div class="disease-desc">${escapeHtml((diseaseDetails.description||'').substring(0,350))}${(diseaseDetails.description?.length||0)>350?'…':''}</div>
-        <div style="margin-top:12px;"><span style="font-size:13px;color:var(--text2);">Recommended specialist:</span> <strong style="color:var(--teal);">${escapeHtml(diseaseDetails.specialist||'General Physician')}</strong></div>
-        <div class="detail-toggle" onclick="this.nextElementSibling.classList.toggle('hidden');this.textContent=this.nextElementSibling.classList.contains('hidden')?'▼ Read full description':'▲ Collapse'">▼ Read full description</div>
-        <div class="hidden" style="margin-top:12px;font-size:14px;line-height:1.65;color:var(--text2);border-top:1px solid var(--border);padding-top:12px;">${escapeHtml(diseaseDetails.description||'')}</div>
-      </div>`;
+    diseaseHtml = `<div class="disease-detail-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <strong style="font-size:15px;">📋 Condition Profile</strong>
+        <div style="display:flex;gap:8px;align-items:center;">${formatSeverityBadge(ps)}<span style="font-size:12px;color:var(--text3);">Untreated: ${ss}</span></div>
+      </div>
+      <div class="disease-desc">${escapeHtml((diseaseDetails.description||'').substring(0,350))}${(diseaseDetails.description?.length||0)>350?'…':''}</div>
+      <div style="margin-top:12px;"><span style="font-size:13px;color:var(--text2);">Recommended specialist:</span> <strong style="color:var(--teal);">${escapeHtml(diseaseDetails.specialist||'General Physician')}</strong></div>
+      <div class="detail-toggle" onclick="this.nextElementSibling.classList.toggle('hidden');this.textContent=this.nextElementSibling.classList.contains('hidden')?'▼ Read full description':'▲ Collapse'">▼ Read full description</div>
+      <div class="hidden" style="margin-top:12px;font-size:14px;line-height:1.65;color:var(--text2);border-top:1px solid var(--border);padding-top:12px;">${escapeHtml(diseaseDetails.description||'')}</div>
+    </div>`;
   }
 
-  const resultHTML = `
-    <div class="result-card fade-in" style="background:linear-gradient(135deg,#ffffff,#fafaf8);">
-      <div style="display:flex;gap:16px;align-items:center;margin-bottom:24px;">
-        <div style="font-size:44px;">🩺</div>
-        <div>
-          <div style="font-size:22px;font-weight:700;color:var(--text);">Your Diagnostic Assessment</div>
-          <div style="color:var(--text3);font-size:13px;margin-top:3px;">Based on ${STATE.selectedSymptoms.length} reported symptom${STATE.selectedSymptoms.length!==1?'s':''} · ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</div>
-        </div>
+  const resultHTML = `<div class="result-card fade-in" style="background:linear-gradient(135deg,#ffffff,#fafaf8);">
+    <div style="display:flex;gap:16px;align-items:center;margin-bottom:28px;">
+      <div style="font-size:44px;">🩺</div>
+      <div>
+        <div style="font-size:22px;font-weight:700;color:var(--text);">Diagnostic Assessment Report</div>
+        <div style="color:var(--text3);font-size:13px;margin-top:3px;">Based on ${STATE.selectedSymptoms.length} reported symptom${STATE.selectedSymptoms.length!==1?'s':''} · ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</div>
       </div>
-      <div style="margin-bottom:24px;">
-        <div style="font-weight:600;font-size:14px;margin-bottom:14px;color:var(--text);">Top Predicted Conditions</div>
-        ${predictions.map(p => {
-          const pct      = p.confidence * 100;
-          const pctLabel = pct < 0.05 ? '<0.1%' : pct < 1 ? pct.toFixed(1)+'%' : Math.round(pct)+'%';
-          return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:13px 16px;background:${p.rank===1?'#e0f0ec':'#f5f3f0'};border-radius:16px;border:${p.rank===1?'1.5px solid #b5ddd7':'1px solid transparent'};">
-            <div style="width:32px;font-weight:700;color:var(--teal);font-size:17px;">#${p.rank}</div>
-            <div style="flex:1;font-weight:500;font-size:14px;">${escapeHtml(p.disease)}</div>
-            <div style="text-align:right;">
-              <div style="font-weight:700;font-size:15px;color:${p.rank===1?'var(--teal)':'var(--text2)'};">${pctLabel}</div>
-              <div style="height:3px;background:#e2e4df;border-radius:3px;margin-top:4px;width:70px;"><div style="width:${Math.min(pct,100)}%;height:100%;background:${p.rank===1?'var(--teal)':'#c5d0d2'};border-radius:3px;"></div></div>
+    </div>
+    <div style="margin-bottom:24px;">
+      <div style="font-weight:600;font-size:14px;margin-bottom:14px;color:var(--text);">Top Predicted Conditions</div>
+      ${predictions.map(p => {
+        const pct = p.confidence * 100;
+        const pctLabel = pct < 0.05 ? '<0.1%' : pct < 1 ? pct.toFixed(1)+'%' : Math.round(pct)+'%';
+        return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;padding:13px 16px;background:${p.rank===1?'#e0f0ec':'#f5f3f0'};border-radius:16px;border:${p.rank===1?'1.5px solid #b5ddd7':'1px solid transparent'};">
+          <div style="width:32px;font-weight:700;color:var(--teal);font-size:17px;">#${p.rank}</div>
+          <div style="flex:1;font-weight:500;font-size:14px;">${escapeHtml(p.disease)}</div>
+          <div style="text-align:right;">
+            <div style="font-weight:700;font-size:15px;color:${p.rank===1?'var(--teal)':'var(--text2)'};">${pctLabel}</div>
+            <div style="height:3px;background:#e2e4df;border-radius:3px;margin-top:4px;width:80px;">
+              <div style="width:${Math.min(pct,100)}%;height:100%;background:${p.rank===1?'var(--teal)':'#c5d0d2'};border-radius:3px;"></div>
             </div>
-          </div>`;
-        }).join('')}
-      </div>
-      ${diseaseHtml}
-      ${explanations?.length ? `
-        <div style="margin-bottom:24px;">
-          <div style="font-weight:600;font-size:14px;margin-bottom:12px;">🔑 Key Symptom Contributors</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            ${explanations.slice(0,7).map(e =>
-              `<span style="background:#eef2fc;padding:6px 14px;border-radius:20px;font-size:13px;">${escapeHtml(e.symptom)}<span style="color:var(--teal);margin-left:6px;font-weight:600;">${e.value>0?'+':''}${(Math.abs(e.value)*100).toFixed(1)}%</span></span>`
-            ).join('')}
           </div>
-        </div>` : ''}
-      <div class="disclaimer">⚠️ <strong>Important:</strong> This assessment is AI-generated for informational guidance only. It is not a medical diagnosis. Please consult a qualified healthcare professional before making any health decisions.</div>
-    </div>`;
+        </div>`;
+      }).join('')}
+    </div>
+    ${diseaseHtml}
+    ${explanations?.length ? `<div style="margin-bottom:24px;">
+      <div style="font-weight:600;font-size:14px;margin-bottom:12px;">🔑 Key Symptom Contributors</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${explanations.slice(0,7).map(e =>
+          `<span style="background:#eef2fc;padding:6px 14px;border-radius:20px;font-size:13px;">${escapeHtml(e.symptom)}<span style="color:var(--teal);margin-left:6px;font-weight:600;">${e.value>0?'+':''}${(Math.abs(e.value)*100).toFixed(1)}%</span></span>`
+        ).join('')}
+      </div>
+    </div>` : ''}
+    <div class="disclaimer">⚠️ <strong>Important:</strong> This assessment is AI-generated for informational guidance only. It is not a medical diagnosis. Please consult a qualified healthcare professional before making any health decisions.</div>
+  </div>`;
 
   const rd = document.createElement('div'); rd.innerHTML = resultHTML;
-  document.getElementById('chatArea').appendChild(rd);
-  scrollBottom();
+  document.getElementById('chatArea').appendChild(rd); scrollBottom();
 
   await saveAssessment();
   await delay(200);
-  await addBotMsg(`Your results have been saved to your health records. Based on the analysis, I'd recommend following up with <strong>${escapeHtml(specialist)}</strong> — especially if your symptoms have lasted more than a couple of days or are getting worse. Don't hesitate to seek urgent care if anything feels severe.`);
+  await addBotMsg(`Your report is ready. I'd recommend following up with <strong>${escapeHtml(specialist)}</strong> — especially if symptoms have persisted for more than 48 hours or are worsening. Seek urgent care immediately if anything feels severe.`);
   await delay(300);
 
-  /* Action buttons */
+  /* Action buttons — step 5 */
   const actDiv = document.createElement('div'); actDiv.className = 'fade-in';
   actDiv.style.cssText = 'display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;';
 
   const consultBtn = document.createElement('button'); consultBtn.className = 'find-care-trigger-btn';
   consultBtn.style.background = 'linear-gradient(135deg,#3b82b6,#2c7a6e)';
   consultBtn.innerHTML = `<div class="pulse-dot"></div> 👨‍⚕️ Book a Consultation`;
-  consultBtn.onclick = () => {
-    consultBtn.disabled = true; consultBtn.style.opacity = '0.6';
-    openConsultModal();
-    setTimeout(() => { consultBtn.disabled = false; consultBtn.style.opacity = '1'; }, 3000);
-  };
+  consultBtn.onclick = () => { consultBtn.disabled = true; consultBtn.style.opacity = '0.6'; openConsultModal(); setTimeout(() => { consultBtn.disabled = false; consultBtn.style.opacity = '1'; }, 3000); };
 
   const mapBtn = document.createElement('button'); mapBtn.className = 'find-care-trigger-btn';
   mapBtn.innerHTML = `<div class="pulse-dot"></div> 📍 Find Nearby Care`;
-  mapBtn.onclick = () => {
-    mapBtn.disabled = true; mapBtn.style.opacity = '0.6';
-    setStep(5);
-    initNearbyCareFinder(STATE.topDisease, STATE.topSpecialist);
-    setTimeout(() => { mapBtn.disabled = false; mapBtn.style.opacity = '1'; }, 3000);
-  };
+  mapBtn.onclick = () => { mapBtn.disabled = true; mapBtn.style.opacity = '0.6'; setStep(5); initNearbyCareFinder(STATE.topDisease, STATE.topSpecialist); setTimeout(() => { mapBtn.disabled = false; mapBtn.style.opacity = '1'; }, 3000); };
 
   const newBtn = document.createElement('button'); newBtn.className = 'btn-outline';
   newBtn.textContent = '⟳ Start Over';
-  newBtn.onclick = () => window.location.reload();
+  let startOverPending = false;
+  newBtn.onclick = () => {
+    if (!startOverPending) {
+      startOverPending = true;
+      showToast('Click "Start Over" again to confirm.', 4000);
+      newBtn.textContent = '⟳ Confirm Start Over'; newBtn.style.borderColor = '#e05c5c'; newBtn.style.color = '#e05c5c';
+      setTimeout(() => { startOverPending = false; newBtn.textContent = '⟳ Start Over'; newBtn.style.borderColor = ''; newBtn.style.color = ''; }, 5000);
+    } else { window.location.reload(); }
+  };
 
   actDiv.appendChild(consultBtn); actDiv.appendChild(mapBtn); actDiv.appendChild(newBtn);
   document.getElementById('interactionZone').appendChild(actDiv);
@@ -1317,25 +1320,30 @@ async function showResults(predictions, explanations, diseaseDetails = null) {
 function getSpecialistFromDisease(disease) {
   if (!disease) return 'a healthcare professional';
   const d = disease.toLowerCase();
-  if (d.includes('cardiac') || d.includes('heart'))                       return 'a Cardiologist';
-  if (d.includes('anxiety') || d.includes('panic') || d.includes('depression')) return 'a Psychiatrist';
-  if (d.includes('lung')    || d.includes('asthma') || d.includes('pneumonia')) return 'a Pulmonologist';
+  if (d.includes('cardiac') || d.includes('heart'))                                         return 'a Cardiologist';
+  if (d.includes('anxiety') || d.includes('panic') || d.includes('depression'))             return 'a Psychiatrist';
+  if (d.includes('lung')    || d.includes('asthma') || d.includes('pneumonia'))             return 'a Pulmonologist';
   if (d.includes('gastro')  || d.includes('stomach') || d.includes('bowel') || d.includes('intestine')) return 'a Gastroenterologist';
-  if (d.includes('neuro')   || d.includes('migraine') || d.includes('headache')) return 'a Neurologist';
-  if (d.includes('skin')    || d.includes('rash') || d.includes('dermat')) return 'a Dermatologist';
-  if (d.includes('joint')   || d.includes('arthritis') || d.includes('bone')) return 'a Rheumatologist';
-  if (d.includes('diabetes') || d.includes('blood sugar'))                 return 'a Diabetologist';
-  if (d.includes('infection') || d.includes('fever') || d.includes('viral')) return 'a General Physician';
+  if (d.includes('neuro')   || d.includes('migraine') || d.includes('headache'))            return 'a Neurologist';
+  if (d.includes('skin')    || d.includes('rash') || d.includes('dermat'))                  return 'a Dermatologist';
+  if (d.includes('joint')   || d.includes('arthritis') || d.includes('bone'))               return 'a Rheumatologist';
+  if (d.includes('diabetes') || d.includes('blood sugar'))                                  return 'a Diabetologist';
+  if (d.includes('infection') || d.includes('fever') || d.includes('viral'))                return 'a General Physician';
   return 'a General Physician';
 }
 
-/* ================================================================
-   CONSULTATION MODAL
-   ================================================================ */
+/* ── Consultation modal ── */
 async function openConsultModal() {
   if (!sessionToken) {
-    showToast('Please log in to book a consultation.');
-    setTimeout(() => window.location.href = 'index.html', 1500); return;
+    document.getElementById('consultModal').classList.add('active');
+    document.getElementById('consultModalBody').innerHTML = `<div style="text-align:center;padding:30px 20px;">
+      <div style="font-size:48px;margin-bottom:16px;">🔑</div>
+      <h3 style="font-size:18px;color:var(--text);margin-bottom:10px;">Login Required</h3>
+      <p style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:24px;">Please log in to book a consultation. Your assessment results will be saved automatically.</p>
+      <button onclick="closeConsultModal();window.location.href='index.html';" class="consult-submit-btn" style="background:linear-gradient(135deg,var(--teal),var(--blue));">Go to Login</button>
+      <button onclick="closeConsultModal()" class="btn-outline" style="width:100%;margin-top:10px;">Continue as Guest</button>
+    </div>`;
+    return;
   }
   document.getElementById('consultModal').classList.add('active');
   document.getElementById('consultModalBody').innerHTML = '<div class="consult-loading">Finding matching doctors…</div>';
@@ -1370,27 +1378,20 @@ async function submitConsultation() {
   if (!doctorId) { showToast('Please select a doctor.'); return; }
   btn.disabled = true; btn.textContent = 'Sending request…';
   try {
-    const body = {
-      doctor_id:          parseInt(doctorId),
-      symptoms_summary:   message || STATE.selectedSymptoms.map(s => s.symptom_name).slice(0,5).join(', '),
-      predicted_disease:  STATE.topDisease || '',
-      patient_message:    message || 'Requesting consultation based on AI assessment'
-    };
+    const body = { doctor_id: parseInt(doctorId), symptoms_summary: message || STATE.selectedSymptoms.map(s => s.symptom_name).slice(0,5).join(', '),
+      predicted_disease: STATE.topDisease || '', patient_message: message || 'Requesting consultation based on AI assessment' };
     if (STATE.assessmentId) body.assessment_id = STATE.assessmentId;
     const res = await fetch(`${API_BASE}/api/consultations/request`, {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json', 'X-Session-Token': sessionToken },
+      method: 'POST', headers: { 'Content-Type':'application/json', 'X-Session-Token': sessionToken },
       body: JSON.stringify(body)
     });
     if (res.ok) {
-      document.getElementById('consultModalBody').innerHTML = `
-        <div class="consult-success">✓ Consultation request sent!</div>
-        <p style="margin:16px 0;text-align:center;">The doctor will review your request and respond shortly. You can track the status in your Records dashboard.</p>
+      document.getElementById('consultModalBody').innerHTML = `<div class="consult-success">✓ Consultation request sent!</div>
+        <p style="margin:16px 0;text-align:center;">The doctor will review your request shortly. Track status in your Records dashboard.</p>
         <button onclick="closeConsultModal()" class="consult-submit-btn" style="background:var(--teal);">Done</button>`;
       showToast('Consultation requested! Check your Records for updates.');
     } else {
-      const err = await res.json();
-      showToast(err.detail || 'Failed to send request.');
+      const err = await res.json(); showToast(err.detail || 'Failed to send request.');
       btn.disabled = false; btn.textContent = '📅 Request Consultation';
     }
   } catch (e) {
@@ -1405,26 +1406,18 @@ async function saveAssessment() {
   if (!sessionToken || !PROFILE.id) return;
   try {
     const res = await fetch(`${API_BASE}/api/profile/${PROFILE.id}/assessments`, {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json', 'X-Session-Token': sessionToken },
-      body: JSON.stringify({
-        symptoms:    STATE.selectedSymptoms.map(s => s.symptom_name),
-        age_group:   PROFILE.age_group,
-        gender:      PROFILE.gender,
-        predictions: STATE.predictions || [],
-        top_disease: STATE.topDisease  || '',
-        confidence:  STATE.predictions?.[0]?.confidence || 0
-      })
+      method: 'POST', headers: { 'Content-Type':'application/json', 'X-Session-Token': sessionToken },
+      body: JSON.stringify({ symptoms: STATE.selectedSymptoms.map(s => s.symptom_name),
+        age_group: PROFILE.age_group, gender: PROFILE.gender,
+        predictions: STATE.predictions || [], top_disease: STATE.topDisease || '',
+        confidence: STATE.predictions?.[0]?.confidence || 0 })
     });
     if (res.ok) { const d = await res.json(); STATE.assessmentId = d.assessment_id; }
   } catch (e) { console.error('Save assessment failed:', e); }
 }
 
-/* ================================================================
-   NEARBY CARE FINDER
-   ================================================================ */
+/* ── Nearby care ── */
 let nearbyMap = null, mapMarkers = [], allCareResults = [], currentCareType = 'all', userLatLng = null;
-
 const CARE_TYPES = {
   hospital: { icon:'🏥', badgeClass:'care-badge-hospital', iconClass:'care-icon-hospital' },
   clinic:   { icon:'🏨', badgeClass:'care-badge-clinic',   iconClass:'care-icon-clinic'   },
@@ -1435,44 +1428,35 @@ const CARE_TYPES = {
 function initNearbyCareFinder(disease, specialist) {
   const section = document.createElement('div');
   section.className = 'nearby-care-section fade-in'; section.id = 'nearbyCareSection';
-  section.innerHTML = `
-    <div class="nearby-care-header">
-      <div>
-        <h3>📍 Find Nearby Care</h3>
-        <p>Hospitals · Clinics · Pharmacies · Doctors — powered by OpenStreetMap</p>
-      </div>
-      <div style="font-size:12px;color:#8fb5be;text-align:right;">
-        <div>${escapeHtml(disease||'')}</div>
-        <div style="color:#4ade80;">→ ${escapeHtml(specialist||'')}</div>
-      </div>
+  section.innerHTML = `<div class="nearby-care-header">
+    <div><h3>📍 Find Nearby Care</h3><p>Hospitals · Clinics · Pharmacies · Doctors — powered by OpenStreetMap</p></div>
+    <div style="font-size:12px;color:#8fb5be;text-align:right;">
+      <div>${escapeHtml(disease||'')}</div><div style="color:#4ade80;">→ ${escapeHtml(specialist||'')}</div>
     </div>
-    <div class="care-filter-tabs" id="careFilterTabs">
-      <button class="care-tab active" data-type="all"      onclick="filterCareResults('all')">🗺️ All</button>
-      <button class="care-tab"        data-type="hospital" onclick="filterCareResults('hospital')">🏥 Hospitals</button>
-      <button class="care-tab"        data-type="clinic"   onclick="filterCareResults('clinic')">🏨 Clinics</button>
-      <button class="care-tab"        data-type="pharmacy" onclick="filterCareResults('pharmacy')">💊 Pharmacies</button>
-      <button class="care-tab"        data-type="doctors"  onclick="filterCareResults('doctors')">👨‍⚕️ Doctors</button>
+  </div>
+  <div class="care-filter-tabs" id="careFilterTabs">
+    <button class="care-tab active" data-type="all"      onclick="filterCareResults('all')">🗺️ All</button>
+    <button class="care-tab"        data-type="hospital" onclick="filterCareResults('hospital')">🏥 Hospitals</button>
+    <button class="care-tab"        data-type="clinic"   onclick="filterCareResults('clinic')">🏨 Clinics</button>
+    <button class="care-tab"        data-type="pharmacy" onclick="filterCareResults('pharmacy')">💊 Pharmacies</button>
+    <button class="care-tab"        data-type="doctors"  onclick="filterCareResults('doctors')">👨‍⚕️ Doctors</button>
+  </div>
+  <div class="map-container">
+    <div id="nearbyMap"></div>
+    <div class="map-loading-overlay" id="mapLoadingOverlay">
+      <div class="loading-spinner" style="width:32px;height:32px;border-width:3px;"></div>
+      <p id="mapLoadingMsg">Getting your location…</p>
     </div>
-    <div class="map-container">
-      <div id="nearbyMap"></div>
-      <div class="map-loading-overlay" id="mapLoadingOverlay">
-        <div class="loading-spinner" style="width:32px;height:32px;border-width:3px;"></div>
-        <p id="mapLoadingMsg">Getting your location…</p>
-      </div>
-      <button class="map-overlay-btn" onclick="recenterMap()">📍 My Location</button>
-    </div>
-    <div class="care-results-list" id="careResultsList">
-      <div class="no-results-msg"><div style="font-size:32px;">📡</div><p>Fetching nearby care facilities…</p></div>
-    </div>
-    <div class="osm-credit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</div>`;
-
-  document.getElementById('chatArea').appendChild(section);
-  scrollBottom();
+    <button class="map-overlay-btn" onclick="recenterMap()">📍 My Location</button>
+  </div>
+  <div class="care-results-list" id="careResultsList">
+    <div class="no-results-msg"><div style="font-size:32px;">📡</div><p>Fetching nearby care facilities…</p></div>
+  </div>
+  <div class="osm-credit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</div>`;
+  document.getElementById('chatArea').appendChild(section); scrollBottom();
   setTimeout(() => {
     nearbyMap = L.map('nearbyMap', { zoomControl:true }).setView([20, 78], 5);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors', maxZoom:19
-    }).addTo(nearbyMap);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors', maxZoom:19 }).addTo(nearbyMap);
     getUserLocation();
   }, 100);
 }
@@ -1484,22 +1468,16 @@ function getUserLocation() {
     pos => {
       userLatLng = [pos.coords.latitude, pos.coords.longitude];
       nearbyMap.setView(userLatLng, 14);
-      L.circleMarker(userLatLng, { radius:10, fillColor:'#2c7a6e', color:'#fff', weight:3, opacity:1, fillOpacity:0.9 })
-        .addTo(nearbyMap).bindPopup('<strong>📍 Your Location</strong>');
+      L.circleMarker(userLatLng, { radius:10, fillColor:'#2c7a6e', color:'#fff', weight:3, opacity:1, fillOpacity:0.9 }).addTo(nearbyMap).bindPopup('<strong>📍 Your Location</strong>');
       fetchAllCareNearby(userLatLng[0], userLatLng[1]);
     },
-    err => {
+    () => {
       setMapMsg('Location access denied. Using approximate location…');
-      fetch('https://ipapi.co/json/')
-        .then(r => r.json())
-        .then(d => {
-          userLatLng = [d.latitude, d.longitude];
-          nearbyMap.setView(userLatLng, 13);
-          L.circleMarker(userLatLng, { radius:10, fillColor:'#c6a15b', color:'#fff', weight:3, opacity:1, fillOpacity:0.9 })
-            .addTo(nearbyMap).bindPopup('<strong>📍 Estimated Location</strong><br><small>Enable location for precise results</small>');
-          fetchAllCareNearby(userLatLng[0], userLatLng[1]);
-        })
-        .catch(() => { hideMapLoading(); showManualLocationInput(); });
+      fetch('https://ipapi.co/json/').then(r => r.json()).then(d => {
+        userLatLng = [d.latitude, d.longitude]; nearbyMap.setView(userLatLng, 13);
+        L.circleMarker(userLatLng, { radius:10, fillColor:'#c6a15b', color:'#fff', weight:3, opacity:1, fillOpacity:0.9 }).addTo(nearbyMap).bindPopup('<strong>📍 Estimated Location</strong><br><small>Enable location for precise results</small>');
+        fetchAllCareNearby(userLatLng[0], userLatLng[1]);
+      }).catch(() => { hideMapLoading(); showManualLocationInput(); });
     },
     { enableHighAccuracy:true, timeout:10000, maximumAge:60000 }
   );
@@ -1521,8 +1499,7 @@ function showManualLocationInput() {
 }
 
 async function searchManualLocation() {
-  const input = document.getElementById('manualLocationInput');
-  if (!input || !input.value.trim()) return;
+  const input = document.getElementById('manualLocationInput'); if (!input || !input.value.trim()) return;
   const query = input.value.trim();
   const listEl = document.getElementById('careResultsList');
   if (listEl) listEl.innerHTML = '<div class="no-results-msg"><div class="loading-spinner"></div><p style="margin-top:10px;">Searching…</p></div>';
@@ -1532,34 +1509,22 @@ async function searchManualLocation() {
     if (data.length) {
       userLatLng = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
       nearbyMap.setView(userLatLng, 13);
-      L.circleMarker(userLatLng, { radius:10, fillColor:'#2c7a6e', color:'#fff', weight:3, opacity:1, fillOpacity:0.9 })
-        .addTo(nearbyMap).bindPopup(`<strong>📍 ${escapeHtml(data[0].display_name.split(',')[0])}</strong>`);
-      hideMapLoading();
-      fetchAllCareNearby(userLatLng[0], userLatLng[1]);
+      L.circleMarker(userLatLng, { radius:10, fillColor:'#2c7a6e', color:'#fff', weight:3, opacity:1, fillOpacity:0.9 }).addTo(nearbyMap).bindPopup(`<strong>📍 ${escapeHtml(data[0].display_name.split(',')[0])}</strong>`);
+      hideMapLoading(); fetchAllCareNearby(userLatLng[0], userLatLng[1]);
     } else if (listEl) listEl.innerHTML = '<div class="no-results-msg"><p>Location not found. Try a different term.</p></div>';
-  } catch (e) {
-    if (listEl) listEl.innerHTML = '<div class="no-results-msg"><p>Search failed. Please try again.</p></div>';
-  }
+  } catch (e) { if (listEl) listEl.innerHTML = '<div class="no-results-msg"><p>Search failed. Please try again.</p></div>'; }
 }
 
 async function fetchAllCareNearby(lat, lng) {
   setMapMsg('Searching nearby care facilities…');
   const r = 5000;
   const q = `[out:json][timeout:25];(node["amenity"="hospital"](around:${r},${lat},${lng});way["amenity"="hospital"](around:${r},${lat},${lng});node["amenity"="clinic"](around:${r},${lat},${lng});way["amenity"="clinic"](around:${r},${lat},${lng});node["amenity"="pharmacy"](around:${r},${lat},${lng});way["amenity"="pharmacy"](around:${r},${lat},${lng});node["amenity"="doctors"](around:${r},${lat},${lng});way["amenity"="doctors"](around:${r},${lat},${lng}););out center 40;`;
-  const tryFetch = async url => {
-    const res = await fetch(url, { method:'POST', body:'data='+encodeURIComponent(q) });
-    return (await res.json()).elements;
-  };
-  try {
-    processOverpassResults(await tryFetch('https://overpass-api.de/api/interpreter'), lat, lng);
-  } catch (e) {
+  const tryFetch = async url => { const res = await fetch(url, { method:'POST', body:'data='+encodeURIComponent(q) }); return (await res.json()).elements; };
+  try { processOverpassResults(await tryFetch('https://overpass-api.de/api/interpreter'), lat, lng); }
+  catch (e) {
     hideMapLoading();
-    try {
-      processOverpassResults(await tryFetch('https://overpass.kumi.systems/api/interpreter'), lat, lng);
-    } catch (e2) {
-      const listEl = document.getElementById('careResultsList');
-      if (listEl) listEl.innerHTML = '<div class="no-results-msg"><div style="font-size:28px">⚠️</div><p>Could not load nearby care. Check your connection.</p></div>';
-    }
+    try { processOverpassResults(await tryFetch('https://overpass.kumi.systems/api/interpreter'), lat, lng); }
+    catch (e2) { const listEl = document.getElementById('careResultsList'); if (listEl) listEl.innerHTML = '<div class="no-results-msg"><div style="font-size:28px">⚠️</div><p>Could not load nearby care. Check your connection.</p></div>'; }
   }
 }
 
@@ -1576,33 +1541,25 @@ function processOverpassResults(elements, userLat, userLng) {
     const lat = el.lat || el.center?.lat, lng = el.lon || el.center?.lon; if (!lat || !lng) return;
     const amenity = el.tags?.amenity || 'unknown';
     const name    = el.tags?.name || el.tags?.['name:en'] || `${amenity.charAt(0).toUpperCase()+amenity.slice(1)}`;
-    allCareResults.push({
-      id: el.id, name, amenity, lat, lng,
-      dist:    userLat ? hav(userLat, userLng, lat, lng) : null,
-      phone:   el.tags?.phone   || el.tags?.['contact:phone'] || null,
-      website: el.tags?.website || null,
-      opening: el.tags?.opening_hours || null
-    });
+    allCareResults.push({ id: el.id, name, amenity, lat, lng,
+      dist: userLat ? hav(userLat, userLng, lat, lng) : null,
+      phone: el.tags?.phone || el.tags?.['contact:phone'] || null,
+      website: el.tags?.website || null, opening: el.tags?.opening_hours || null });
   });
   allCareResults.sort((a, b) => (a.dist||Infinity) - (b.dist||Infinity));
   allCareResults.slice(0, 30).forEach(place => {
     const cfg   = CARE_TYPES[place.amenity] || { icon:'📌' };
     const color = place.amenity==='hospital'?'#dc2626':place.amenity==='pharmacy'?'#16a34a':place.amenity==='clinic'?'#2563eb':'#7c3aed';
-    const icon  = L.divIcon({
-      html:`<div style="background:white;border:2.5px solid ${color};border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,0.15);">${cfg.icon||'📌'}</div>`,
-      className:'', iconSize:[32,32], iconAnchor:[16,16]
-    });
-    const marker = L.marker([place.lat, place.lng], { icon })
-      .addTo(nearbyMap)
-      .bindPopup(`<div style="min-width:180px;">
-        <strong style="font-size:14px;">${escapeHtml(place.name)}</strong><br>
-        <span style="font-size:12px;color:#666;">${place.amenity}</span><br>
-        ${place.dist?`<span style="color:#2c7a6e;font-weight:600;">📏 ${fmtDist(place.dist)}</span><br>`:''}
-        ${place.phone?`📞 ${escapeHtml(place.phone)}<br>`:''}
-        ${place.opening?`🕐 ${escapeHtml(place.opening)}<br>`:''}
-        ${place.website?`<a href="${escapeHtml(place.website)}" target="_blank" style="color:#2c7a6e;">🌐 Website</a><br>`:''}
-        <a href="https://www.openstreetmap.org/directions?to=${place.lat},${place.lng}" target="_blank" style="color:#3b82b6;font-size:12px;">🗺️ Get Directions</a>
-      </div>`);
+    const icon  = L.divIcon({ html:`<div style="background:white;border:2.5px solid ${color};border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,0.15);">${cfg.icon||'📌'}</div>`, className:'', iconSize:[32,32], iconAnchor:[16,16] });
+    const marker = L.marker([place.lat, place.lng], { icon }).addTo(nearbyMap).bindPopup(`<div style="min-width:180px;">
+      <strong style="font-size:14px;">${escapeHtml(place.name)}</strong><br>
+      <span style="font-size:12px;color:#666;">${place.amenity}</span><br>
+      ${place.dist?`<span style="color:#2c7a6e;font-weight:600;">📏 ${fmtDist(place.dist)}</span><br>`:''}
+      ${place.phone?`📞 ${escapeHtml(place.phone)}<br>`:''}
+      ${place.opening?`🕐 ${escapeHtml(place.opening)}<br>`:''}
+      ${place.website?`<a href="${escapeHtml(place.website)}" target="_blank" style="color:#2c7a6e;">🌐 Website</a><br>`:''}
+      <a href="https://www.openstreetmap.org/directions?to=${place.lat},${place.lng}" target="_blank" style="color:#3b82b6;font-size:12px;">🗺️ Get Directions</a>
+    </div>`);
     place._marker = marker; mapMarkers.push(marker);
     marker.on('click', () => highlightListItem(place.id));
   });
@@ -1624,17 +1581,12 @@ function filterCareResults(type) {
 
 function renderCareList(results) {
   const listEl = document.getElementById('careResultsList'); if (!listEl) return;
-  if (!results.length) {
-    listEl.innerHTML = `<div class="no-results-msg"><div style="font-size:28px;">🔍</div><p>No ${currentCareType==='all'?'care facilities':currentCareType} found nearby.</p></div>`;
-    return;
-  }
+  if (!results.length) { listEl.innerHTML = `<div class="no-results-msg"><div style="font-size:28px;">🔍</div><p>No ${currentCareType==='all'?'care facilities':currentCareType} found nearby.</p></div>`; return; }
   listEl.innerHTML = '';
   results.slice(0, 20).forEach(place => {
     const cfg  = CARE_TYPES[place.amenity] || { icon:'📌', iconClass:'care-icon-default', badgeClass:'' };
-    const item = document.createElement('div');
-    item.className = 'care-result-item'; item.id = `care-item-${place.id}`;
-    item.innerHTML = `
-      <div class="care-icon ${cfg.iconClass}">${cfg.icon||'📌'}</div>
+    const item = document.createElement('div'); item.className = 'care-result-item'; item.id = `care-item-${place.id}`;
+    item.innerHTML = `<div class="care-icon ${cfg.iconClass}">${cfg.icon||'📌'}</div>
       <div class="care-result-info">
         <h4>${escapeHtml(place.name)}</h4>
         <div class="care-meta">
@@ -1643,17 +1595,12 @@ function renderCareList(results) {
           ${place.opening?`<span>🕐 ${escapeHtml(place.opening.length>22?place.opening.substring(0,22)+'…':place.opening)}</span>`:''}
         </div>
       </div>
-      <div>
-        <div class="care-distance">${place.dist?fmtDist(place.dist):'—'}</div>
-        <a href="https://www.openstreetmap.org/directions?to=${place.lat},${place.lng}" target="_blank"
-           style="display:block;margin-top:6px;font-size:11px;color:var(--blue);text-decoration:none;text-align:right;">
-          Directions ↗
-        </a>
+      <div><div class="care-distance">${place.dist?fmtDist(place.dist):'—'}</div>
+        <a href="https://www.openstreetmap.org/directions?to=${place.lat},${place.lng}" target="_blank" style="display:block;margin-top:6px;font-size:11px;color:var(--blue);text-decoration:none;text-align:right;">Directions ↗</a>
       </div>`;
     item.onclick = () => {
       nearbyMap.setView([place.lat, place.lng], 16);
-      if (place._marker) place._marker.openPopup();
-      scrollBottom();
+      if (place._marker) place._marker.openPopup(); scrollBottom();
       document.querySelectorAll('.care-result-item').forEach(e => e.classList.remove('highlighted'));
       item.classList.add('highlighted');
     };
@@ -1668,18 +1615,11 @@ function highlightListItem(id) {
 }
 function recenterMap() { if (userLatLng && nearbyMap) nearbyMap.setView(userLatLng, 14); }
 
-/* ── Toast ── */
-function showToast(msg, dur = 3500) {
-  const t = document.createElement('div'); t.className = 'toast-notification'; t.textContent = msg;
-  document.body.appendChild(t); setTimeout(() => t.remove(), dur);
-}
-
-/* ================================================================
-   INIT
-   ================================================================ */
+/* ── Init ── */
 (async function init() {
-  await loadUserProfile();
-  setTimeout(() => startIntro(), 400);
+  await loadProfileFromSession();
+  await new Promise(r => setTimeout(r, 150));
+  await startIntro();
 })();
 </script>
 </body>

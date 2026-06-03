@@ -1,0 +1,1887 @@
+[
+  {
+    "symptom_name": "abdominal distention",
+    "gender_specific": "both",
+    "explanation": "Your belly looks or feels swollen, larger than usual, or tight. It may be due to gas, fluid, or digestive issues."
+  },
+  {
+    "symptom_name": "abnormal appearing skin",
+    "gender_specific": "both",
+    "explanation": "Skin looks different than normal — color changes, rashes, lumps, scaling, or sores that weren't there before."
+  },
+  {
+    "symptom_name": "abnormal appearing tongue",
+    "gender_specific": "both",
+    "explanation": "Your tongue has unusual color (white, red, black), coating, swelling, cracks, or smooth patches."
+  },
+  {
+    "symptom_name": "abnormal breathing sounds",
+    "gender_specific": "both",
+    "explanation": "You or someone hears wheezing, crackling, stridor (high-pitched sound), or gurgling when you breathe."
+  },
+  {
+    "symptom_name": "abnormal involuntary movements",
+    "gender_specific": "both",
+    "explanation": "You jerk, twitch, shake, or make movements you cannot control, like tremors or tics."
+  },
+  {
+    "symptom_name": "abnormal movement of eyelid",
+    "gender_specific": "both",
+    "explanation": "Your eyelid twitches, flutters, droops, or closes without you meaning to."
+  },
+  {
+    "symptom_name": "abnormal size or shape of ear",
+    "gender_specific": "both",
+    "explanation": "One or both ears look larger, smaller, misshapen, or different than before or compared to other people."
+  },
+  {
+    "symptom_name": "absence of menstruation",
+    "gender_specific": "female",
+    "explanation": "You have missed three or more periods in a row when not pregnant, breastfeeding, or menopausal."
+  },
+  {
+    "symptom_name": "abusing alcohol",
+    "gender_specific": "both",
+    "explanation": "You drink more than intended, can't cut down, or it causes problems at work, home, or health."
+  },
+  {
+    "symptom_name": "ache all over",
+    "gender_specific": "both",
+    "explanation": "You feel a dull, generalized pain in muscles or joints throughout your entire body, not just one spot."
+  },
+  {
+    "symptom_name": "acne or pimples",
+    "gender_specific": "both",
+    "explanation": "Red bumps, whiteheads, blackheads, or pus-filled spots on face, chest, or back."
+  },
+  {
+    "symptom_name": "allergic reaction",
+    "gender_specific": "both",
+    "explanation": "After contact with a trigger (food, pollen, medicine), you have hives, itching, swelling, or trouble breathing."
+  },
+  {
+    "symptom_name": "ankle pain",
+    "gender_specific": "both",
+    "explanation": "You feel soreness, ache, or sharp pain in or around your ankle joint."
+  },
+  {
+    "symptom_name": "ankle stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Your ankle feels hard to move fully — bending up, down, or side to side — often worse in the morning."
+  },
+  {
+    "symptom_name": "ankle swelling",
+    "gender_specific": "both",
+    "explanation": "Your ankle looks puffy, larger, or the skin feels stretched; pressing may leave a dent."
+  },
+  {
+    "symptom_name": "ankle weakness",
+    "gender_specific": "both",
+    "explanation": "Your ankle feels unstable, gives way easily, or you cannot push off your foot normally when walking."
+  },
+  {
+    "symptom_name": "antisocial behavior",
+    "gender_specific": "both",
+    "explanation": "You repeatedly ignore others' rights, lie, fight, show no guilt, or act impulsively without caring about rules."
+  },
+  {
+    "symptom_name": "anxiety and nervousness",
+    "gender_specific": "both",
+    "explanation": "You feel worried, restless, tense, or on edge most days, often with racing heart or sweating."
+  },
+  {
+    "symptom_name": "apnea",
+    "gender_specific": "both",
+    "explanation": "Breathing stops briefly during sleep (often noticed by snoring, gasping, or waking up tired)."
+  },
+  {
+    "symptom_name": "arm cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Your arm muscle suddenly tightens painfully and may feel hard to the touch."
+  },
+  {
+    "symptom_name": "arm lump or mass",
+    "gender_specific": "both",
+    "explanation": "A bump or swelling on your arm that wasn't there before; can be soft, hard, movable, or fixed."
+  },
+  {
+    "symptom_name": "arm pain",
+    "gender_specific": "both",
+    "explanation": "Any discomfort in your arm from shoulder to fingers — aching, sharp, burning, or throbbing."
+  },
+  {
+    "symptom_name": "arm stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Your arm feels hard to straighten or bend fully; muscles feel tight or resistant."
+  },
+  {
+    "symptom_name": "arm swelling",
+    "gender_specific": "both",
+    "explanation": "One or both arms look bigger, puffy, or have shiny skin, sometimes with reduced motion."
+  },
+  {
+    "symptom_name": "arm weakness",
+    "gender_specific": "both",
+    "explanation": "You cannot lift, hold, or move your arm with normal strength; may feel heavy or limp."
+  },
+  {
+    "symptom_name": "back cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Muscles in your back suddenly knot up painfully; you may feel a hard lump of muscle."
+  },
+  {
+    "symptom_name": "back mass or lump",
+    "gender_specific": "both",
+    "explanation": "Any bump, swelling, or growth on your back that feels different from the surrounding area."
+  },
+  {
+    "symptom_name": "back pain",
+    "gender_specific": "both",
+    "explanation": "Soreness or ache anywhere from your neck to tailbone; may be dull, sharp, or burning."
+  },
+  {
+    "symptom_name": "back stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Your back feels rigid, hard to twist or bend; may loosen with movement or worsen after rest."
+  },
+  {
+    "symptom_name": "back swelling",
+    "gender_specific": "both",
+    "explanation": "Visible puffiness or enlargement on your back, possibly with redness or warmth."
+  },
+  {
+    "symptom_name": "back weakness",
+    "gender_specific": "both",
+    "explanation": "Your back muscles feel unable to support you, causing slouching, difficulty standing straight, or fatigue."
+  },
+  {
+    "symptom_name": "bedwetting",
+    "gender_specific": "both",
+    "explanation": "Involuntary urination during sleep in someone past toilet-training age (over 5-6 years)."
+  },
+  {
+    "symptom_name": "bladder mass",
+    "gender_specific": "both",
+    "explanation": "A growth or lump felt in the bladder area (usually detected by imaging, not self-palpable)."
+  },
+  {
+    "symptom_name": "bleeding from ear",
+    "gender_specific": "both",
+    "explanation": "Blood coming out of your ear canal, often after injury, infection, or eardrum rupture."
+  },
+  {
+    "symptom_name": "bleeding from eye",
+    "gender_specific": "both",
+    "explanation": "Blood visible on white part of eye (subconjunctival hemorrhage) or from inside the eye."
+  },
+  {
+    "symptom_name": "bleeding gums",
+    "gender_specific": "both",
+    "explanation": "Gums bleed when brushing, flossing, or eating; may be pink on toothbrush or in spit."
+  },
+  {
+    "symptom_name": "bleeding in mouth",
+    "gender_specific": "both",
+    "explanation": "Blood from tongue, cheeks, roof of mouth, or gums not due to obvious injury."
+  },
+  {
+    "symptom_name": "bleeding or discharge from nipple",
+    "gender_specific": "both",
+    "explanation": "Fluid (clear, bloody, milky, green) coming from nipple without squeezing; can affect men too."
+  },
+  {
+    "symptom_name": "blindness",
+    "gender_specific": "both",
+    "explanation": "Complete or near-complete loss of vision in one or both eyes, not correctable with glasses."
+  },
+  {
+    "symptom_name": "blood clots during menstrual periods",
+    "gender_specific": "female",
+    "explanation": "Lumps of dark or bright red blood bigger than a dime passed during your period."
+  },
+  {
+    "symptom_name": "blood in stool",
+    "gender_specific": "both",
+    "explanation": "Red blood on toilet paper, in toilet bowl, or black/tarry stools indicating digested blood."
+  },
+  {
+    "symptom_name": "blood in urine",
+    "gender_specific": "both",
+    "explanation": "Pink, red, or cola-colored urine; you may see clots or only microscope detects it."
+  },
+  {
+    "symptom_name": "bones are painful",
+    "gender_specific": "both",
+    "explanation": "Deep, dull ache in bones, not muscles or joints; may be worse at night or with pressure."
+  },
+  {
+    "symptom_name": "bowlegged or knock-kneed",
+    "gender_specific": "both",
+    "explanation": "Legs curve outward at knees (bowlegged) or inward so knees touch but ankles don't (knock-kneed)."
+  },
+  {
+    "symptom_name": "breathing fast",
+    "gender_specific": "both",
+    "explanation": "More than 20 breaths per minute in an adult at rest; may feel like can't catch breath."
+  },
+  {
+    "symptom_name": "bumps on penis",
+    "gender_specific": "male",
+    "explanation": "Small raised spots on shaft, head, or foreskin; may be pimples, warts, or normal pearly penile papules."
+  },
+  {
+    "symptom_name": "burning abdominal pain",
+    "gender_specific": "both",
+    "explanation": "Hot, fiery pain in stomach area, often after meals or when stomach empty; may improve with antacids."
+  },
+  {
+    "symptom_name": "burning chest pain",
+    "gender_specific": "both",
+    "explanation": "Heat-like discomfort behind breastbone, often from acid reflux (heartburn) or inflammation."
+  },
+  {
+    "symptom_name": "change in skin mole size or color",
+    "gender_specific": "both",
+    "explanation": "A mole grows, changes shape, becomes multicolored (black, red, blue), or gets irregular borders."
+  },
+  {
+    "symptom_name": "changes in stool appearance",
+    "gender_specific": "both",
+    "explanation": "Stool becomes narrow, pencil-thin, very hard/soft, oily, floating, or changes color (clay, black, red)."
+  },
+  {
+    "symptom_name": "chest tightness",
+    "gender_specific": "both",
+    "explanation": "Feeling of pressure, squeezing, or a band around your chest, making deep breathing hard."
+  },
+  {
+    "symptom_name": "chills",
+    "gender_specific": "both",
+    "explanation": "Feeling cold with shivering or shaking, even in a warm room; sometimes with fever."
+  },
+  {
+    "symptom_name": "cloudy eye",
+    "gender_specific": "both",
+    "explanation": "The normally clear front part of eye (cornea) or lens looks white, gray, or hazy."
+  },
+  {
+    "symptom_name": "congestion in chest",
+    "gender_specific": "both",
+    "explanation": "Feeling of mucus or fluid in your lungs/chest, often with cough or rattling sound when breathing."
+  },
+  {
+    "symptom_name": "constipation",
+    "gender_specific": "both",
+    "explanation": "Fewer than 3 bowel movements per week, hard/dry stool, straining, or feeling of incomplete emptying."
+  },
+  {
+    "symptom_name": "coryza",
+    "gender_specific": "both",
+    "explanation": "Medical term for head cold symptoms: runny nose, sneezing, mild nasal congestion."
+  },
+  {
+    "symptom_name": "cough",
+    "gender_specific": "both",
+    "explanation": "Sudden expulsion of air from lungs to clear airways; can be dry (no mucus) or wet (with phlegm)."
+  },
+  {
+    "symptom_name": "coughing up sputum",
+    "gender_specific": "both",
+    "explanation": "Bringing up mucus/phlegm from lungs by coughing; color may be clear, white, yellow, green, or brown."
+  },
+  {
+    "symptom_name": "cramps and spasms",
+    "gender_specific": "both",
+    "explanation": "Sudden, involuntary, painful muscle tightening that can last seconds to minutes."
+  },
+  {
+    "symptom_name": "cross-eyed",
+    "gender_specific": "both",
+    "explanation": "Eyes do not align properly — one turns inward, outward, up, or down while other looks straight."
+  },
+  {
+    "symptom_name": "decreased appetite",
+    "gender_specific": "both",
+    "explanation": "No desire to eat, eating much less than normal, or feeling full after few bites."
+  },
+  {
+    "symptom_name": "decreased heart rate",
+    "gender_specific": "both",
+    "explanation": "Resting heart rate below 60 beats per minute in adults (unless you are athletic)."
+  },
+  {
+    "symptom_name": "delusions or hallucinations",
+    "gender_specific": "both",
+    "explanation": "Believing things not real (delusions) or seeing/hearing/feeling things that aren't there (hallucinations)."
+  },
+  {
+    "symptom_name": "depression",
+    "gender_specific": "both",
+    "explanation": "Persistent low mood, loss of interest, hopelessness, sleep/appetite changes for over 2 weeks."
+  },
+  {
+    "symptom_name": "depressive or psychotic symptoms",
+    "gender_specific": "both",
+    "explanation": "Combination of depression with psychosis — e.g., severe sadness plus false beliefs or hallucinations."
+  },
+  {
+    "symptom_name": "diaper rash",
+    "gender_specific": "both",
+    "explanation": "Red, inflamed skin in diaper area (buttocks, genitals, inner thighs) in infants or incontinent adults."
+  },
+  {
+    "symptom_name": "diarrhea",
+    "gender_specific": "both",
+    "explanation": "Loose, watery stools three or more times per day; may be with urgency or cramping."
+  },
+  {
+    "symptom_name": "difficulty breathing",
+    "gender_specific": "both",
+    "explanation": "Feeling of not getting enough air, breathlessness, or labored breathing; also called dyspnea."
+  },
+  {
+    "symptom_name": "difficulty eating",
+    "gender_specific": "both",
+    "explanation": "Trouble chewing, swallowing, keeping food in mouth, or pain when eating."
+  },
+  {
+    "symptom_name": "difficulty in swallowing",
+    "gender_specific": "both",
+    "explanation": "Feeling that food or liquid sticks in throat or chest; may cough or choke when swallowing."
+  },
+  {
+    "symptom_name": "difficulty speaking",
+    "gender_specific": "both",
+    "explanation": "Slurred, slow, or jumbled speech; trouble finding words; or hoarseness affecting communication."
+  },
+  {
+    "symptom_name": "diminished hearing",
+    "gender_specific": "both",
+    "explanation": "Sounds seem muffled or quieter; you may need to turn up volume or ask people to repeat."
+  },
+  {
+    "symptom_name": "diminished vision",
+    "gender_specific": "both",
+    "explanation": "Vision less sharp than before — blurry, cloudy, or with blind spots, even with glasses."
+  },
+  {
+    "symptom_name": "discharge in stools",
+    "gender_specific": "both",
+    "explanation": "Mucus, pus, or bloody material mixed with bowel movement; may look like jelly."
+  },
+  {
+    "symptom_name": "disturbance of memory",
+    "gender_specific": "both",
+    "explanation": "Forgetting recent events, names, appointments, or getting lost in familiar places."
+  },
+  {
+    "symptom_name": "disturbance of smell or taste",
+    "gender_specific": "both",
+    "explanation": "Things smell or taste different, reduced, absent, or distorted (e.g., metallic taste)."
+  },
+  {
+    "symptom_name": "dizziness",
+    "gender_specific": "both",
+    "explanation": "Feeling lightheaded, woozy, unsteady, or like you might faint; sometimes room spins (vertigo)."
+  },
+  {
+    "symptom_name": "double vision",
+    "gender_specific": "both",
+    "explanation": "Seeing two images of a single object; may resolve covering one eye."
+  },
+  {
+    "symptom_name": "drainage in throat",
+    "gender_specific": "both",
+    "explanation": "Feeling of mucus dripping from nose into back of throat; you may clear throat often."
+  },
+  {
+    "symptom_name": "drug abuse",
+    "gender_specific": "both",
+    "explanation": "Using illegal drugs or misusing prescription drugs despite negative consequences to health or life."
+  },
+  {
+    "symptom_name": "dry lips",
+    "gender_specific": "both",
+    "explanation": "Lips feel rough, chapped, cracked, or peeling; may be from weather, dehydration, or licking."
+  },
+  {
+    "symptom_name": "dry or flaky scalp",
+    "gender_specific": "both",
+    "explanation": "Scalp skin sheds white flakes (dandruff), feels tight, itchy, or has dry patches."
+  },
+  {
+    "symptom_name": "ear pain",
+    "gender_specific": "both",
+    "explanation": "Sharp, dull, or burning pain inside ear or around outer ear; may be worse when pulling earlobe."
+  },
+  {
+    "symptom_name": "early or late onset of menopause",
+    "gender_specific": "female",
+    "explanation": "Menopause before age 40 (early) or after age 55 (late); periods stop for 12 months."
+  },
+  {
+    "symptom_name": "elbow cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Muscles around elbow suddenly tighten painfully, often with visible twitching."
+  },
+  {
+    "symptom_name": "elbow lump or mass",
+    "gender_specific": "both",
+    "explanation": "Any bump near the elbow joint; common sites are tip of elbow (olecranon) or inner/outer sides."
+  },
+  {
+    "symptom_name": "elbow pain",
+    "gender_specific": "both",
+    "explanation": "Discomfort over elbow joint; may be on outside (tennis elbow) or inside (golfer's elbow)."
+  },
+  {
+    "symptom_name": "elbow stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Unable to fully straighten or bend elbow; feels resistant or stuck."
+  },
+  {
+    "symptom_name": "elbow swelling",
+    "gender_specific": "both",
+    "explanation": "Visible puffiness around elbow; may look like a fluid-filled bump (bursitis)."
+  },
+  {
+    "symptom_name": "elbow weakness",
+    "gender_specific": "both",
+    "explanation": "Difficulty lifting or gripping objects due to lack of strength in elbow muscles."
+  },
+  {
+    "symptom_name": "emotional symptoms",
+    "gender_specific": "both",
+    "explanation": "Feeling sad, angry, scared, numb, overwhelmed, or having mood swings not typical for you."
+  },
+  {
+    "symptom_name": "excessive anger",
+    "gender_specific": "both",
+    "explanation": "Frequent, intense anger out of proportion to trigger; may lead to yelling, breaking things, or violence."
+  },
+  {
+    "symptom_name": "excessive appetite",
+    "gender_specific": "both",
+    "explanation": "Constant hunger, eating much more than usual, or never feeling full after meals."
+  },
+  {
+    "symptom_name": "excessive growth",
+    "gender_specific": "both",
+    "explanation": "Unusually tall height, large hands/feet, or coarser facial features beyond family pattern."
+  },
+  {
+    "symptom_name": "excessive urination at night",
+    "gender_specific": "both",
+    "explanation": "Waking up two or more times each night to urinate; also called nocturia."
+  },
+  {
+    "symptom_name": "eye burns or stings",
+    "gender_specific": "both",
+    "explanation": "Uncomfortable, hot, or sharp sensation in eyes; often with watering or redness."
+  },
+  {
+    "symptom_name": "eye deviation",
+    "gender_specific": "both",
+    "explanation": "One eye points in a different direction from the other (strabismus) — in, out, up, or down."
+  },
+  {
+    "symptom_name": "eye moves abnormally",
+    "gender_specific": "both",
+    "explanation": "Uncontrolled eye movements — jerking, bouncing, or drifting (nystagmus)."
+  },
+  {
+    "symptom_name": "eye redness",
+    "gender_specific": "both",
+    "explanation": "White part of eye looks pink or red due to dilated blood vessels; with or without discharge."
+  },
+  {
+    "symptom_name": "eye strain",
+    "gender_specific": "both",
+    "explanation": "Tired, sore, or achy eyes after reading, screen use, or driving; may have headache."
+  },
+  {
+    "symptom_name": "eyelid lesion or rash",
+    "gender_specific": "both",
+    "explanation": "Any spot, bump, scaly patch, or redness on the eyelid skin."
+  },
+  {
+    "symptom_name": "eyelid retracted",
+    "gender_specific": "both",
+    "explanation": "Upper eyelid is pulled up higher than normal, showing white above iris; may look like staring."
+  },
+  {
+    "symptom_name": "eyelid swelling",
+    "gender_specific": "both",
+    "explanation": "Puffy, swollen eyelid(s); may be one or both, upper or lower, with or without redness."
+  },
+  {
+    "symptom_name": "facial pain",
+    "gender_specific": "both",
+    "explanation": "Pain in cheeks, forehead, jaw, or around eyes; can be from sinuses, nerves, or teeth."
+  },
+  {
+    "symptom_name": "fainting",
+    "gender_specific": "both",
+    "explanation": "Brief loss of consciousness with spontaneous recovery; usually due to reduced blood flow to brain."
+  },
+  {
+    "symptom_name": "fatigue",
+    "gender_specific": "both",
+    "explanation": "Overwhelming lack of energy, tiredness not relieved by rest, affecting daily activities."
+  },
+  {
+    "symptom_name": "fears and phobias",
+    "gender_specific": "both",
+    "explanation": "Intense, irrational fear of specific things (heights, spiders, crowds) causing avoidance or panic."
+  },
+  {
+    "symptom_name": "feeling cold",
+    "gender_specific": "both",
+    "explanation": "Sensation of coldness when others are comfortable; may be in whole body or just hands/feet."
+  },
+  {
+    "symptom_name": "feeling hot",
+    "gender_specific": "both",
+    "explanation": "Sensation of heat or warmth without fever; may be due to hormones, exercise, or environment."
+  },
+  {
+    "symptom_name": "feeling hot and cold",
+    "gender_specific": "both",
+    "explanation": "Alternating or mixed sensations of hot and cold; common in fever, infections, or menopause."
+  },
+  {
+    "symptom_name": "feeling ill",
+    "gender_specific": "both",
+    "explanation": "General sense of being unwell, like coming down with something — achy, tired, queasy."
+  },
+  {
+    "symptom_name": "feet turned in",
+    "gender_specific": "both",
+    "explanation": "When standing or walking, toes point inward instead of straight ahead (pigeon-toed)."
+  },
+  {
+    "symptom_name": "fever",
+    "gender_specific": "both",
+    "explanation": "Body temperature above normal (usually >100.4°F or 38°C) measured orally."
+  },
+  {
+    "symptom_name": "flatulence",
+    "gender_specific": "both",
+    "explanation": "Passing gas from rectum frequently or excessively; may have odor or be silent."
+  },
+  {
+    "symptom_name": "flu-like syndrome",
+    "gender_specific": "both",
+    "explanation": "Group of symptoms: fever, chills, muscle aches, fatigue, headache, and sometimes cough."
+  },
+  {
+    "symptom_name": "fluid in ear",
+    "gender_specific": "both",
+    "explanation": "Feeling of fullness, popping, or muffled hearing without infection; fluid behind eardrum."
+  },
+  {
+    "symptom_name": "fluid retention",
+    "gender_specific": "both",
+    "explanation": "Swelling in hands, feet, ankles, or legs due to excess fluid; skin may pit with pressure."
+  },
+  {
+    "symptom_name": "flushing",
+    "gender_specific": "both",
+    "explanation": "Sudden reddening of face, neck, or chest with warm feeling; often from emotions, alcohol, or fever."
+  },
+  {
+    "symptom_name": "focal weakness",
+    "gender_specific": "both",
+    "explanation": "Weakness limited to one specific body part, like one arm, one leg, or one side of face."
+  },
+  {
+    "symptom_name": "foot or toe cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Sudden, painful muscle tightening in arch of foot, toes, or sole; often at night."
+  },
+  {
+    "symptom_name": "foot or toe lump or mass",
+    "gender_specific": "both",
+    "explanation": "Any bump on foot or toes — could be bunion, ganglion cyst, corn, callus, or growth."
+  },
+  {
+    "symptom_name": "foot or toe pain",
+    "gender_specific": "both",
+    "explanation": "Pain in any part of foot — heel, arch, ball, toes; may be sharp, dull, or burning."
+  },
+  {
+    "symptom_name": "foot or toe stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Difficulty bending toes or ankle; foot feels rigid, especially in morning."
+  },
+  {
+    "symptom_name": "foot or toe swelling",
+    "gender_specific": "both",
+    "explanation": "Foot looks puffy, shoe feels tight, or toes appear sausage-like."
+  },
+  {
+    "symptom_name": "foot or toe weakness",
+    "gender_specific": "both",
+    "explanation": "Foot drags when walking, cannot push off ground, or frequent tripping."
+  },
+  {
+    "symptom_name": "foreign body sensation in eye",
+    "gender_specific": "both",
+    "explanation": "Feels like sand, grit, or something is in your eye, even when nothing is there."
+  },
+  {
+    "symptom_name": "frequent menstruation",
+    "gender_specific": "female",
+    "explanation": "Periods occur more often than every 21 days (fewer than 21 days between first days)."
+  },
+  {
+    "symptom_name": "frequent urination",
+    "gender_specific": "both",
+    "explanation": "Needing to urinate more than 8 times in 24 hours; may wake you at night."
+  },
+  {
+    "symptom_name": "frontal headache",
+    "gender_specific": "both",
+    "explanation": "Pain focused in forehead area, above eyebrows; may feel like pressure or band."
+  },
+  {
+    "symptom_name": "groin mass",
+    "gender_specific": "both",
+    "explanation": "Lump in the fold between abdomen and thigh; could be hernia, lymph node, or cyst."
+  },
+  {
+    "symptom_name": "groin pain",
+    "gender_specific": "both",
+    "explanation": "Discomfort in lower abdomen where leg meets pelvis; may be sharp or dull."
+  },
+  {
+    "symptom_name": "gum pain",
+    "gender_specific": "both",
+    "explanation": "Sore or tender gums; may bleed, be red, or recede from teeth."
+  },
+  {
+    "symptom_name": "hand or finger cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Fingers curl or hand grips involuntarily; may be painful (writer's cramp)."
+  },
+  {
+    "symptom_name": "hand or finger lump or mass",
+    "gender_specific": "both",
+    "explanation": "Bump on palm, finger, or back of hand — like ganglion cyst, wart, or nodule."
+  },
+  {
+    "symptom_name": "hand or finger pain",
+    "gender_specific": "both",
+    "explanation": "Pain in any hand structure: joints, muscles, nerves (tingling/burning)."
+  },
+  {
+    "symptom_name": "hand or finger stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Hands feel tight, difficult to make a fist or fully open fingers; worse in morning."
+  },
+  {
+    "symptom_name": "hand or finger swelling",
+    "gender_specific": "both",
+    "explanation": "Fingers look puffy, rings become tight, or hand looks like a balloon."
+  },
+  {
+    "symptom_name": "hand or finger weakness",
+    "gender_specific": "both",
+    "explanation": "Dropping objects, weak grip, trouble pinching or opening jars."
+  },
+  {
+    "symptom_name": "headache",
+    "gender_specific": "both",
+    "explanation": "Pain in any part of head — sharp, throbbing, dull, or pressure-like."
+  },
+  {
+    "symptom_name": "heartburn",
+    "gender_specific": "both",
+    "explanation": "Burning sensation behind breastbone, often after eating or when lying down."
+  },
+  {
+    "symptom_name": "heavy menstrual flow",
+    "gender_specific": "female",
+    "explanation": "Soaking through pad/tampon every hour, needing double protection, or period lasting >7 days."
+  },
+  {
+    "symptom_name": "hemoptysis",
+    "gender_specific": "both",
+    "explanation": "Coughing up blood or bloody sputum from lungs (not from stomach or mouth)."
+  },
+  {
+    "symptom_name": "hesitancy",
+    "gender_specific": "both",
+    "explanation": "Difficulty starting urination; urine stream may be weak or stop and start."
+  },
+  {
+    "symptom_name": "hip lump or mass",
+    "gender_specific": "both",
+    "explanation": "Bump near hip bone or upper thigh; may be hernia, lipoma, or lymph node."
+  },
+  {
+    "symptom_name": "hip pain",
+    "gender_specific": "both",
+    "explanation": "Discomfort in groin, outer hip, or buttock; may affect walking or weight-bearing."
+  },
+  {
+    "symptom_name": "hip stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Difficulty moving hip forward, backward, or rotating; common in joint issues."
+  },
+  {
+    "symptom_name": "hip swelling",
+    "gender_specific": "both",
+    "explanation": "Visible puffiness over hip joint or surrounding area; may be from fluid or inflammation."
+  },
+  {
+    "symptom_name": "hip weakness",
+    "gender_specific": "both",
+    "explanation": "Leg feels weak when lifting thigh, climbing stairs, or rising from chair."
+  },
+  {
+    "symptom_name": "hoarse voice",
+    "gender_specific": "both",
+    "explanation": "Voice sounds rough, raspy, or lower in pitch; may strain to speak."
+  },
+  {
+    "symptom_name": "hostile behavior",
+    "gender_specific": "both",
+    "explanation": "Acting argumentative, threatening, violent, or showing intense anger regularly."
+  },
+  {
+    "symptom_name": "hot flashes",
+    "gender_specific": "both",
+    "explanation": "Sudden feeling of intense heat, sweating, and reddening, especially face/chest."
+  },
+  {
+    "symptom_name": "hurts to breath",
+    "gender_specific": "both",
+    "explanation": "Pain with each breath (pleuritic pain), often sharp, worse on deep inhale."
+  },
+  {
+    "symptom_name": "hysterical behavior",
+    "gender_specific": "both",
+    "explanation": "Outbursts of uncontrollable laughing or crying, emotional outbursts, or dramatic reactions."
+  },
+  {
+    "symptom_name": "impotence",
+    "gender_specific": "male",
+    "explanation": "Inability to get or keep an erection firm enough for satisfactory sex."
+  },
+  {
+    "symptom_name": "incontinence of stool",
+    "gender_specific": "both",
+    "explanation": "Loss of control over bowel movements — leakage or complete accidents."
+  },
+  {
+    "symptom_name": "increased heart rate",
+    "gender_specific": "both",
+    "explanation": "Resting heart rate over 100 beats per minute; may feel pounding or fluttering."
+  },
+  {
+    "symptom_name": "infant feeding problem",
+    "gender_specific": "both",
+    "explanation": "Baby refuses to feed, arches back, falls asleep quickly, chokes, or takes very long to feed."
+  },
+  {
+    "symptom_name": "infant spitting up",
+    "gender_specific": "both",
+    "explanation": "Baby brings up small amounts of milk after feeding; forceful vomiting or large amounts is different."
+  },
+  {
+    "symptom_name": "infertility",
+    "gender_specific": "both",
+    "explanation": "Unable to conceive after 12 months of regular unprotected intercourse (6 months if over 35)."
+  },
+  {
+    "symptom_name": "infrequent menstruation",
+    "gender_specific": "female",
+    "explanation": "Cycles longer than 35 days or fewer than 9 periods per year."
+  },
+  {
+    "symptom_name": "insomnia",
+    "gender_specific": "both",
+    "explanation": "Difficulty falling asleep, staying asleep, or waking too early; poor sleep quality."
+  },
+  {
+    "symptom_name": "intermenstrual bleeding",
+    "gender_specific": "female",
+    "explanation": "Bleeding or spotting between regular periods, after sex, or mid-cycle."
+  },
+  {
+    "symptom_name": "involuntary urination",
+    "gender_specific": "both",
+    "explanation": "Leaking urine when coughing, sneezing, laughing (stress) or sudden strong urge (urge)."
+  },
+  {
+    "symptom_name": "irregular appearing nails",
+    "gender_specific": "both",
+    "explanation": "Nails have pits, ridges, spoon shape, thickening, discoloration, or separation from nail bed."
+  },
+  {
+    "symptom_name": "irregular appearing scalp",
+    "gender_specific": "both",
+    "explanation": "Scalp has patches of hair loss, scaling, redness, bumps, or flaking."
+  },
+  {
+    "symptom_name": "irregular belly button",
+    "gender_specific": "both",
+    "explanation": "Belly button changed shape, became protruding, hard, or has discharge."
+  },
+  {
+    "symptom_name": "irregular heartbeat",
+    "gender_specific": "both",
+    "explanation": "Heart feels like it skips beats, flutters, races, or beats unevenly (palpitations)."
+  },
+  {
+    "symptom_name": "irritable infant",
+    "gender_specific": "both",
+    "explanation": "Baby cries excessively, hard to soothe, fussy, or seems in discomfort most of the time."
+  },
+  {
+    "symptom_name": "itchiness of eye",
+    "gender_specific": "both",
+    "explanation": "Uncomfortable urge to rub eyes; often with redness, watering, or gritty feeling."
+  },
+  {
+    "symptom_name": "itching of scrotum",
+    "gender_specific": "male",
+    "explanation": "Uncontrollable itch on scrotal skin; may be from jock itch, dryness, or irritation."
+  },
+  {
+    "symptom_name": "itching of skin",
+    "gender_specific": "both",
+    "explanation": "Unpleasant sensation that makes you want to scratch; may have rash or be invisible (pruritus)."
+  },
+  {
+    "symptom_name": "itching of the anus",
+    "gender_specific": "both",
+    "explanation": "Persistent itch around anal opening; worse at night; may be from hemorrhoids or pinworms."
+  },
+  {
+    "symptom_name": "itchy ear(s)",
+    "gender_specific": "both",
+    "explanation": "Deep itch inside ear canal; may be from dryness, allergy, or infection."
+  },
+  {
+    "symptom_name": "itchy eyelid",
+    "gender_specific": "both",
+    "explanation": "Itching sensation on eyelid skin; often with redness, scaling, or swelling."
+  },
+  {
+    "symptom_name": "itchy scalp",
+    "gender_specific": "both",
+    "explanation": "Scalp itches; may have flakes, redness, sores, or hair loss."
+  },
+  {
+    "symptom_name": "jaundice",
+    "gender_specific": "both",
+    "explanation": "Yellowing of skin and whites of eyes; urine may be dark, stool pale."
+  },
+  {
+    "symptom_name": "jaw pain",
+    "gender_specific": "both",
+    "explanation": "Pain in jaw joint, muscles, or bone; may click, lock, or hurt when chewing."
+  },
+  {
+    "symptom_name": "jaw swelling",
+    "gender_specific": "both",
+    "explanation": "Visible puffiness or enlargement of jaw area; may be tooth or gland related."
+  },
+  {
+    "symptom_name": "joint pain",
+    "gender_specific": "both",
+    "explanation": "Pain in any joint (knee, hip, shoulder, fingers); may be aching, sharp, or throbbing."
+  },
+  {
+    "symptom_name": "joint stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Joint hard to move after rest; improves with movement; lasts >30 min in arthritis."
+  },
+  {
+    "symptom_name": "joint swelling",
+    "gender_specific": "both",
+    "explanation": "Joint looks puffy, larger than other side; may feel warm or look red."
+  },
+  {
+    "symptom_name": "kidney mass",
+    "gender_specific": "both",
+    "explanation": "Abnormal growth in kidney area (usually found by imaging, not self-palpable)."
+  },
+  {
+    "symptom_name": "knee cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Sudden, painful contraction of muscles around the knee."
+  },
+  {
+    "symptom_name": "knee lump or mass",
+    "gender_specific": "both",
+    "explanation": "Bump on or around knee — could be bursitis (goose egg), cyst, or bone spurs."
+  },
+  {
+    "symptom_name": "knee pain",
+    "gender_specific": "both",
+    "explanation": "Pain anywhere in knee — front, back, sides; with bending, weight, or at rest."
+  },
+  {
+    "symptom_name": "knee stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Difficulty fully straightening or bending knee; may feel like 'stuck.'"
+  },
+  {
+    "symptom_name": "knee swelling",
+    "gender_specific": "both",
+    "explanation": "Knee visibly bigger than other side; may have 'water on the knee' (effusion)."
+  },
+  {
+    "symptom_name": "knee weakness",
+    "gender_specific": "both",
+    "explanation": "Feeling that knee will buckle or give way; trouble climbing stairs or standing."
+  },
+  {
+    "symptom_name": "lack of growth",
+    "gender_specific": "both",
+    "explanation": "Child is much shorter than peers or growth rate slows significantly on growth chart."
+  },
+  {
+    "symptom_name": "lacrimation",
+    "gender_specific": "both",
+    "explanation": "Excessive tearing or watering of eyes, not from crying; may be from irritation or blockage."
+  },
+  {
+    "symptom_name": "leg cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Sudden, painful muscle tightening in calf, hamstring, or quadriceps."
+  },
+  {
+    "symptom_name": "leg lump or mass",
+    "gender_specific": "both",
+    "explanation": "Bump on thigh, calf, or shin; may be lipoma, cyst, varicose vein, or hematoma."
+  },
+  {
+    "symptom_name": "leg pain",
+    "gender_specific": "both",
+    "explanation": "Any discomfort in leg from hip to ankle; may be muscle, bone, nerve, or vascular."
+  },
+  {
+    "symptom_name": "leg stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Leg muscles feel tight, limited range of motion; common in hamstrings or calves."
+  },
+  {
+    "symptom_name": "leg swelling",
+    "gender_specific": "both",
+    "explanation": "One or both legs larger than normal; may be pitting (leaves dent)."
+  },
+  {
+    "symptom_name": "leg weakness",
+    "gender_specific": "both",
+    "explanation": "Leg feels heavy, hard to lift, or drags; trouble rising from chair or walking."
+  },
+  {
+    "symptom_name": "lip sore",
+    "gender_specific": "both",
+    "explanation": "Painful spot on lip — cold sore (blister), ulcer (canker), or crack."
+  },
+  {
+    "symptom_name": "lip swelling",
+    "gender_specific": "both",
+    "explanation": "Lip(s) puffy, enlarged; may be allergic reaction (angioedema) or injury."
+  },
+  {
+    "symptom_name": "long menstrual periods",
+    "gender_specific": "female",
+    "explanation": "Menstrual bleeding lasting more than 7 days each cycle."
+  },
+  {
+    "symptom_name": "loss of sensation",
+    "gender_specific": "both",
+    "explanation": "Numbness or feeling of 'dead' area on skin; cannot feel touch, pain, or temperature."
+  },
+  {
+    "symptom_name": "loss of sex drive",
+    "gender_specific": "both",
+    "explanation": "Lack of interest in sexual activity for months; not due to relationship or fatigue alone."
+  },
+  {
+    "symptom_name": "low back cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Sudden tightening of lower back muscles, often after lifting or twisting."
+  },
+  {
+    "symptom_name": "low back pain",
+    "gender_specific": "both",
+    "explanation": "Pain in the lumbar spine area (below ribs, above buttocks)."
+  },
+  {
+    "symptom_name": "low back stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Lower back feels rigid, hard to bend forward or backward; worse after rest."
+  },
+  {
+    "symptom_name": "low back swelling",
+    "gender_specific": "both",
+    "explanation": "Visible puffiness or mass in lower back region."
+  },
+  {
+    "symptom_name": "low back weakness",
+    "gender_specific": "both",
+    "explanation": "Feeling of instability or inability to support weight through lower back."
+  },
+  {
+    "symptom_name": "low self-esteem",
+    "gender_specific": "both",
+    "explanation": "Persistent feeling of worthlessness, inadequacy, or harsh self-criticism."
+  },
+  {
+    "symptom_name": "low urine output",
+    "gender_specific": "both",
+    "explanation": "Producing less than 400 ml of urine per day (about 2 cups)."
+  },
+  {
+    "symptom_name": "lower abdominal pain",
+    "gender_specific": "both",
+    "explanation": "Pain in belly below the navel; may be bladder, bowel, or reproductive organ related."
+  },
+  {
+    "symptom_name": "lower body pain",
+    "gender_specific": "both",
+    "explanation": "Pain affecting pelvis, hips, legs, or buttocks generally, not one specific spot."
+  },
+  {
+    "symptom_name": "lump in throat",
+    "gender_specific": "both",
+    "explanation": "Sensation of a ball or object stuck in throat when nothing is there (globus)."
+  },
+  {
+    "symptom_name": "lump or mass of breast",
+    "gender_specific": "both",
+    "explanation": "Any new bump in breast or armpit; can be in men too. May be tender or painless."
+  },
+  {
+    "symptom_name": "lump over jaw",
+    "gender_specific": "both",
+    "explanation": "Visible bump on or near jawbone; could be tooth abscess, lymph node, or cyst."
+  },
+  {
+    "symptom_name": "lymphedema",
+    "gender_specific": "both",
+    "explanation": "Chronic swelling of arm or leg due to lymphatic fluid buildup, often after surgery."
+  },
+  {
+    "symptom_name": "mass in scrotum",
+    "gender_specific": "male",
+    "explanation": "Lump or swelling inside the scrotum — from testicle, epididymis, or hernia."
+  },
+  {
+    "symptom_name": "mass on ear",
+    "gender_specific": "both",
+    "explanation": "Bump on outer ear — cauliflower ear, cyst, keloid, or skin growth."
+  },
+  {
+    "symptom_name": "mass on eyelid",
+    "gender_specific": "both",
+    "explanation": "Bump on eyelid — stye (painful, red), chalazion (painless, firm)."
+  },
+  {
+    "symptom_name": "mass on vulva",
+    "gender_specific": "female",
+    "explanation": "Lump or bump on external female genitalia; may be cyst, wart, or growth."
+  },
+  {
+    "symptom_name": "mass or swelling around the anus",
+    "gender_specific": "both",
+    "explanation": "Bump near anal opening — hemorrhoid, abscess, or skin tag."
+  },
+  {
+    "symptom_name": "melena",
+    "gender_specific": "both",
+    "explanation": "Black, tarry, sticky stools with foul odor, indicating digested blood from upper GI."
+  },
+  {
+    "symptom_name": "mouth dryness",
+    "gender_specific": "both",
+    "explanation": "Dry, sticky feeling in mouth; trouble swallowing or speaking; cracked lips."
+  },
+  {
+    "symptom_name": "mouth pain",
+    "gender_specific": "both",
+    "explanation": "Pain inside mouth — on tongue, cheeks, gums, palate; may be burning or sharp."
+  },
+  {
+    "symptom_name": "mouth ulcer",
+    "gender_specific": "both",
+    "explanation": "Open sore inside mouth (canker sore) — round, white/yellow with red border."
+  },
+  {
+    "symptom_name": "muscle cramps, contractures, or spasms",
+    "gender_specific": "both",
+    "explanation": "Involuntary, painful muscle contractions that may cause joint to lock (contracture)."
+  },
+  {
+    "symptom_name": "muscle pain",
+    "gender_specific": "both",
+    "explanation": "Aching or soreness in muscles; may be from overuse, flu, or medication."
+  },
+  {
+    "symptom_name": "muscle stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Muscles feel hard, resistant to stretch; difficulty moving normally."
+  },
+  {
+    "symptom_name": "muscle swelling",
+    "gender_specific": "both",
+    "explanation": "Muscle looks bigger or bulging compared to other side; may be from injury or inflammation."
+  },
+  {
+    "symptom_name": "muscle weakness",
+    "gender_specific": "both",
+    "explanation": "Reduced muscle power; feels like you have to exert more to do same task."
+  },
+  {
+    "symptom_name": "nailbiting",
+    "gender_specific": "both",
+    "explanation": "Compulsive biting of fingernails or cuticles, often with stress or habit."
+  },
+  {
+    "symptom_name": "nasal congestion",
+    "gender_specific": "both",
+    "explanation": "Stuffy nose; difficulty breathing through nose; may have sinus pressure."
+  },
+  {
+    "symptom_name": "nausea",
+    "gender_specific": "both",
+    "explanation": "Queasy feeling in stomach, urge to vomit, but not actually vomiting."
+  },
+  {
+    "symptom_name": "neck cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Sudden painful tightening of neck muscles; may cause head to turn (torticollis)."
+  },
+  {
+    "symptom_name": "neck mass",
+    "gender_specific": "both",
+    "explanation": "Lump on neck; could be swollen lymph node, thyroid, cyst, or growth."
+  },
+  {
+    "symptom_name": "neck pain",
+    "gender_specific": "both",
+    "explanation": "Pain in neck area; may radiate to shoulders or head; worse with movement."
+  },
+  {
+    "symptom_name": "neck stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Difficulty turning head or touching chin to chest; feels rigid."
+  },
+  {
+    "symptom_name": "neck swelling",
+    "gender_specific": "both",
+    "explanation": "Visible puffiness or enlargement of neck; may affect swallowing or breathing."
+  },
+  {
+    "symptom_name": "neck weakness",
+    "gender_specific": "both",
+    "explanation": "Difficulty holding head up; neck feels floppy or tires easily."
+  },
+  {
+    "symptom_name": "nightmares",
+    "gender_specific": "both",
+    "explanation": "Frightening dreams that wake you up; you remember details vividly."
+  },
+  {
+    "symptom_name": "nose deformity",
+    "gender_specific": "both",
+    "explanation": "Shape of nose changed — collapsed, deviated, hump, or saddle nose."
+  },
+  {
+    "symptom_name": "nosebleed",
+    "gender_specific": "both",
+    "explanation": "Blood from nostrils; may be from dryness, injury, or high blood pressure."
+  },
+  {
+    "symptom_name": "obsessions and compulsions",
+    "gender_specific": "both",
+    "explanation": "Unwanted repeated thoughts (obsessions) leading to repetitive actions (compulsions)."
+  },
+  {
+    "symptom_name": "pain during intercourse",
+    "gender_specific": "both",
+    "explanation": "Pain with sexual activity — deep (female: cervical/uterine) or entry pain."
+  },
+  {
+    "symptom_name": "pain during pregnancy",
+    "gender_specific": "female",
+    "explanation": "Any abdominal, pelvic, or back pain while pregnant; needs evaluation."
+  },
+  {
+    "symptom_name": "pain in eye",
+    "gender_specific": "both",
+    "explanation": "Sharp, dull, or aching sensation inside or around eye."
+  },
+  {
+    "symptom_name": "pain in gums",
+    "gender_specific": "both",
+    "explanation": "Soreness in gum tissue; may be red, swollen, or bleed."
+  },
+  {
+    "symptom_name": "pain in testicles",
+    "gender_specific": "male",
+    "explanation": "Pain in one or both testicles; may be dull ache or sharp."
+  },
+  {
+    "symptom_name": "pain of the anus",
+    "gender_specific": "both",
+    "explanation": "Pain in or around anal opening; worse with sitting or bowel movement."
+  },
+  {
+    "symptom_name": "pain or soreness of breast",
+    "gender_specific": "both",
+    "explanation": "Breast tenderness, heaviness, or sharp pain; may be cyclic or constant."
+  },
+  {
+    "symptom_name": "painful menstruation",
+    "gender_specific": "female",
+    "explanation": "Cramping or pelvic pain before or during period; severe enough to limit activity."
+  },
+  {
+    "symptom_name": "painful sinuses",
+    "gender_specific": "both",
+    "explanation": "Pressure or pain over cheeks, forehead, behind eyes; worse leaning forward."
+  },
+  {
+    "symptom_name": "painful urination",
+    "gender_specific": "both",
+    "explanation": "Burning, stinging, or pain when passing urine (dysuria)."
+  },
+  {
+    "symptom_name": "pallor",
+    "gender_specific": "both",
+    "explanation": "Unusually pale skin, especially inside lower eyelids, gums, or nail beds."
+  },
+  {
+    "symptom_name": "palpitations",
+    "gender_specific": "both",
+    "explanation": "Feeling of heart pounding, racing, flip-flopping, or skipping beats."
+  },
+  {
+    "symptom_name": "paresthesia",
+    "gender_specific": "both",
+    "explanation": "Pins-and-needles, tingling, burning, or 'falling asleep' sensation."
+  },
+  {
+    "symptom_name": "pelvic pain",
+    "gender_specific": "both",
+    "explanation": "Pain in lowest part of belly (pelvis); can be sharp, dull, or pressure."
+  },
+  {
+    "symptom_name": "pelvic pressure",
+    "gender_specific": "both",
+    "explanation": "Feeling of heaviness or pushing down in pelvis; may need to urinate often."
+  },
+  {
+    "symptom_name": "penile discharge",
+    "gender_specific": "male",
+    "explanation": "Fluid (white, yellow, green, or bloody) from penis, not urine or semen."
+  },
+  {
+    "symptom_name": "penis pain",
+    "gender_specific": "male",
+    "explanation": "Pain in shaft, head, or base of penis; may be with erection or urination."
+  },
+  {
+    "symptom_name": "penis redness",
+    "gender_specific": "male",
+    "explanation": "Red skin on penis; may be from irritation, infection, or rash."
+  },
+  {
+    "symptom_name": "peripheral edema",
+    "gender_specific": "both",
+    "explanation": "Swelling in hands, feet, ankles, or lower legs due to fluid buildup."
+  },
+  {
+    "symptom_name": "plugged feeling in ear",
+    "gender_specific": "both",
+    "explanation": "Ear feels full or blocked; may be wax, fluid, or eustachian tube issue."
+  },
+  {
+    "symptom_name": "polyuria",
+    "gender_specific": "both",
+    "explanation": "Excessive urine volume — more than 2.5 liters per day (10-15 cups)."
+  },
+  {
+    "symptom_name": "poor circulation",
+    "gender_specific": "both",
+    "explanation": "Cold, numb, discolored (blue/pale) hands or feet; sores heal slowly."
+  },
+  {
+    "symptom_name": "postpartum problems of the breast",
+    "gender_specific": "female",
+    "explanation": "After childbirth: engorgement, mastitis (red, painful, fever), or abscess."
+  },
+  {
+    "symptom_name": "posture problems",
+    "gender_specific": "both",
+    "explanation": "Slouching, hunched back, forward head, or asymmetry (one shoulder higher)."
+  },
+  {
+    "symptom_name": "premature ejaculation",
+    "gender_specific": "male",
+    "explanation": "Ejaculation consistently occurs within one minute of penetration, with little control."
+  },
+  {
+    "symptom_name": "premenstrual tension or irritability",
+    "gender_specific": "female",
+    "explanation": "Mood swings, irritability, anxiety, or anger in days before period; resolves after."
+  },
+  {
+    "symptom_name": "problems during pregnancy",
+    "gender_specific": "female",
+    "explanation": "Any complication like bleeding, severe swelling, headache, or reduced fetal movement."
+  },
+  {
+    "symptom_name": "problems with movement",
+    "gender_specific": "both",
+    "explanation": "Difficulty walking, clumsiness, poor coordination, or slow movements."
+  },
+  {
+    "symptom_name": "problems with orgasm",
+    "gender_specific": "both",
+    "explanation": "Delayed, absent, or painful orgasm; or inability to reach climax."
+  },
+  {
+    "symptom_name": "problems with shape or size of breast",
+    "gender_specific": "both",
+    "explanation": "Significant change in breast size, shape, or symmetry; new dimpling or puckering."
+  },
+  {
+    "symptom_name": "pulling at ears",
+    "gender_specific": "both",
+    "explanation": "Infant or child repeatedly tugging, pulling, or rubbing ears; often sign of ear pain."
+  },
+  {
+    "symptom_name": "pupils unequal",
+    "gender_specific": "both",
+    "explanation": "One pupil larger than other; may be normal (physiologic anisocoria) or serious."
+  },
+  {
+    "symptom_name": "pus draining from ear",
+    "gender_specific": "both",
+    "explanation": "Thick yellow/green discharge from ear; indicates infection (otitis media with perforation)."
+  },
+  {
+    "symptom_name": "pus in sputum",
+    "gender_specific": "both",
+    "explanation": "Phlegm coughed up that is yellow, green, or brown; suggests bacterial infection."
+  },
+  {
+    "symptom_name": "pus in urine",
+    "gender_specific": "both",
+    "explanation": "Cloudy urine with white sediment; may have odor (pyuria, often UTI)."
+  },
+  {
+    "symptom_name": "recent pregnancy",
+    "gender_specific": "female",
+    "explanation": "You gave birth within last 6-12 months; not current pregnancy."
+  },
+  {
+    "symptom_name": "recent weight loss",
+    "gender_specific": "both",
+    "explanation": "Losing more than 5% of body weight in 6-12 months without trying."
+  },
+  {
+    "symptom_name": "rectal bleeding",
+    "gender_specific": "both",
+    "explanation": "Bright red blood from anus on toilet paper, in bowl, or coating stool."
+  },
+  {
+    "symptom_name": "redness in ear",
+    "gender_specific": "both",
+    "explanation": "Ear lobe or canal skin looks red, inflamed; sometimes hot to touch."
+  },
+  {
+    "symptom_name": "redness in or around nose",
+    "gender_specific": "both",
+    "explanation": "Red skin around nostrils or nasal tip; may be from irritation or infection."
+  },
+  {
+    "symptom_name": "regurgitation",
+    "gender_specific": "both",
+    "explanation": "Food or liquid comes back up into mouth without nausea or retching."
+  },
+  {
+    "symptom_name": "regurgitation.1",
+    "gender_specific": "both",
+    "explanation": "Duplicate entry. Same as above: effortless backflow of swallowed contents."
+  },
+  {
+    "symptom_name": "restlessness",
+    "gender_specific": "both",
+    "explanation": "Unable to sit still; need to move, pace, or fidget; feeling internally agitated."
+  },
+  {
+    "symptom_name": "retention of urine",
+    "gender_specific": "both",
+    "explanation": "Unable to empty bladder completely; may strain, feel fullness, or dribble."
+  },
+  {
+    "symptom_name": "rib pain",
+    "gender_specific": "both",
+    "explanation": "Pain along rib cage; worse with deep breath, coughing, or movement."
+  },
+  {
+    "symptom_name": "ringing in ear",
+    "gender_specific": "both",
+    "explanation": "Hearing sound (ringing, buzzing, hissing) with no external source (tinnitus)."
+  },
+  {
+    "symptom_name": "scanty menstrual flow",
+    "gender_specific": "female",
+    "explanation": "Very light periods, barely needing sanitary protection; usually less than 2 days."
+  },
+  {
+    "symptom_name": "seizures",
+    "gender_specific": "both",
+    "explanation": "Sudden uncontrolled electrical disturbance in brain: convulsions, staring, jerking."
+  },
+  {
+    "symptom_name": "sharp abdominal pain",
+    "gender_specific": "both",
+    "explanation": "Sudden, stabbing, or cutting pain in belly; often severe and localized."
+  },
+  {
+    "symptom_name": "sharp chest pain",
+    "gender_specific": "both",
+    "explanation": "Sudden, stabbing chest pain; may worsen with breathing or lying down."
+  },
+  {
+    "symptom_name": "shortness of breath",
+    "gender_specific": "both",
+    "explanation": "Feeling of not getting enough air; may occur with activity or at rest."
+  },
+  {
+    "symptom_name": "shoulder cramps or spasms",
+    "gender_specific": "both",
+    "explanation": "Painful tightening of shoulder muscles; may involve neck or upper back."
+  },
+  {
+    "symptom_name": "shoulder lump or mass",
+    "gender_specific": "both",
+    "explanation": "Bump on shoulder — could be acromioclavicular cyst, lipoma, or muscle knot."
+  },
+  {
+    "symptom_name": "shoulder pain",
+    "gender_specific": "both",
+    "explanation": "Pain in shoulder joint or surrounding muscles; worse with reaching or lifting."
+  },
+  {
+    "symptom_name": "shoulder stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Difficulty raising arm, reaching behind, or rotating shoulder (frozen shoulder)."
+  },
+  {
+    "symptom_name": "shoulder swelling",
+    "gender_specific": "both",
+    "explanation": "Visible puffiness around shoulder joint; may be from bursitis or injury."
+  },
+  {
+    "symptom_name": "shoulder weakness",
+    "gender_specific": "both",
+    "explanation": "Difficulty lifting arm overhead or carrying objects; rotator cuff weakness."
+  },
+  {
+    "symptom_name": "side pain",
+    "gender_specific": "both",
+    "explanation": "Pain in flank (between ribs and hip); may be from kidney, muscle, or bowel."
+  },
+  {
+    "symptom_name": "sinus congestion",
+    "gender_specific": "both",
+    "explanation": "Pressure, fullness, or stuffiness in face; worse leaning forward."
+  },
+  {
+    "symptom_name": "skin dryness, peeling, scaliness, or roughness",
+    "gender_specific": "both",
+    "explanation": "Skin feels rough, looks flaky, or peels like after sunburn; often itchy."
+  },
+  {
+    "symptom_name": "skin growth",
+    "gender_specific": "both",
+    "explanation": "New lump, bump, or spot on skin that was not there before (wart, mole, tag)."
+  },
+  {
+    "symptom_name": "skin irritation",
+    "gender_specific": "both",
+    "explanation": "Skin feels itchy, burning, or sore; may look red but no clear rash."
+  },
+  {
+    "symptom_name": "skin lesion",
+    "gender_specific": "both",
+    "explanation": "Any abnormal area on skin — sore, ulcer, blister, crust, or patch."
+  },
+  {
+    "symptom_name": "skin moles",
+    "gender_specific": "both",
+    "explanation": "Brownish spots on skin; new or changing moles need monitoring."
+  },
+  {
+    "symptom_name": "skin oiliness",
+    "gender_specific": "both",
+    "explanation": "Skin looks shiny, feels greasy, pores enlarged; often on face and scalp."
+  },
+  {
+    "symptom_name": "skin on arm or hand looks infected",
+    "gender_specific": "both",
+    "explanation": "Redness, swelling, warmth, pus, or spreading red streaks on upper limb."
+  },
+  {
+    "symptom_name": "skin on head or neck looks infected",
+    "gender_specific": "both",
+    "explanation": "Red, swollen, tender, or crusting sores on scalp, face, or neck."
+  },
+  {
+    "symptom_name": "skin on leg or foot looks infected",
+    "gender_specific": "both",
+    "explanation": "Red, hot, swollen leg/foot; possible drainage; may be cellulitis."
+  },
+  {
+    "symptom_name": "skin pain",
+    "gender_specific": "both",
+    "explanation": "Soreness or tenderness of skin to light touch; like sunburn or nerve pain."
+  },
+  {
+    "symptom_name": "skin rash",
+    "gender_specific": "both",
+    "explanation": "Area of red, bumpy, scaly, or blistered skin; may be itchy or not."
+  },
+  {
+    "symptom_name": "skin swelling",
+    "gender_specific": "both",
+    "explanation": "Localized puffiness of skin; may be hives (wheals) or deeper edema."
+  },
+  {
+    "symptom_name": "sleepiness",
+    "gender_specific": "both",
+    "explanation": "Excessive daytime drowsiness; falling asleep easily when inactive."
+  },
+  {
+    "symptom_name": "sleepwalking",
+    "gender_specific": "both",
+    "explanation": "Getting up and walking around while asleep; no memory of it next day."
+  },
+  {
+    "symptom_name": "slurring words",
+    "gender_specific": "both",
+    "explanation": "Speech sounds unclear, mumbled, or slow; may be mistaken for drunkenness."
+  },
+  {
+    "symptom_name": "smoking problems",
+    "gender_specific": "both",
+    "explanation": "Health issues from smoking: chronic cough, shortness of breath, wheezing."
+  },
+  {
+    "symptom_name": "sneezing",
+    "gender_specific": "both",
+    "explanation": "Sudden, forceful expulsion of air through nose/mouth; often from allergy or virus."
+  },
+  {
+    "symptom_name": "sore in nose",
+    "gender_specific": "both",
+    "explanation": "Painful ulcer or crust inside nostril; may bleed when picking."
+  },
+  {
+    "symptom_name": "sore throat",
+    "gender_specific": "both",
+    "explanation": "Pain, scratchiness, or irritation in throat; worse with swallowing."
+  },
+  {
+    "symptom_name": "spots or clouds in vision",
+    "gender_specific": "both",
+    "explanation": "Floaters (dark spots), cobwebs, or hazy areas moving with eye movement."
+  },
+  {
+    "symptom_name": "spotting or bleeding during pregnancy",
+    "gender_specific": "female",
+    "explanation": "Any vaginal bleeding while pregnant; needs immediate evaluation."
+  },
+  {
+    "symptom_name": "stiffness all over",
+    "gender_specific": "both",
+    "explanation": "Generalized feeling of rigidity in muscles and joints; whole body feels tight."
+  },
+  {
+    "symptom_name": "stomach bloating",
+    "gender_specific": "both",
+    "explanation": "Feeling of fullness, tightness, or swelling in abdomen; may look larger."
+  },
+  {
+    "symptom_name": "stuttering or stammering",
+    "gender_specific": "both",
+    "explanation": "Repetition of sounds, prolonged sounds, or blocks preventing fluent speech."
+  },
+  {
+    "symptom_name": "suprapubic pain",
+    "gender_specific": "both",
+    "explanation": "Pain just above pubic bone (lower midline belly); often bladder related."
+  },
+  {
+    "symptom_name": "sweating",
+    "gender_specific": "both",
+    "explanation": "Excessive perspiration not from heat or exercise; may be night sweats."
+  },
+  {
+    "symptom_name": "swelling of scrotum",
+    "gender_specific": "male",
+    "explanation": "Scrotal sac enlarged; could be hydrocele, hernia, or orchitis."
+  },
+  {
+    "symptom_name": "swollen abdomen",
+    "gender_specific": "both",
+    "explanation": "Belly visibly larger than normal; may be from gas, fluid, or organ enlargement."
+  },
+  {
+    "symptom_name": "swollen eye",
+    "gender_specific": "both",
+    "explanation": "Periorbital swelling — puffy eyelids and tissues around eye."
+  },
+  {
+    "symptom_name": "swollen lymph nodes",
+    "gender_specific": "both",
+    "explanation": "Enlarged, tender or rubbery lumps in neck, armpit, groin; pea- to marble-sized."
+  },
+  {
+    "symptom_name": "swollen or red tonsils",
+    "gender_specific": "both",
+    "explanation": "Tonsils at back of throat look large, red, or have white patches."
+  },
+  {
+    "symptom_name": "swollen tongue",
+    "gender_specific": "both",
+    "explanation": "Lingual enlargement; may cause trouble speaking, swallowing, or breathing."
+  },
+  {
+    "symptom_name": "symptoms of bladder",
+    "gender_specific": "both",
+    "explanation": "Urinary frequency, urgency, pain, or blood; general bladder-related issues."
+  },
+  {
+    "symptom_name": "symptoms of eye",
+    "gender_specific": "both",
+    "explanation": "Blurred, double vision, pain, redness, discharge, or floaters."
+  },
+  {
+    "symptom_name": "symptoms of infants",
+    "gender_specific": "both",
+    "explanation": "Fussiness, poor feeding, lethargy, fever, rash, or vomiting in baby."
+  },
+  {
+    "symptom_name": "symptoms of prostate",
+    "gender_specific": "male",
+    "explanation": "Frequent urination, weak stream, hesitancy, dribbling, or night urination."
+  },
+  {
+    "symptom_name": "symptoms of the face",
+    "gender_specific": "both",
+    "explanation": "Facial pain, numbness, swelling, rash, or asymmetry."
+  },
+  {
+    "symptom_name": "symptoms of the kidneys",
+    "gender_specific": "both",
+    "explanation": "Flank pain, blood in urine, fever, swelling, or changes in urine output."
+  },
+  {
+    "symptom_name": "symptoms of the scrotum and testes",
+    "gender_specific": "male",
+    "explanation": "Pain, lump, swelling, heaviness, or color change in scrotum/testicles."
+  },
+  {
+    "symptom_name": "temper problems",
+    "gender_specific": "both",
+    "explanation": "Frequent outbursts of anger, irritability, or tantrums out of proportion."
+  },
+  {
+    "symptom_name": "thirst",
+    "gender_specific": "both",
+    "explanation": "Abnormally strong desire to drink; persistent even after drinking."
+  },
+  {
+    "symptom_name": "throat feels tight",
+    "gender_specific": "both",
+    "explanation": "Sensation of constriction in throat, not lump; may be anxiety or allergy."
+  },
+  {
+    "symptom_name": "throat irritation",
+    "gender_specific": "both",
+    "explanation": "Scratchy, tickling, or raw feeling in throat; often with dry cough."
+  },
+  {
+    "symptom_name": "throat redness",
+    "gender_specific": "both",
+    "explanation": "Back of throat looks red, inflamed; may have white patches or swelling."
+  },
+  {
+    "symptom_name": "throat swelling",
+    "gender_specific": "both",
+    "explanation": "Feeling of fullness or visible bulge in throat; may affect breathing."
+  },
+  {
+    "symptom_name": "tongue bleeding",
+    "gender_specific": "both",
+    "explanation": "Blood from tongue surface; often from biting, injury, or ulcer."
+  },
+  {
+    "symptom_name": "tongue lesions",
+    "gender_specific": "both",
+    "explanation": "Sores, ulcers, or growths on tongue; may be white, red, or painful."
+  },
+  {
+    "symptom_name": "tongue pain",
+    "gender_specific": "both",
+    "explanation": "Sore or burning sensation in tongue; may affect eating."
+  },
+  {
+    "symptom_name": "too little hair",
+    "gender_specific": "both",
+    "explanation": "Hair thinning or loss (alopecia) on scalp or body beyond typical aging."
+  },
+  {
+    "symptom_name": "toothache",
+    "gender_specific": "both",
+    "explanation": "Pain in or around a tooth; may be sharp, throbbing, or constant."
+  },
+  {
+    "symptom_name": "underweight",
+    "gender_specific": "both",
+    "explanation": "BMI below 18.5; unintentional weight loss or inability to gain."
+  },
+  {
+    "symptom_name": "unpredictable menstruation",
+    "gender_specific": "female",
+    "explanation": "Cycles vary widely in length (e.g., 25 days, then 40 days); irregular timing."
+  },
+  {
+    "symptom_name": "unusual color or odor to urine",
+    "gender_specific": "both",
+    "explanation": "Urine looks dark, orange, green, blue, or smells foul, sweet, or fishy."
+  },
+  {
+    "symptom_name": "unwanted hair",
+    "gender_specific": "both",
+    "explanation": "Excessive hair growth in areas not typical for your sex/age (hirsutism in females)."
+  },
+  {
+    "symptom_name": "upper abdominal pain",
+    "gender_specific": "both",
+    "explanation": "Pain in belly above navel; may be stomach, gallbladder, pancreas or liver."
+  },
+  {
+    "symptom_name": "uterine contractions",
+    "gender_specific": "female",
+    "explanation": "Tightening and relaxing of uterine muscle; can be labor (regular) or Braxton Hicks."
+  },
+  {
+    "symptom_name": "vaginal bleeding after menopause",
+    "gender_specific": "female",
+    "explanation": "Any vaginal bleeding in woman who has not had period for 12+ months."
+  },
+  {
+    "symptom_name": "vaginal discharge",
+    "gender_specific": "female",
+    "explanation": "Fluid from vagina; normal is clear/white, abnormal: green, bloody, foul, or itchy."
+  },
+  {
+    "symptom_name": "vaginal dryness",
+    "gender_specific": "female",
+    "explanation": "Lack of lubrication in vagina; may cause pain with sex or itching."
+  },
+  {
+    "symptom_name": "vaginal itching",
+    "gender_specific": "female",
+    "explanation": "Persistent itch in vaginal area; often with discharge or irritation."
+  },
+  {
+    "symptom_name": "vaginal pain",
+    "gender_specific": "female",
+    "explanation": "Pain in vaginal canal; may be burning, sharp, or aching."
+  },
+  {
+    "symptom_name": "vaginal redness",
+    "gender_specific": "female",
+    "explanation": "Vaginal or vulvar skin looks red, inflamed; often with itching or discomfort."
+  },
+  {
+    "symptom_name": "vomiting",
+    "gender_specific": "both",
+    "explanation": "Forceful expulsion of stomach contents through mouth."
+  },
+  {
+    "symptom_name": "vomiting blood",
+    "gender_specific": "both",
+    "explanation": "Blood in vomit: bright red (fresh) or coffee-ground (digested)."
+  },
+  {
+    "symptom_name": "vulvar irritation",
+    "gender_specific": "female",
+    "explanation": "Itching, burning, or soreness of external female genitals."
+  },
+  {
+    "symptom_name": "vulvar sore",
+    "gender_specific": "female",
+    "explanation": "Open sore, ulcer, or blister on vulva; may be painful or painless."
+  },
+  {
+    "symptom_name": "warts",
+    "gender_specific": "both",
+    "explanation": "Small, rough, flesh-colored growths on skin or genitals (HPV)."
+  },
+  {
+    "symptom_name": "weakness",
+    "gender_specific": "both",
+    "explanation": "General or specific loss of strength; feeling of fatigue or powerlessness."
+  },
+  {
+    "symptom_name": "weight gain",
+    "gender_specific": "both",
+    "explanation": "Unintentional increase in body weight; not due to diet/excess intake."
+  },
+  {
+    "symptom_name": "wheezing",
+    "gender_specific": "both",
+    "explanation": "High-pitched whistling sound when breathing out; often asthma/COPD."
+  },
+  {
+    "symptom_name": "white discharge from eye",
+    "gender_specific": "both",
+    "explanation": "Thick white or yellow mucus from eye; often bacterial conjunctivitis."
+  },
+  {
+    "symptom_name": "wrinkles on skin",
+    "gender_specific": "both",
+    "explanation": "Lines, creases, or sagging skin; normal aging, but early onset may be significant."
+  },
+  {
+    "symptom_name": "wrist lump or mass",
+    "gender_specific": "both",
+    "explanation": "Bump on wrist; common: ganglion cyst (round, smooth, sometimes painful)."
+  },
+  {
+    "symptom_name": "wrist pain",
+    "gender_specific": "both",
+    "explanation": "Pain in wrist joint; may be carpal tunnel, arthritis, or strain."
+  },
+  {
+    "symptom_name": "wrist stiffness or tightness",
+    "gender_specific": "both",
+    "explanation": "Difficulty bending wrist up, down, or sideways; feels tight."
+  },
+  {
+    "symptom_name": "wrist swelling",
+    "gender_specific": "both",
+    "explanation": "Visible puffiness around wrist; may be from injury or arthritis."
+  },
+  {
+    "symptom_name": "wrist weakness",
+    "gender_specific": "both",
+    "explanation": "Difficulty gripping, twisting (like opening a jar), or holding weight."
+  }
+]
