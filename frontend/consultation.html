@@ -10,71 +10,46 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; }
 
-        :root {
-            --ivory:        #faf8f3;
-            --ivory-deep:   #f2ede3;
-            --ivory-border: #e4ddd2;
-            --warm-brown:   #2e2418;
-            --warm-mid:     #63503f;
-            --warm-muted:   #9e8c7c;
-            --teal:         #1f6b5e;
-            --teal-mid:     #2c7a6e;
-            --teal-light:   #eaf4f1;
-            --gold:         #b87d2a;
-            --card-bg:      #ffffff;
-            --card-border:  #ede7de;
-        }
-
         body {
             font-family: 'DM Sans', sans-serif;
-            background: var(--ivory);
-            color: var(--warm-brown);
+            background: var(--bg-light);
+            color: var(--text-primary);
             overflow-x: hidden;
         }
 
         .container {
             max-width: 1480px;
             margin: 0 auto;
-            padding: 0 40px 80px;
+            padding: 40px 40px 80px;
         }
 
         /* ─── HERO ─────────────────────────────────────────── */
         .hero {
-            margin-top: 36px;
-            border-radius: 36px;
+            margin-top: 24px;
+            border-radius: var(--radius-card);
             overflow: hidden;
             position: relative;
-            background: var(--ivory-deep);
-            border: 1px solid var(--ivory-border);
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
             display: grid;
-            grid-template-columns: 1fr 400px;
-            min-height: 400px;
-            box-shadow: 0 4px 40px rgba(46,36,24,0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+            grid-template-columns: 1fr 420px;
+            min-height: 420px;
+            box-shadow: var(--shadow-sm);
         }
 
-        /* dot texture */
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(circle, rgba(184,125,42,0.14) 1px, transparent 1px);
-            background-size: 26px 26px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
+        /* Ambient subtle gradients matching brand */
         .hero-card-bg {
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse 55% 65% at 88% 8%,  rgba(184,125,42,0.16), transparent 55%),
-                radial-gradient(ellipse 45% 55% at 8%  92%, rgba(31,107,94,0.12),  transparent 50%);
+                radial-gradient(ellipse 55% 65% at 88% 8%, rgba(198,161,91,0.09), transparent 55%),
+                radial-gradient(ellipse 45% 55% at 8% 92%, rgba(44,122,110,0.07), transparent 50%);
             z-index: 0;
             pointer-events: none;
         }
 
         .hero-left {
-            padding: 56px 60px;
+            padding: 60px;
             position: relative;
             z-index: 2;
             display: flex;
@@ -82,109 +57,111 @@
             justify-content: center;
         }
 
-        /* teal editorial rule */
+        /* Elegant vertical brand accent line */
         .hero-left::before {
             content: '';
             position: absolute;
-            left: 0; top: 56px; bottom: 56px;
-            width: 3px;
-            border-radius: 2px;
-            background: linear-gradient(180deg, var(--teal) 0%, transparent 100%);
+            left: 0; top: 60px; bottom: 60px;
+            width: 4px;
+            border-radius: 0 4px 4px 0;
+            background: linear-gradient(180deg, var(--accent-teal) 0%, var(--accent-blue) 100%);
         }
 
         .hero-eyebrow {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.14em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: var(--teal-mid);
-            margin-bottom: 18px;
+            color: var(--accent-teal);
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .hero-eyebrow::before {
             content: '';
-            width: 28px; height: 1.5px;
-            background: var(--teal-mid);
+            width: 32px; height: 2px;
+            background: var(--accent-teal);
         }
 
         .hero-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(40px, 4.2vw, 56px);
-            font-weight: 600;
+            font-size: clamp(38px, 4.5vw, 54px);
+            font-weight: 500;
             letter-spacing: -0.02em;
-            line-height: 1.08;
-            margin-bottom: 22px;
-            color: var(--warm-brown);
+            line-height: 1.15;
+            margin-bottom: 20px;
+            color: var(--text-primary);
         }
 
         .hero-title em {
             font-style: italic;
-            color: var(--teal);
+            color: var(--accent-teal);
         }
 
         .hero-desc {
-            font-size: 15px;
-            line-height: 1.7;
-            color: var(--warm-mid);
-            max-width: 490px;
-            margin-bottom: 28px;
+            font-size: 15.5px;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin-bottom: 32px;
         }
 
         .hero-pills {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 36px;
+            margin-bottom: 40px;
         }
 
         .hero-pill {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 7px 16px;
-            background: rgba(31,107,94,0.07);
-            border: 1px solid rgba(44,122,110,0.18);
-            color: var(--teal);
-            border-radius: 40px;
-            font-size: 12px;
+            gap: 8px;
+            padding: 8px 18px;
+            background: var(--accent-teal-light);
+            border: 1px solid rgba(44,122,110,0.15);
+            color: var(--accent-teal);
+            border-radius: 50px;
+            font-size: 13px;
             font-weight: 500;
         }
 
         .hero-pill::before {
             content: '';
-            width: 5px; height: 5px;
+            width: 6px; height: 6px;
             border-radius: 50%;
-            background: var(--teal-mid);
+            background: var(--accent-blue);
             flex-shrink: 0;
         }
 
-        /* stats strip */
+        /* Stats Section */
         .hero-stats {
             display: flex;
-            gap: 36px;
-            padding-top: 28px;
-            border-top: 1px solid var(--ivory-border);
+            gap: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-light);
         }
 
         .hero-stat-num {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 26px;
-            font-weight: 600;
-            color: var(--warm-brown);
+            font-size: 32px;
+            font-weight: 500;
+            color: var(--text-primary);
             line-height: 1;
         }
 
         .hero-stat-label {
-            font-size: 11px;
-            color: var(--warm-muted);
-            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 6px;
             font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* illustration panel */
+        /* Illustration panel */
         .hero-illustration {
             position: relative;
             z-index: 2;
@@ -192,23 +169,23 @@
             align-items: flex-end;
             justify-content: center;
             overflow: hidden;
-            background: linear-gradient(160deg, rgba(184,125,42,0.07) 0%, rgba(31,107,94,0.09) 100%);
-            border-left: 1px solid var(--ivory-border);
+            background: linear-gradient(160deg, var(--accent-teal-light) 0%, var(--accent-blue-soft) 100%);
+            border-left: 1px solid var(--border-light);
         }
 
         .hero-illustration img {
             width: 100%;
-            max-width: 370px;
+            max-width: 380px;
             height: auto;
             object-fit: contain;
             object-position: bottom;
-            filter: drop-shadow(0 -6px 20px rgba(31,107,94,0.14));
-            animation: heroFloat 7s ease-in-out infinite alternate;
+            filter: drop-shadow(0 -8px 24px rgba(44,122,110,0.1));
+            animation: heroFloat 6s ease-in-out infinite alternate;
         }
 
         @keyframes heroFloat {
             0%   { transform: translateY(0); }
-            100% { transform: translateY(-16px); }
+            100% { transform: translateY(-14px); }
         }
 
         /* ─── SECTION ROW (title + filter) ─────────────────── */
@@ -216,77 +193,77 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            margin: 48px 0 24px;
+            gap: 20px;
+            margin: 56px 0 28px;
             flex-wrap: wrap;
         }
 
         .section-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 30px;
-            font-weight: 600;
-            color: var(--warm-brown);
-            letter-spacing: -0.02em;
+            font-size: 34px;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
         /* ─── FILTER BAR ──────────────────────────────────── */
         .filter-bar {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             flex-wrap: wrap;
         }
 
         .filter-bar input, .filter-bar select {
-            padding: 11px 20px;
-            border: 1.5px solid var(--ivory-border);
+            padding: 12px 24px;
+            border: 1px solid var(--border-light);
             border-radius: 50px;
-            font-size: 14px;
+            font-size: 14.5px;
             font-family: 'DM Sans', sans-serif;
-            background: var(--card-bg);
-            color: var(--warm-brown);
+            background: var(--bg-card);
+            color: var(--text-primary);
             outline: none;
-            transition: all 0.2s;
-            min-width: 210px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 240px;
+            box-shadow: var(--shadow-sm);
         }
 
         .filter-bar input:focus, .filter-bar select:focus {
-            border-color: var(--teal-mid);
-            box-shadow: 0 0 0 3px rgba(44,122,110,0.1);
+            border-color: var(--accent-teal);
+            box-shadow: 0 0 0 4px rgba(44,122,110,0.08);
         }
 
         /* ─── DOCTOR CARDS ─────────────────────────────────── */
         .doctors-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 28px;
             margin-bottom: 80px;
         }
 
         .doctor-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            border: 1px solid var(--card-border);
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            border: 1px solid var(--border-light);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: all 0.32s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 2px 10px rgba(46,36,24,0.04);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: var(--shadow-sm);
         }
 
         .doctor-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 22px 44px -12px rgba(31,107,94,0.16), 0 0 0 1.5px rgba(44,122,110,0.22);
+            box-shadow: var(--shadow-md), 0 0 0 2px rgba(44,122,110,0.15);
         }
 
-        /* specialty color band */
         .doctor-card-band {
-            height: 5px;
-            background: linear-gradient(90deg, var(--teal) 0%, #3a9e8f 100%);
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent-teal) 0%, var(--accent-blue) 100%);
             flex-shrink: 0;
         }
 
         .doctor-card-body {
-            padding: 22px 22px 18px;
+            padding: 28px 28px 24px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -294,89 +271,76 @@
 
         .doctor-header {
             display: flex;
-            gap: 14px;
+            gap: 16px;
             align-items: flex-start;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
 
         .doctor-avatar {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, var(--teal), #1a8c7d);
-            border-radius: 14px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 600;
             color: #ffffff;
             font-family: 'Inter', sans-serif;
-            box-shadow: 0 6px 14px rgba(31,107,94,0.2);
+            box-shadow: 0 6px 16px rgba(44,122,110,0.15);
             flex-shrink: 0;
         }
 
         .doctor-name {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--warm-brown);
-            font-family: 'Inter', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
             letter-spacing: -0.2px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
+            line-height: 1.3;
         }
 
         .doctor-specialization {
-            color: var(--teal-mid);
-            font-size: 11px;
+            color: var(--accent-teal);
+            font-size: 11.5px;
             font-weight: 600;
-            margin-top: 3px;
+            margin-top: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.7px;
+            letter-spacing: 0.8px;
         }
 
         .verified-badge {
             display: inline-flex;
             align-items: center;
-            background: var(--teal-light);
-            color: var(--teal);
-            font-size: 10px;
+            background: var(--accent-teal-light);
+            color: var(--accent-teal);
+            font-size: 10.5px;
             font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 10px;
-            border: 1px solid rgba(44,122,110,0.15);
-        }
-
-        /* specialty tag pill on card */
-        .spec-tag {
-            display: inline-block;
-            background: var(--ivory-deep);
-            color: var(--warm-mid);
-            font-size: 11px;
-            font-weight: 500;
-            padding: 3px 10px;
-            border-radius: 20px;
-            border: 1px solid var(--ivory-border);
-            margin-bottom: 10px;
-            align-self: flex-start;
+            padding: 2px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(44,122,110,0.12);
         }
 
         .doctor-rating {
             display: flex;
             align-items: center;
-            gap: 6px;
-            margin-bottom: 10px;
-            font-size: 13px;
+            gap: 8px;
+            margin-bottom: 14px;
+            font-size: 13.5px;
         }
 
-        .rating-stars { color: #c4882a; font-size: 13px; letter-spacing: 0.5px; }
+        .rating-stars { color: var(--gold); font-size: 14px; letter-spacing: 0.5px; }
 
         .doctor-bio {
-            font-size: 13px;
-            color: var(--warm-mid);
+            font-size: 13.5px;
+            color: var(--text-secondary);
             line-height: 1.6;
-            margin-bottom: 18px;
+            margin-bottom: 24px;
             flex: 1;
             display: -webkit-box;
             -webkit-line-clamp: 3;
@@ -384,48 +348,47 @@
             overflow: hidden;
         }
 
-        /* card footer divider */
         .doctor-card-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
-            padding-top: 16px;
-            border-top: 1px solid var(--card-border);
+            gap: 14px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-light);
             margin-top: auto;
         }
 
         .doctor-fee {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--warm-brown);
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--text-primary);
             font-family: 'Cormorant Garamond', serif;
         }
 
         .doctor-fee span {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--warm-muted);
+            font-size: 12.5px;
+            font-weight: 400;
+            color: var(--text-tertiary);
             font-family: 'DM Sans', sans-serif;
         }
 
         .consult-btn {
-            padding: 10px 22px;
-            background: var(--warm-brown);
+            padding: 11px 24px;
+            background: var(--text-primary);
             color: white;
             border: none;
             border-radius: 50px;
-            font-weight: 600;
-            font-size: 13px;
+            font-weight: 500;
+            font-size: 13.5px;
             cursor: pointer;
-            transition: all 0.22s ease;
+            transition: all 0.25s ease;
             font-family: 'DM Sans', sans-serif;
             white-space: nowrap;
         }
 
         .consult-btn:hover {
-            background: var(--teal);
-            box-shadow: 0 8px 20px rgba(31,107,94,0.24);
+            background: var(--accent-teal);
+            box-shadow: 0 6px 16px rgba(44,122,110,0.2);
             transform: translateY(-1px);
         }
 
@@ -433,18 +396,18 @@
         .loading-state {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 60px;
+            padding: 80px 40px;
             font-size: 15px;
-            color: var(--warm-muted);
+            color: var(--text-tertiary);
         }
 
         .spinner {
-            width: 30px; height: 30px;
-            border: 2.5px solid rgba(44,122,110,0.1);
+            width: 32px; height: 32px;
+            border: 3px solid rgba(44,122,110,0.1);
             border-radius: 50%;
-            border-top-color: var(--teal-mid);
+            border-top-color: var(--accent-teal);
             animation: spin 0.8s linear infinite;
-            margin: 0 auto 14px;
+            margin: 0 auto 16px;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -453,14 +416,15 @@
         @media (max-width: 1100px) {
             .hero { grid-template-columns: 1fr; }
             .hero-illustration { display: none; }
-            .hero-left { padding: 44px; }
+            .hero-left { padding: 48px; }
         }
 
         @media (max-width: 768px) {
-            .container { padding: 0 20px 48px; }
-            .hero-left { padding: 32px 28px; }
-            .hero-title { font-size: 34px; }
-            .hero-stats { gap: 20px; flex-wrap: wrap; }
+            .container { padding: 20px 20px 48px; }
+            .hero-left { padding: 36px 24px; }
+            .hero-title { font-size: 36px; }
+            .hero-stats { gap: 24px; flex-wrap: wrap; }
+            .filter-bar input, .filter-bar select { min-width: 100%; }
         }
     </style>
 </head>
@@ -469,7 +433,7 @@
     <main class="main-content-full">
         <div class="container">
             <!-- HERO -->
-            <div class="hero fade-up">
+            <div class="hero fade-up visible">
                 <div class="hero-card-bg"></div>
                 <div class="hero-left">
                     <div class="hero-eyebrow">Verified Specialists</div>
@@ -496,12 +460,12 @@
                     </div>
                 </div>
                 <div class="hero-illustration">
-                    <img src="assets/illustration4.png" alt="Consult a doctor" onerror="this.src='https://placehold.co/370x400/eaf4f1/2c7a6e?text=Panacea+Consult'; this.style.opacity='0.7'">
+                    <img src="assets/illustration4.png" alt="Consult a doctor" onerror="this.src='https://placehold.co/370x400/e0f0ec/2c7a6e?text=Panacea+Consult'; this.style.opacity='0.8'">
                 </div>
             </div>
 
             <!-- SECTION ROW: title + filter -->
-            <div class="section-row fade-up delay-100">
+            <div class="section-row fade-up delay-100 visible">
                 <div class="section-title">Browse Specialists</div>
                 <div class="filter-bar">
                     <input type="text" id="searchInput" placeholder="Search doctors or specializations...">
@@ -511,6 +475,7 @@
                 </div>
             </div>
 
+            <!-- DOCTORS CONTAINER -->
             <div id="doctorsContainer" class="doctors-grid">
                 <div class="loading-state">
                     <div class="spinner"></div>
@@ -520,23 +485,24 @@
         </div>
     </main>
 
+    <!-- CONSULTATION MODAL -->
     <div id="consultModal" class="modal-overlay">
-        <div class="modal-container" style="background:#faf8f3; border:1.5px solid #e4ddd2; border-radius:28px; box-shadow:0 24px 60px rgba(46,36,24,0.14);">
+        <div class="modal-container" style="background: var(--bg-light); border: 1px solid var(--border-light); border-radius: var(--radius-card); box-shadow: var(--shadow-md);">
             <div class="modal-header">
-                <h2 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#2e2418;">Request Consultation</h2>
+                <h2 style="font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:500; color: var(--text-primary);">Request Consultation</h2>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
-            <div style="background:#eaf4f1; padding:12px 16px; border-radius:14px; margin-bottom:20px; border:1px solid rgba(44,122,110,0.15);">
-                <p id="selectedDoctorName" style="color:#1f6b5e; font-weight:600; font-size:15px; margin:0;"></p>
-                <p id="contextSuggestion" style="font-size:12px; color:#63503f; margin-top:4px; display:none;"></p>
+            <div style="background: var(--accent-teal-light); padding:14px 18px; border-radius:16px; margin-bottom:24px; border:1px solid rgba(44,122,110,0.12);">
+                <p id="selectedDoctorName" style="color: var(--accent-teal); font-weight:600; font-size:15px; margin:0;"></p>
+                <p id="contextSuggestion" style="font-size:12px; color: var(--text-secondary); margin-top:6px; display:none;"></p>
             </div>
             <div class="form-group">
-                <label style="font-size:13px;font-weight:600;color:#63503f;display:block;margin-bottom:8px;">Describe your symptoms or concern</label>
-                <textarea id="consultMessage" rows="4" placeholder="I have been experiencing..." style="width:100%; padding:14px 16px; border-radius:16px; border:1.5px solid #e4ddd2; font-family:'DM Sans',sans-serif; font-size:14px; resize:vertical; outline:none; transition:border-color 0.2s; background:#fff; color:#2e2418;"></textarea>
+                <label style="font-size:14px; font-weight:500; color: var(--text-primary); display:block; margin-bottom:10px;">Describe your symptoms or concern</label>
+                <textarea id="consultMessage" rows="4" placeholder="I have been experiencing..." style="width:100%; padding:14px 16px; border-radius:16px; border:1px solid var(--border-light); font-family:'DM Sans',sans-serif; font-size:14px; resize:vertical; outline:none; transition:border-color 0.2s; background:#fff; color: var(--text-primary);"></textarea>
             </div>
             <input type="hidden" id="selectedDoctorId">
-            <button class="btn-submit" onclick="submitConsultation()" id="submitBtn" style="border-radius:50px; background:#2e2418; font-size:14px;">Send Request</button>
-            <button class="btn-secondary" onclick="closeModal()" style="border-radius:50px; font-size:14px;">Cancel</button>
+            <button class="btn-submit" onclick="submitConsultation()" id="submitBtn" style="border-radius:50px; background: var(--text-primary); font-size:14px; font-weight:500;">Send Request</button>
+            <button class="btn-secondary" onclick="closeModal()" style="border-radius:50px; font-size:14px; font-weight:500; background: var(--bg-soft);">Cancel</button>
         </div>
     </div>
 
@@ -594,22 +560,23 @@
                 container.innerHTML = '<div class="loading-state">No specialists found matching your criteria.</div>';
                 return;
             }
+            // Seamlessly updated grid colors mapping to systemic identity
             const bandColors = {
-                'neurologist':'linear-gradient(90deg,#5b4fcf,#7c6fe0)',
-                'cardiologist':'linear-gradient(90deg,#c04040,#e06060)',
-                'pulmonologist':'linear-gradient(90deg,#1a6ea0,#2d90cc)',
-                'psychiatrist':'linear-gradient(90deg,#7a4fa0,#a070cc)',
-                'dermatologist':'linear-gradient(90deg,#c07040,#e09060)',
-                'general physician':'linear-gradient(90deg,#1f6b5e,#3a9e8f)',
-                'orthopedist':'linear-gradient(90deg,#2a6040,#3a8060)',
-                'pediatrician':'linear-gradient(90deg,#3070b0,#5090d0)',
+                'neurologist':'linear-gradient(90deg,#4a5bc4,#6375e3)',
+                'cardiologist':'linear-gradient(90deg,#cc4949,#eb5e5e)',
+                'pulmonologist':'linear-gradient(90deg,#257fa4,#3ba3cc)',
+                'psychiatrist':'linear-gradient(90deg,#8354ad,#a270db)',
+                'dermatologist':'linear-gradient(90deg,#c97644,#eb9563)',
+                'general physician':'linear-gradient(90deg,var(--accent-teal),var(--accent-blue))',
+                'orthopedist':'linear-gradient(90deg,#2e6945,#419161)',
+                'pediatrician':'linear-gradient(90deg,#357cb8,#549bd4)',
             };
             container.innerHTML = doctors.map((doc, index) => {
                 const delay = 100 + (index * 50);
                 const cleanName = doc.name ? doc.name.replace(/^Dr\.\s*/i, '').trim() : '';
                 const initialLetter = cleanName ? cleanName.charAt(0).toUpperCase() : 'D';
                 const specKey = (doc.specialization || '').toLowerCase();
-                const bandStyle = bandColors[specKey] || 'linear-gradient(90deg,#1f6b5e,#3a9e8f)';
+                const bandStyle = bandColors[specKey] || 'linear-gradient(90deg, var(--accent-teal) 0%, var(--accent-blue) 100%)';
                 const bioText = doc.bio ? doc.bio.substring(0,120) : 'Experienced medical professional dedicated to providing the highest quality of care.';
                 return `
                 <div class="doctor-card fade-up delay-${delay > 300 ? 300 : delay} visible">
@@ -627,7 +594,7 @@
                         </div>
                         <div class="doctor-rating">
                             <span class="rating-stars">${renderStars(doc.rating)}</span>
-                            <span style="color:var(--warm-muted);font-size:12px;">${doc.rating ? doc.rating.toFixed(1) : '0.0'} &middot; ${doc.total_consultations || 0} consults</span>
+                            <span style="color:var(--text-tertiary);font-size:12.5px;">${doc.rating ? doc.rating.toFixed(1) : '0.0'} &middot; ${doc.total_consultations || 0} consults</span>
                         </div>
                         <p class="doctor-bio">${escapeHtml(bioText)}${bioText.length >= 120 ? '\u2026' : ''}</p>
                         <div class="doctor-card-footer">
