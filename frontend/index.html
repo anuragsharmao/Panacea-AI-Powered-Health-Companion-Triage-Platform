@@ -6,31 +6,8 @@
 <title>Panacea — Health Companion | Intelligent Care</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  :root {
-    --bg-light: #fbfaf8;
-    --bg-card: #ffffff;
-    --bg-soft: #f5f3f0;
-    --text-primary: #1e2a2e;
-    --text-secondary: #4a5b5e;
-    --text-tertiary: #8b9a9e;
-    --accent-teal: #2c7a6e;
-    --accent-teal-light: #e0f0ec;
-    --accent-blue: #3b82b6;
-    --accent-blue-soft: #eef2fc;
-    --border-light: #e2e4e0;
-    --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.03);
-    --shadow-md: 0 20px 35px -12px rgba(0, 0, 0, 0.08);
-    --gold: #c6a15b;
-    --radius-card: 28px;
-  }
-
   body {
     background: var(--bg-light);
     color: var(--text-primary);
@@ -39,418 +16,20 @@
     overflow-x: hidden;
   }
 
+  /* ── Layout shell ── */
   .app-wrapper {
     display: flex;
     min-height: 100vh;
   }
 
-  /* ── SIDEBAR ── */
-  .side-strip {
-    width: 340px;
-    background: linear-gradient(145deg, #0f2a2e 0%, #091d21 100%);
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    padding: 40px 28px 32px 28px;
-    box-shadow: 10px 0 28px rgba(0, 0, 0, 0.15);
-    border-right: 1px solid rgba(68, 130, 158, 0.25);
-  }
-
-  .strip-logo {
-    margin-bottom: 48px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    padding-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .logo-image {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-  }
-
-  .strip-logo .logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 34px;
-    font-weight: 500;
-    letter-spacing: -0.2px;
-    background: linear-gradient(135deg, #ffffff 0%, #c7e2ec 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-
-  .strip-logo .logo-sub {
-    font-size: 12px;
-    color: #8fb2bd;
-    margin-top: 6px;
-    letter-spacing: 0.4px;
-    width: 100%;
-  }
-
-  .strip-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    flex: 1;
-  }
-
-  .strip-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 28px;
-    padding: 22px 20px;
-    transition: all 0.25s ease;
-    border: 1px solid rgba(255, 255, 255, 0.07);
-  }
-
-  .strip-card:hover {
-    background: rgba(44, 122, 110, 0.2);
-    transform: translateY(-2px);
-    border-color: rgba(59, 130, 182, 0.5);
-  }
-
-  .strip-card .card-icon-svg {
-    margin-bottom: 16px;
-    opacity: 0.9;
-  }
-
-  .strip-card h4 {
-    font-size: 17px;
-    font-weight: 500;
-    color: #f0f7fa;
-    letter-spacing: -0.2px;
-    margin-bottom: 8px;
-  }
-
-  .strip-card p {
-    font-size: 13px;
-    color: #bfdde5;
-    line-height: 1.45;
-  }
-
-  /* ── MAIN ── */
-  .main-content {
-    flex: 1;
-    margin-left: 340px;
-    background: var(--bg-light);
-    z-index: 2;
-    position: relative;
-  }
-
+  /* ── Main: pushed right by sidebar, down by topbar ── */
+  /* (Both values come from .main-content in style.css) */
   .container {
     position: relative;
     z-index: 2;
     max-width: 1320px;
     margin: 0 auto;
     padding: 32px 40px 60px 40px;
-  }
-
-  /* ── NAV ── */
-  .top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0 20px;
-    border-bottom: 1px solid var(--border-light);
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 40px;
-    font-weight: 450;
-    font-size: 15px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .nav-links a {
-    text-decoration: none;
-    color: var(--text-secondary);
-    transition: color 0.2s ease;
-    letter-spacing: -0.2px;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .nav-links a:hover { color: var(--accent-teal); }
-
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent-teal), var(--accent-blue));
-    transition: width 0.2s ease;
-  }
-  /* Active nav link styling */
-.nav-links a.active {
-  color: var(--accent-teal);
-  font-weight: 600;
-}
-
-.nav-links a.active::after {
-  width: 100%;
-  background: linear-gradient(90deg, var(--accent-teal), var(--accent-blue));
-}
-
-  .nav-links a:hover::after { width: 100%; }
-
-  /* ── PROFILE PILL ── */
-  .profile-section {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: var(--bg-card);
-    padding: 6px 12px 6px 8px;
-    border-radius: 60px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-light);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-  }
-
-  .profile-section:hover {
-    border-color: var(--accent-teal);
-    background: #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-  }
-
-  .profile-avatar {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
-    font-size: 16px;
-    box-shadow: 0 2px 8px rgba(44,122,110,0.2);
-  }
-
-  .profile-info { text-align: left; }
-
-  .profile-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
-    line-height: 1.2;
-  }
-
-  .profile-role { font-size: 11px; color: var(--text-tertiary); }
-
-  .dropdown-icon { font-size: 12px; color: var(--text-tertiary); transition: transform 0.2s; }
-
-  .profile-section.active .dropdown-icon { transform: rotate(180deg); }
-
-  .profile-dropdown {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
-    width: 200px;
-    padding: 8px 0;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-6px);
-    transition: all 0.2s ease;
-    z-index: 20;
-    border: 1px solid var(--border-light);
-  }
-
-  .profile-section.active .profile-dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .profile-dropdown a {
-    display: block;
-    padding: 10px 20px;
-    font-size: 13px;
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: background 0.15s;
-    cursor: pointer;
-  }
-
-  .profile-dropdown a:hover {
-    background: var(--bg-soft);
-    color: var(--accent-teal);
-  }
-
-  .profile-dropdown .dropdown-divider {
-    height: 1px;
-    background: var(--border-light);
-    margin: 6px 0;
-  }
-
-  /* ── MODALS ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal-overlay.active { display: flex; }
-
-  .modal-container {
-    background: white;
-    border-radius: 32px;
-    max-width: 500px;
-    width: 90%;
-    padding: 32px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    animation: modalSlideIn 0.3s ease;
-  }
-
-  @keyframes modalSlideIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-  }
-
-  .modal-header h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-weight: 500;
-  }
-
-  .modal-close {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: var(--text-tertiary);
-    transition: color 0.2s;
-  }
-
-  .modal-close:hover { color: var(--text-primary); }
-
-  .form-group { margin-bottom: 20px; }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    font-size: 14px;
-  }
-
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--border-light);
-    border-radius: 16px;
-    font-size: 14px;
-    transition: border-color 0.2s;
-  }
-
-  .form-group input:focus,
-  .form-group select:focus {
-    outline: none;
-    border-color: var(--accent-teal);
-  }
-
-  .btn-submit {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, #1e2a2e, #1e3a3f);
-    color: white;
-    border: none;
-    border-radius: 40px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-submit:hover {
-    background: linear-gradient(135deg, #2c7a6e, #3b82b6);
-    transform: translateY(-1px);
-  }
-
-  .btn-secondary {
-    width: 100%;
-    padding: 12px;
-    background: #f5f3f0;
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    font-weight: 500;
-    margin-top: 12px;
-  }
-
-  .form-note {
-    text-align: center;
-    margin-top: 16px;
-    font-size: 12px;
-    color: var(--text-tertiary);
-  }
-
-  .modal-tab-switch {
-    text-align: center;
-    margin-top: 16px;
-    font-size: 13px;
-    color: var(--text-tertiary);
-  }
-
-  .modal-tab-switch a {
-    color: var(--accent-teal);
-    cursor: pointer;
-    font-weight: 500;
-    text-decoration: none;
-  }
-
-  .modal-tab-switch a:hover { text-decoration: underline; }
-
-  .required { color: #e74c3c; }
-
-  /* ── TOAST ── */
-  .toast-notification {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    background: #1e2a2e;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-size: 14px;
-    z-index: 1001;
-    animation: slideInRight 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
-
-  @keyframes slideInRight {
-    from { transform: translateX(100%); opacity: 0; }
-    to   { transform: translateX(0);   opacity: 1; }
   }
 
   /* ── HERO ── */
@@ -506,48 +85,6 @@
   }
 
   .cta-group { display: flex; gap: 20px; flex-wrap: wrap; }
-
-  .btn-primary {
-    background: linear-gradient(135deg, var(--text-primary) 0%, #1e3a3f 100%);
-    color: white;
-    padding: 14px 32px;
-    border-radius: 40px;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 15px;
-    transition: all 0.25s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-  }
-
-  .btn-primary:hover {
-    background: linear-gradient(135deg, #2c7a6e 0%, #3b82b6 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px -10px rgba(44,122,110,0.28);
-  }
-
-  .btn-outline {
-    background: transparent;
-    border: 1px solid var(--border-light);
-    padding: 14px 28px;
-    border-radius: 40px;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 15px;
-    color: var(--text-primary);
-    transition: all 0.2s ease;
-    cursor: pointer;
-  }
-
-  .btn-outline:hover {
-    border-color: var(--accent-teal);
-    background: rgba(44,122,110,0.03);
-    transform: translateY(-1px);
-  }
 
   .hero-illustration {
     flex: 1.4;
@@ -761,12 +298,14 @@
   .record-item:last-child { border: none; }
   .record-item span:last-child { color: var(--accent-teal); font-weight: 500; }
 
-  /* ── SPECIALIST SHOWCASE — horizontal scroll row ── */
+  /* ── SPECIALIST SHOWCASE ── */
   .specialist-showcase {
+    padding-top: 10px;
     display: flex;
     flex-wrap: nowrap;
     gap: 20px;
     overflow-x: auto;
+    overflow-y: visible;
     padding-bottom: 12px;
     margin-bottom: 70px;
     scrollbar-width: thin;
@@ -828,93 +367,79 @@
     background: linear-gradient(135deg, #1f5a51, #2c6e9e);
   }
 
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid rgba(0,0,0,0.06);
-    padding: 48px 0 40px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    color: var(--text-tertiary);
-    font-size: 13px;
-  }
-
-  .footer-links { display: flex; gap: 32px; }
-
-  .footer-links a {
-    text-decoration: none;
-    color: var(--text-tertiary);
-    transition: color 0.2s;
-    cursor: pointer;
-  }
-
-  .footer-links a:hover { color: var(--accent-teal); }
-
   /* ── RESPONSIVE ── */
-  @media (max-width: 1000px) {
-    .side-strip { width: 280px; }
-    .main-content { margin-left: 280px; }
-    .container { padding: 24px 28px 48px; }
-  }
-
   @media (max-width: 760px) {
-    .app-wrapper { flex-direction: column; }
-    .side-strip {
-      position: relative;
-      width: 100%;
-      flex-direction: row;
-      flex-wrap: wrap;
-      padding: 20px;
-      gap: 20px;
-    }
-    .strip-cards { flex-direction: row; overflow-x: auto; }
-    .main-content { margin-left: 0; }
-    .top-nav { flex-direction: column; align-items: stretch; }
-    .profile-section { align-self: flex-start; }
-    .footer-links { flex-wrap: wrap; gap: 16px; margin-top: 12px; }
-    footer { flex-direction: column; gap: 16px; }
+    .container { padding: 20px 20px 48px; }
+    .hero { flex-direction: column; }
+    .hero-illustration { display: none; }
     .quick-stat { flex-direction: column; align-items: center; gap: 24px; }
     .feature-badge-section { flex-direction: column; align-items: center; }
     .spec-card { flex: 0 0 140px; min-width: 140px; }
   }
-
-  /* ── ANIMATIONS ── */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeUp 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
-  }
-
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .delay-100 { animation-delay: 0.1s; }
-  .delay-130 { animation-delay: 0.13s; }
-  .delay-150 { animation-delay: 0.15s; }
-  .delay-160 { animation-delay: 0.16s; }
-  .delay-190 { animation-delay: 0.19s; }
-  .delay-200 { animation-delay: 0.2s; }
-  .delay-220 { animation-delay: 0.22s; }
-  .delay-250 { animation-delay: 0.25s; }
 </style>
 </head>
 <body>
-<div class="app-wrapper">
 
-  <!-- ══ SIDEBAR ══ -->
-  <aside class="side-strip">
-    <div class="strip-logo">
-      <img src="assets/logo.png" alt="Panacea Logo" class="logo-image" onerror="this.style.display='none';">
-      <div>
-        <div class="logo">panacea</div>
-        <div class="logo-sub">intelligent health companion</div>
+<!-- ══════════════════════════════════════════════
+     SHARED TOP NAV  — fixed, full viewport width
+     Logo-zone (left) will be covered by the dark
+     sidebar on this page. Nav links always stay
+     at the same horizontal position.
+     ══════════════════════════════════════════════ -->
+<nav class="top-nav">
+
+  <!-- Logo zone: exact same width as sidebar so sidebar covers it perfectly -->
+  <div class="nav-logo-zone">
+    <img src="assets/logo.png" alt="Panacea"
+         class="nav-logo-image"
+         onerror="this.style.display='none';">
+    <div class="nav-logo-text-wrap">
+      <span class="nav-logo-text">panacea</span>
+      <span class="nav-logo-sub">intelligent health companion</span>
+    </div>
+  </div>
+
+  <!-- Nav area: links + profile pill — always in the same spot -->
+  <div class="nav-area">
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="#" onclick="requireAuthNav('assessment.html'); return false;">Symptom Checker</a>
+      <a href="#" onclick="requireAuthNav('pharmacy.html'); return false;">Pharmacy</a>
+      <a href="#" onclick="requireAuthNav('consultation.html'); return false;">Consult Doctor</a>
+      <a href="#" onclick="requireAuthNav('patient-dashboard.html'); return false;">Records</a>
+    </div>
+
+    <!-- Profile pill -->
+    <div class="profile-section" id="profileToggle">
+      <div class="profile-avatar" id="profileAvatar">G</div>
+      <div class="profile-info">
+        <div class="profile-name" id="profileName">Guest User</div>
+        <div class="profile-role" id="profileRole">Not logged in</div>
+      </div>
+      <div class="dropdown-icon">▼</div>
+      <div class="profile-dropdown" id="profileDropdownMenu">
+        <a href="#" id="loginMenuItem"   class="dd-guest">🔑 Login</a>
+        <a href="#" id="signupMenuItem"  class="dd-guest">✨ Sign Up</a>
+        <a href="#" id="profileMenuItem" class="dd-user"  style="display:none;">👤 View Profile</a>
+        <div class="dropdown-divider dd-user" style="display:none;"></div>
+        <a href="#" id="signOutMenuItem" class="dd-user"  style="display:none;">🚪 Sign Out</a>
       </div>
     </div>
+  </div>
+
+</nav>
+<!-- ══ END TOP NAV ══ -->
+
+<div class="app-wrapper">
+
+  <!-- ══ SIDEBAR — z-index 120, covers the topbar logo-zone ══ -->
+  <aside class="side-strip">
+    <!-- Logo injected by script.js injectSidebarLogo() -->
+    <div class="strip-logo"></div>
     <div class="strip-cards">
       <div class="strip-card">
         <div class="card-icon-svg">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
             <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#C7E2EC" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M2 17L12 22L22 17" stroke="#C7E2EC" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M2 12L12 17L22 12" stroke="#C7E2EC" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -925,7 +450,7 @@
       </div>
       <div class="strip-card">
         <div class="card-icon-svg">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="10" r="3" stroke="#C7E2EC" stroke-width="1.2"/>
             <path d="M19 10C19 15 12 22 12 22C12 22 5 15 5 10C5 6.13401 8.13401 3 12 3C15.866 3 19 6.13401 19 10Z" stroke="#C7E2EC" stroke-width="1.2"/>
           </svg>
@@ -935,7 +460,7 @@
       </div>
       <div class="strip-card">
         <div class="card-icon-svg">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
             <rect x="3" y="4" width="18" height="16" rx="2" stroke="#C7E2EC" stroke-width="1.2"/>
             <path d="M8 2V6M16 2V6M3 10H21" stroke="#C7E2EC" stroke-width="1.2"/>
             <path d="M12 14H12.01" stroke="#C7E2EC" stroke-width="1.5" stroke-linecap="round"/>
@@ -952,35 +477,9 @@
     </div>
   </aside>
 
-  <!-- ══ MAIN CONTENT ══ -->
+  <!-- ══ MAIN CONTENT — offset right by sidebar, down by topbar ══ -->
   <main class="main-content">
     <div class="container">
-
-      <!-- NAV -->
-      <div class="top-nav fade-up">
-        <div class="nav-links">
-          <a href="#" onclick="return false;" class="active">Home</a>
-          <a href="#" onclick="requireAuthNav('assessment.html'); return false;">Symptom Checker</a>
-          <a href="#" onclick="requireAuthNav('pharmacy.html'); return false;">Pharmacy</a>
-          <a href="#" onclick="requireAuthNav('consultation.html'); return false;">Consult Doctor</a>
-          <a href="#" onclick="requireAuthNav('patient-dashboard.html'); return false;">Records</a>
-        </div>
-        <div class="profile-section" id="profileToggle">
-          <div class="profile-avatar" id="profileAvatar">G</div>
-          <div class="profile-info">
-            <div class="profile-name" id="profileName">Guest User</div>
-            <div class="profile-role" id="profileRole">Not logged in</div>
-          </div>
-          <div class="dropdown-icon">▼</div>
-          <div class="profile-dropdown" id="profileDropdownMenu">
-            <a href="#" id="loginMenuItem"   class="dd-guest">🔑 Login</a>
-            <a href="#" id="signupMenuItem"  class="dd-guest">✨ Sign Up</a>
-            <a href="#" id="profileMenuItem" class="dd-user"  style="display:none;">👤 View Profile</a>
-            <div class="dropdown-divider dd-user" style="display:none;"></div>
-            <a href="#" id="signOutMenuItem" class="dd-user"  style="display:none;">🚪 Sign Out</a>
-          </div>
-        </div>
-      </div>
 
       <!-- HERO -->
       <div class="hero">
@@ -994,7 +493,7 @@
           </div>
         </div>
         <div class="hero-illustration fade-up delay-200">
-          <img src="assets/illustration1.png" alt="Girl with healing aura - compassionate care" class="healing-img"
+          <img src="assets/illustration1.png" alt="Compassionate care illustration" class="healing-img"
                onerror="this.onerror=null; this.src='https://placehold.co/600x600/e0f0ec/2c7a6e?text=Healing+Aura+Illustration';">
         </div>
       </div>
@@ -1073,7 +572,7 @@
         </div>
       </div>
 
-      <!-- SPECIALISTS — single horizontal scroll row -->
+      <!-- SPECIALISTS -->
       <div class="section-title fade-up">
         <h2>Connect with the right specialist</h2>
         <p>Our intelligent matching engine suggests medical experts based on your symptom pattern and predicted diagnosis.</p>
@@ -1143,6 +642,7 @@
 
     </div><!-- /container -->
   </main>
+
 </div><!-- /app-wrapper -->
 
 <!-- ══ LOGIN MODAL ══ -->
@@ -1152,7 +652,19 @@
       <h2>Welcome back</h2>
       <button class="modal-close" onclick="closeLoginModal()">&times;</button>
     </div>
-    <form id="loginForm">
+    <!-- Tab switcher -->
+    <div style="display:flex;gap:0;margin-bottom:20px;border-radius:12px;overflow:hidden;border:1px solid var(--border-light);">
+      <button id="loginTabPatient" onclick="switchLoginTab('patient')"
+        style="flex:1;padding:10px;border:none;cursor:pointer;font-size:13px;font-weight:600;background:var(--accent-teal);color:#fff;transition:all .2s;">
+        👤 Patient
+      </button>
+      <button id="loginTabDoctor" onclick="switchLoginTab('doctor')"
+        style="flex:1;padding:10px;border:none;cursor:pointer;font-size:13px;font-weight:600;background:var(--bg-card);color:var(--text-secondary);transition:all .2s;">
+        🩺 Doctor
+      </button>
+    </div>
+    <!-- Patient login -->
+    <form id="loginForm" autocomplete="on">
       <div class="form-group">
         <label>Email <span class="required">*</span></label>
         <input type="email" id="loginEmail" required placeholder="your@email.com">
@@ -1177,6 +689,20 @@
       <button type="submit" class="btn-submit">Login →</button>
       <p class="modal-tab-switch">Don't have an account? <a onclick="switchToSignup()">Sign Up</a></p>
       <p class="form-note">By continuing, you agree to our Terms of Service and Privacy Policy.</p>
+    </form>
+    <!-- Doctor login -->
+    <form id="doctorLoginForm" style="display:none;" autocomplete="on">
+      <div class="form-group">
+        <label>Doctor Email <span class="required">*</span></label>
+        <input type="email" id="doctorLoginEmail" required placeholder="doctor@hospital.com">
+      </div>
+      <div class="form-group">
+        <label>License Number <span class="required">*</span></label>
+        <input type="password" id="doctorLoginLicense" required placeholder="Your medical license number">
+      </div>
+      <button type="submit" class="btn-submit">Doctor Login →</button>
+      <p class="modal-tab-switch">New doctor? <a onclick="switchToDoctorRegister()" style="cursor:pointer;">Register here</a></p>
+      <p class="form-note">Access is restricted to verified healthcare professionals.</p>
     </form>
   </div>
 </div>
@@ -1213,6 +739,62 @@
       <button type="submit" class="btn-submit">Create Account →</button>
       <p class="modal-tab-switch">Already have an account? <a onclick="switchToLogin()">Login</a></p>
       <p class="form-note">By signing up, you agree to our Terms of Service and Privacy Policy.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ══ DOCTOR REGISTER MODAL ══ -->
+<div id="doctorRegisterModal" class="modal-overlay">
+  <div class="modal-container" style="max-width:520px;">
+    <div class="modal-header">
+      <h2>🩺 Doctor Registration</h2>
+      <button class="modal-close" onclick="closeDoctorRegisterModal()">&times;</button>
+    </div>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">
+      Register as a verified healthcare professional. Your license number will be used to log in.
+    </p>
+    <form id="doctorRegisterForm" autocomplete="on">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>Full Name <span class="required">*</span></label>
+          <input type="text" id="drName" required placeholder="Dr. Full Name">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>Email <span class="required">*</span></label>
+          <input type="email" id="drEmail" required placeholder="doctor@hospital.com">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>License Number <span class="required">*</span></label>
+          <input type="text" id="drLicense" required placeholder="Medical license number (used to log in)">
+        </div>
+        <div class="form-group">
+          <label>Specialization</label>
+          <input type="text" id="drSpec" placeholder="e.g. Cardiology">
+        </div>
+        <div class="form-group">
+          <label>Qualification</label>
+          <input type="text" id="drQual" placeholder="e.g. MBBS, MD">
+        </div>
+        <div class="form-group">
+          <label>Experience (years)</label>
+          <input type="number" id="drExp" min="0" placeholder="e.g. 10">
+        </div>
+        <div class="form-group">
+          <label>Consultation Fee (₹)</label>
+          <input type="number" id="drFee" min="0" placeholder="e.g. 500">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>Phone</label>
+          <input type="tel" id="drPhone" placeholder="Contact number">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>Bio / About</label>
+          <textarea id="drBio" rows="3" placeholder="Brief professional bio…"
+            style="width:100%;padding:10px 14px;border:1px solid var(--border-light);border-radius:12px;resize:vertical;font-family:inherit;font-size:14px;"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn-submit" style="margin-top:4px;">Register as Doctor →</button>
+      <p class="modal-tab-switch">Already registered? <a onclick="switchToDoctorLogin()" style="cursor:pointer;">Login here</a></p>
     </form>
   </div>
 </div>
@@ -1259,421 +841,62 @@
   </div>
 </div>
 
+<script src="script.js"></script>
 <script>
-  // ─────────────────────────────────────────────
-  // CONFIG
-  // ─────────────────────────────────────────────
-  const API_BASE = 'http://localhost:8000';
+  // ── Form submissions (index.html — modals are hard-coded here,
+  //    script.js's _bindModalForms() is the canonical handler injector
+  //    and will skip already-bound forms via dataset.bound guard) ──
 
-  // ─────────────────────────────────────────────
-  // FIX: Clear invalid cached user IDs FIRST (runs immediately)
-  // ─────────────────────────────────────────────
-  (function validateAndFixCache() {
-    const userId = localStorage.getItem('panacea_user_id');
-    const sessionToken = localStorage.getItem('panacea_session_token');
-    
-    // If user ID starts with 'user_' or is not a number, it's from old cache - clear it
-    if (userId && (userId.startsWith('user_') || isNaN(parseInt(userId)))) {
-      console.log('⚠️ Detected invalid cached user ID:', userId, 'clearing cache...');
-      localStorage.removeItem('panacea_session_token');
-      localStorage.removeItem('panacea_user_id');
-      localStorage.removeItem('panacea_user_name');
-      localStorage.removeItem('panacea_user_email');
-      localStorage.removeItem('panacea_user_gender');
-      localStorage.removeItem('panacea_user_age');
-    }
-    
-    // Also check if session token exists but no user ID - invalid state
-    if (sessionToken && !userId) {
-      console.log('⚠️ Invalid cache state, clearing...');
-      localStorage.removeItem('panacea_session_token');
-    }
-  })();
-
-  // ─────────────────────────────────────────────
-  // SESSION STATE
-  // ─────────────────────────────────────────────
-  let currentSessionToken = localStorage.getItem('panacea_session_token') || null;
-  let currentUserId       = localStorage.getItem('panacea_user_id')        || null;
-  let currentUser         = null;
-  let pendingCallback     = null;
-
-  // ─────────────────────────────────────────────
-  // UTILITIES
-  // ─────────────────────────────────────────────
-  function showToast(message, duration = 3500) {
-    const toast = document.createElement('div');
-    toast.className = 'toast-notification';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), duration);
-  }
-
-  function setButtonLoading(btn, loading, originalText) {
-    if (loading) {
-      btn.disabled = true;
-      btn.dataset.original = btn.textContent;
-      btn.textContent = 'Please wait…';
-    } else {
-      btn.disabled = false;
-      btn.textContent = originalText || btn.dataset.original || btn.textContent;
-    }
-  }
-
-  // ─────────────────────────────────────────────
-  // API HELPERS
-  // ─────────────────────────────────────────────
-  async function apiPost(path, body) {
-    const res = await fetch(API_BASE + path, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
-    return data;
-  }
-
-  async function apiGet(path) {
-    const res = await fetch(API_BASE + path, {
-      headers: currentSessionToken ? { 'X-Session-Token': currentSessionToken } : {}
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
-    return data;
-  }
-
-  async function apiPut(path, body) {
-    const res = await fetch(API_BASE + path, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
-    return data;
-  }
-
-  // ─────────────────────────────────────────────
-  // SESSION PERSISTENCE
-  // ─────────────────────────────────────────────
-  function persistSession(token, userId, user) {
-    localStorage.setItem('panacea_session_token', token);
-    localStorage.setItem('panacea_user_id',       String(userId));
-    localStorage.setItem('panacea_user_name',     user.name);
-    localStorage.setItem('panacea_user_email',    user.email || '');
-    if (user.gender) localStorage.setItem('panacea_user_gender', user.gender);
-    if (user.age)    localStorage.setItem('panacea_user_age',    String(user.age));
-    currentSessionToken = token;
-    currentUserId       = String(userId);
-    currentUser         = user;
-    console.log('✅ Session persisted for user:', user.name);
-  }
-
-  function clearSession() {
-    localStorage.removeItem('panacea_session_token');
-    localStorage.removeItem('panacea_user_id');
-    localStorage.removeItem('panacea_user_name');
-    localStorage.removeItem('panacea_user_email');
-    localStorage.removeItem('panacea_user_gender');
-    localStorage.removeItem('panacea_user_age');
-    currentSessionToken = null;
-    currentUserId       = null;
-    currentUser         = null;
-    console.log('🗑️ Session cleared from localStorage');
-  }
-
-  // ─────────────────────────────────────────────
-  // MODAL HELPERS
-  // ─────────────────────────────────────────────
-  function showLoginModal()   { document.getElementById('signupModal').classList.remove('active'); document.getElementById('loginModal').classList.add('active'); }
-  function closeLoginModal()  { document.getElementById('loginModal').classList.remove('active'); pendingCallback = null; }
-  function showSignupModal()  { document.getElementById('loginModal').classList.remove('active'); document.getElementById('signupModal').classList.add('active'); }
-  function closeSignupModal() { document.getElementById('signupModal').classList.remove('active'); pendingCallback = null; }
-  function switchToSignup()   { showSignupModal(); }
-  function switchToLogin()    { showLoginModal(); }
-
-  function showHealthMetricsModal()  { document.getElementById('healthMetricsModal').classList.add('active'); }
-  function closeHealthMetricsModal() { document.getElementById('healthMetricsModal').classList.remove('active'); }
-  function skipHealthMetrics()       { closeHealthMetricsModal(); showToast('You can add health metrics later from your profile.'); }
-
-  function showProfileModal()  { document.getElementById('profileModal').classList.add('active'); }
-  function closeProfileModal() { document.getElementById('profileModal').classList.remove('active'); }
-
-  // ─────────────────────────────────────────────
-  // UI STATE
-  // ─────────────────────────────────────────────
-  function updateProfileUI(user) {
-    const nameEl   = document.getElementById('profileName');
-    const roleEl   = document.getElementById('profileRole');
-    const avatarEl = document.getElementById('profileAvatar');
-
-    const isLoggedIn = !!(user && user.name);
-
-    document.querySelectorAll('.dd-guest').forEach(el => el.style.display = isLoggedIn ? 'none'  : 'block');
-    document.querySelectorAll('.dd-user').forEach(el  => el.style.display = isLoggedIn ? 'block' : 'none');
-
-    if (isLoggedIn) {
-      nameEl.textContent   = user.name;
-      const gLabel = user.gender === 'male' ? 'Male' : user.gender === 'female' ? 'Female' : null;
-      const aLabel = user.age ? `${user.age} yrs` : null;
-      roleEl.textContent   = [gLabel, aLabel].filter(Boolean).join(' · ') || 'Member';
-      avatarEl.textContent = user.name.charAt(0).toUpperCase();
-      avatarEl.style.background = 'linear-gradient(135deg, #2c7a6e, #3b82b6)';
-      console.log('👤 Profile UI updated - Logged in as:', user.name);
-    } else {
-      nameEl.textContent   = 'Guest User';
-      roleEl.textContent   = 'Not logged in';
-      avatarEl.textContent = 'G';
-      avatarEl.style.background = 'linear-gradient(135deg, #8b9a9e, #6b7a7e)';
-      console.log('👤 Profile UI updated - Guest mode');
-    }
-  }
-
-  // ─────────────────────────────────────────────
-  // SESSION VERIFICATION ON LOAD
-  // ─────────────────────────────────────────────
-  async function checkUserSession() {
-    const token  = localStorage.getItem('panacea_session_token');
-    const cached = {
-      name:   localStorage.getItem('panacea_user_name'),
-      email:  localStorage.getItem('panacea_user_email'),
-      gender: localStorage.getItem('panacea_user_gender'),
-      age:    localStorage.getItem('panacea_user_age'),
-      id:     localStorage.getItem('panacea_user_id'),
-    };
-
-    if (!token) { updateProfileUI(null); return; }
-    if (cached.name) updateProfileUI(cached);
-
+  // ── Doctor login form (wired here since index.html has the modal hard-coded) ──
+  document.getElementById('doctorLoginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn     = e.target.querySelector('button[type="submit"]');
+    const email   = document.getElementById('doctorLoginEmail').value.trim();
+    const license = document.getElementById('doctorLoginLicense').value.trim();
+    setButtonLoading(btn, true);
     try {
-      const data = await apiPost('/api/auth/verify', { session_token: token });
-      if (data.valid && data.user) {
-        currentSessionToken = token;
-        currentUserId       = String(data.user.id);
-        currentUser         = data.user;
-        localStorage.setItem('panacea_user_name',  data.user.name);
-        localStorage.setItem('panacea_user_email', data.user.email || '');
-        if (data.user.gender) localStorage.setItem('panacea_user_gender', data.user.gender);
-        if (data.user.age)    localStorage.setItem('panacea_user_age',    String(data.user.age));
-        updateProfileUI(data.user);
-        console.log('✅ Session verified with backend');
-      } else {
-        clearSession();
-        updateProfileUI(null);
-      }
+      await doDoctorLogin(email, license);
+      closeLoginModal();
+      e.target.reset();
     } catch (err) {
-      console.warn('Session verify failed (API may be offline):', err.message);
-      if (cached.name) {
-        currentSessionToken = token;
-        currentUserId       = cached.id;
-        currentUser         = cached;
-        updateProfileUI(cached);
-      } else {
-        clearSession();
-        updateProfileUI(null);
-      }
+      showToast('Doctor login failed: ' + err.message);
+    } finally {
+      setButtonLoading(btn, false, 'Doctor Login →');
     }
-  }
+  });
 
-  // ─────────────────────────────────────────────
-  // LOGIN
-  // ─────────────────────────────────────────────
-  async function doLogin(email, name, age, gender) {
-    const data = await apiPost('/api/profile/login', { email, name });
-
-    const userId = data.user_id;
-    const token  = data.session_token;
-    const user   = { id: userId, email, name, age, gender, profile_completed: data.profile_completed };
-    persistSession(token, userId, user);
-    updateProfileUI(user);
-
-    if (age || gender) {
-      try {
-        await apiPut(`/api/profile/${userId}`,
-          { ...(age ? { age } : {}), ...(gender ? { gender } : {}) });
-        user.age    = age    || user.age;
-        user.gender = gender || user.gender;
-        updateProfileUI(user);
-      } catch (e) { /* non-critical */ }
-    }
-
-    showToast(`Welcome to Panacea, ${name}! 👋`);
-
-    if (pendingCallback && typeof pendingCallback === 'function') {
-      const cb = pendingCallback; pendingCallback = null; cb();
-    }
-
-    if (!data.profile_completed) {
-      setTimeout(() => showHealthMetricsModal(), 500);
-    }
-
-    return data;
-  }
-
-  // ─────────────────────────────────────────────
-  // LOGOUT - FIXED VERSION WITH DEBUGGING
-  // ─────────────────────────────────────────────
-  async function logout() {
-    console.log('🔴 LOGOUT FUNCTION CALLED');
-    console.log('Current session token:', currentSessionToken ? currentSessionToken.substring(0, 20) + '...' : 'null');
-    console.log('Current user ID:', currentUserId);
-    
-    const tokenToRevoke = currentSessionToken;
-
-    // Clear local state & update UI immediately
-    clearSession();
-    updateProfileUI(null);
-    
-    const profileToggle = document.getElementById('profileToggle');
-    if (profileToggle) {
-      profileToggle.classList.remove('active');
-    }
-    
-    closeProfileModal();
-
-    // Attempt server-side revocation
-    if (tokenToRevoke) {
-      try {
-        console.log('📤 Calling logout API:', `${API_BASE}/api/auth/logout`);
-        const response = await fetch(`${API_BASE}/api/auth/logout`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ session_token: tokenToRevoke })
-        });
-        
-        console.log('📥 Logout API response status:', response.status);
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log('✅ Logout API response:', data);
-          showToast('You have been signed out successfully.');
-        } else {
-          const errorText = await response.text();
-          console.warn('⚠️ Logout API error:', response.status, errorText);
-          showToast('You have been signed out.');
-        }
-      } catch (e) {
-        console.error('❌ Logout API network error:', e.message);
-        showToast('You have been signed out (local only).');
-      }
-    } else {
-      console.log('No session token found, just clearing local state');
-      showToast('You have been signed out.');
-    }
-    
-    console.log('🟢 LOGOUT FUNCTION COMPLETED');
-  }
-
-  // ─────────────────────────────────────────────
-  // SAVE HEALTH METRICS
-  // ─────────────────────────────────────────────
-  async function saveHealthMetrics(metrics) {
-    if (!currentUserId) return;
+  // ── Doctor register form ──
+  document.getElementById('doctorRegisterForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const payload = {
+      name:              document.getElementById('drName').value.trim(),
+      email:             document.getElementById('drEmail').value.trim(),
+      license_number:    document.getElementById('drLicense').value.trim(),
+      specialization:    document.getElementById('drSpec').value.trim()  || null,
+      qualification:     document.getElementById('drQual').value.trim()  || null,
+      experience_years:  document.getElementById('drExp').value          ? parseInt(document.getElementById('drExp').value)    : null,
+      consultation_fee:  document.getElementById('drFee').value          ? parseFloat(document.getElementById('drFee').value)  : null,
+      phone:             document.getElementById('drPhone').value.trim() || null,
+      bio:               document.getElementById('drBio').value.trim()   || null,
+    };
+    setButtonLoading(btn, true);
     try {
-      await apiPut(`/api/profile/${currentUserId}/metrics`, metrics);
-      showToast('Health information saved successfully! ✅');
-    } catch (e) {
-      showToast('Could not save health info: ' + e.message);
+      const data = await apiPost('/api/auth/doctor-register', payload);
+      persistSession(data.session_token, data.user_id, { name: data.name, email: payload.email, user_type: 'doctor' });
+      updateNavPill({ name: data.name, role: 'Doctor' });
+      closeDoctorRegisterModal();
+      e.target.reset();
+      showToast(`Welcome, Dr. ${data.name}! Your account has been created. 🩺`);
+      setTimeout(() => { window.location.href = 'doctor-dashboard.html'; }, 900);
+    } catch (err) {
+      showToast('Registration failed: ' + err.message);
+    } finally {
+      setButtonLoading(btn, false, 'Register as Doctor →');
     }
-  }
+  });
 
-  // ─────────────────────────────────────────────
-  // PROFILE DETAILS MODAL
-  // ─────────────────────────────────────────────
-  async function showUserProfileDetails() {
-    showProfileModal();
-    const content = document.getElementById('profileContent');
-    content.innerHTML = '<p style="text-align:center;padding:20px;color:#8b9a9e;">Loading…</p>';
-
-    try {
-      const data = await apiGet(`/api/profile/${currentUserId}`);
-      const p = data.profile;
-      const m = data.health_metrics;
-
-      const genderDisplay = p.gender === 'male' ? 'Male'
-                          : p.gender === 'female' ? 'Female'
-                          : p.gender === 'other'  ? 'Other' : 'Not specified';
-      const ageDisplay    = p.age ? `${p.age} years` : 'Not specified';
-      const initial       = p.name.charAt(0).toUpperCase();
-      const joined        = p.created_at
-        ? new Date(p.created_at).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })
-        : '2025';
-
-      const metricsHTML = m ? `
-        <div style="margin-top:12px;padding-top:12px;border-top:1px solid #e2e4e0;">
-          <p style="font-size:11px;color:#8b9a9e;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Health Info</p>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            ${m.blood_group ? `<span style="background:#e0f0ec;color:#2c7a6e;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;">🩸 ${m.blood_group}</span>` : ''}
-            ${m.height_cm   ? `<span style="background:#eef2fc;color:#3b82b6;padding:4px 12px;border-radius:20px;font-size:12px;">📏 ${m.height_cm} cm</span>` : ''}
-            ${m.weight_kg   ? `<span style="background:#eef2fc;color:#3b82b6;padding:4px 12px;border-radius:20px;font-size:12px;">⚖️ ${m.weight_kg} kg</span>` : ''}
-          </div>
-        </div>` : '';
-
-      content.innerHTML = `
-        <div style="text-align:center;margin-bottom:24px;">
-          <div style="width:80px;height:80px;background:linear-gradient(135deg,#2c7a6e,#3b82b6);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 4px 15px rgba(44,122,110,0.3);">
-            <span style="font-size:36px;color:white;font-weight:600;">${initial}</span>
-          </div>
-          <h3 style="font-size:22px;font-weight:600;color:#1e2a2e;margin-bottom:4px;">${p.name}</h3>
-          <p style="color:#8b9a9e;font-size:13px;">Member since ${joined}</p>
-        </div>
-        <div style="background:#f5f3f0;border-radius:20px;padding:20px;margin:16px 0;">
-          <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #e2e4e0;">
-            <span style="font-size:20px;">📧</span>
-            <div style="flex:1;"><p style="font-size:11px;color:#8b9a9e;margin-bottom:2px;">Email</p><p style="font-size:14px;color:#1e2a2e;font-weight:500;">${p.email}</p></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #e2e4e0;">
-            <span style="font-size:20px;">🎂</span>
-            <div style="flex:1;"><p style="font-size:11px;color:#8b9a9e;margin-bottom:2px;">Age</p><p style="font-size:14px;color:#1e2a2e;font-weight:500;">${ageDisplay}</p></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;padding:12px 0;">
-            <span style="font-size:20px;">👤</span>
-            <div style="flex:1;"><p style="font-size:11px;color:#8b9a9e;margin-bottom:2px;">Gender</p><p style="font-size:14px;color:#1e2a2e;font-weight:500;">${genderDisplay}</p></div>
-          </div>
-          ${metricsHTML}
-        </div>
-        <div style="background:linear-gradient(135deg,#e0f0ec33,#eef2fc33);border-radius:20px;padding:16px;text-align:center;">
-          <p style="font-size:12px;color:#2c7a6e;">✓ Profile secured with AES-256 encryption</p>
-          <p style="font-size:11px;color:#8b9a9e;margin-top:6px;">Your data is private and never shared</p>
-        </div>`;
-
-    } catch (e) {
-      console.error('Profile fetch error:', e);
-      const name   = localStorage.getItem('panacea_user_name')   || 'User';
-      const email  = localStorage.getItem('panacea_user_email')  || '—';
-      const age    = localStorage.getItem('panacea_user_age');
-      const gender = localStorage.getItem('panacea_user_gender');
-      const gDisplay = gender === 'male' ? 'Male' : gender === 'female' ? 'Female' : 'Not specified';
-      content.innerHTML = `
-        <div style="text-align:center;padding:10px 0 20px;">
-          <div style="width:64px;height:64px;background:linear-gradient(135deg,#2c7a6e,#3b82b6);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
-            <span style="font-size:28px;color:white;font-weight:600;">${name.charAt(0).toUpperCase()}</span>
-          </div>
-          <h3 style="font-size:20px;font-weight:600;">${name}</h3>
-          <p style="color:#8b9a9e;font-size:13px;margin-top:4px;">${email}</p>
-          ${age ? `<p style="color:#8b9a9e;font-size:13px;">${age} yrs · ${gDisplay}</p>` : ''}
-          <p style="font-size:12px;color:#e74c3c;margin-top:12px;">⚠ Could not reach server — showing cached data.</p>
-        </div>`;
-    }
-  }
-
-  // ─────────────────────────────────────────────
-  // NAVIGATION GUARD
-  // ─────────────────────────────────────────────
-  function requireAuthNav(destination) {
-    if (currentUserId && currentSessionToken) {
-      window.location.href = destination;
-    } else {
-      showToast('Please login to continue.');
-      showLoginModal();
-    }
-  }
-
-  // ─────────────────────────────────────────────
-  // FORM SUBMISSIONS
-  // ─────────────────────────────────────────────
-
+  // ── Patient login form ──
   document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn    = e.target.querySelector('button[type="submit"]');
@@ -1731,9 +954,7 @@
     setButtonLoading(btn, false, 'Save health info');
   });
 
-  // ─────────────────────────────────────────────
-  // DROPDOWN HANDLERS - FIXED SIGN OUT
-  // ─────────────────────────────────────────────
+  // ── Dropdown menu items ──
   document.getElementById('loginMenuItem').addEventListener('click', (e) => {
     e.preventDefault(); e.stopPropagation();
     document.getElementById('profileToggle').classList.remove('active');
@@ -1753,64 +974,23 @@
     else showLoginModal();
   });
 
-  // Fix for Sign Out button - ensure it works
-  const signOutBtn = document.getElementById('signOutMenuItem');
-  if (signOutBtn) {
-    // Remove any existing listeners by cloning and replacing
-    const newSignOutBtn = signOutBtn.cloneNode(true);
-    signOutBtn.parentNode.replaceChild(newSignOutBtn, signOutBtn);
-    
-    newSignOutBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('🚪 Sign Out button clicked!');
-      await logout();
-    });
-    console.log('✅ Sign out button event listener attached');
-  } else {
-    console.error('❌ Sign out button not found in DOM!');
-  }
-
-  // Profile pill toggle
-  const profileSection = document.getElementById('profileToggle');
-  if (profileSection) {
-    profileSection.addEventListener('click', (e) => {
-      e.stopPropagation();
-      profileSection.classList.toggle('active');
-    });
-  }
-  document.addEventListener('click', (e) => {
-    if (profileSection && !profileSection.contains(e.target)) profileSection.classList.remove('active');
-  });
-
-  // ─────────────────────────────────────────────
-  // NAVIGATION BUTTONS
-  // ─────────────────────────────────────────────
-  const checkBtn = document.getElementById('checkSymptomsBtn');
-  const launchBtn = document.getElementById('launchCheckerBtn');
-  const startBtn = document.getElementById('startAssessmentBtn');
-  const shopBtn = document.getElementById('shopPharmacyBtn');
+  // ── Navigation buttons ──
+  const checkBtn    = document.getElementById('checkSymptomsBtn');
+  const launchBtn   = document.getElementById('launchCheckerBtn');
+  const startBtn    = document.getElementById('startAssessmentBtn');
+  const shopBtn     = document.getElementById('shopPharmacyBtn');
   const pharmacyBtn = document.getElementById('pharmacyCtaBtn');
-  const browseBtn = document.getElementById('browseDoctorsBtn');
-  
-  if (checkBtn) checkBtn.addEventListener('click', () => requireAuthNav('assessment.html'));
-  if (launchBtn) launchBtn.addEventListener('click', () => requireAuthNav('assessment.html'));
-  if (startBtn) startBtn.addEventListener('click', () => requireAuthNav('assessment.html'));
-  if (shopBtn) shopBtn.addEventListener('click', () => requireAuthNav('pharmacy.html'));
+  const browseBtn   = document.getElementById('browseDoctorsBtn');
+
+  if (checkBtn)    checkBtn.addEventListener('click',    () => requireAuthNav('assessment.html'));
+  if (launchBtn)   launchBtn.addEventListener('click',   () => requireAuthNav('assessment.html'));
+  if (startBtn)    startBtn.addEventListener('click',    () => requireAuthNav('assessment.html'));
+  if (shopBtn)     shopBtn.addEventListener('click',     () => requireAuthNav('pharmacy.html'));
   if (pharmacyBtn) pharmacyBtn.addEventListener('click', () => requireAuthNav('pharmacy.html'));
-  if (browseBtn) browseBtn.addEventListener('click', () => requireAuthNav('consultation.html'));
+  if (browseBtn)   browseBtn.addEventListener('click',   () => requireAuthNav('consultation.html'));
 
-  // Add test function to window for debugging
-  window.testLogout = logout;
+  window.testLogout   = logout;
   window.checkSession = () => console.log('Session token:', currentSessionToken, 'User ID:', currentUserId);
-
-  // ─────────────────────────────────────────────
-  // INIT
-  // ─────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Page loaded, initializing...');
-    checkUserSession();
-  });
 </script>
 </body>
 </html>

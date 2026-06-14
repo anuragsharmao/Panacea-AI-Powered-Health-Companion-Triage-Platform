@@ -1,374 +1,1393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panacea — Doctor Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f7f6f3; color: #1e2a2e; }
-        
-        .navbar {
-            background: white;
-            border-bottom: 1px solid #e2e4e0;
-            padding: 16px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo { font-size: 24px; font-weight: 600; background: linear-gradient(135deg, #2c7a6e, #3b82b6); -webkit-background-clip: text; background-clip: text; color: transparent; text-decoration: none; }
-        .nav-links { display: flex; gap: 32px; }
-        .nav-links a { text-decoration: none; color: #4a5b5e; font-weight: 500; }
-        
-        .container { max-width: 1200px; margin: 0 auto; padding: 32px 40px; }
-        
-        .welcome-card {
-            background: linear-gradient(135deg, #0d2226, #1a3d45);
-            border-radius: 32px;
-            padding: 32px;
-            color: white;
-            margin-bottom: 32px;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-        .stat-card {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid #e2e4e0;
-        }
-        .stat-number { font-size: 28px; font-weight: 700; color: #2c7a6e; }
-        
-        .section {
-            background: white;
-            border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 24px;
-            border: 1px solid #e2e4e0;
-        }
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #e2e4e0;
-        }
-        
-        .request-card {
-            border: 1px solid #e2e4e0;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 16px;
-        }
-        .request-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-        }
-        .patient-name { font-weight: 600; font-size: 16px; }
-        .request-date { font-size: 12px; color: #8b9a9e; }
-        
-        .cart-items-preview {
-            background: #f7f6f3;
-            border-radius: 16px;
-            padding: 12px;
-            margin: 12px 0;
-            font-size: 13px;
-        }
-        
-        .btn-approve {
-            background: #2c7a6e;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            margin-right: 12px;
-        }
-        .btn-reject {
-            background: #e2e4e0;
-            color: #1e2a2e;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-        }
-        
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: #1e2a2e;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            z-index: 1000;
-        }
-        
-        @media (max-width: 768px) {
-            .container { padding: 20px; }
-            .navbar { padding: 12px 20px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panacea — Doctor Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+  /* ══════════════════════════════════════════
+     PAGE BASE
+  ══════════════════════════════════════════ */
+  body {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    letter-spacing: -0.1px;
+  }
+
+  /* ══════════════════════════════════════════
+     DOCTOR HEADER BAR
+  ══════════════════════════════════════════ */
+  .doctor-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 100px;
+  }
+
+  .doctor-header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .doctor-header-logo img {
+    width: 26px; height: 26px;
+    object-fit: contain;
+  }
+
+  .doctor-header-logo-wrap { line-height: 1.1; }
+
+  .doctor-header-logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+    display: block;
+  }
+
+  .doctor-header-logo-sub {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    display: block;
+  }
+
+  .doctor-header-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 5px 14px 5px 5px;
+    border-radius: 40px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-card);
+    position: relative;
+    transition: box-shadow 0.2s;
+    user-select: none;
+  }
+
+  .doctor-header-profile:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+
+  .doctor-header-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a6b8a, #0e4d6b);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 600; font-size: 12px; flex-shrink: 0;
+  }
+
+  .doctor-header-info { line-height: 1.2; }
+
+  .doctor-header-name {
+    font-size: 13px; font-weight: 600; color: var(--text-primary);
+  }
+
+  .doctor-header-role {
+    font-size: 11px; color: #1a6b8a; font-weight: 500;
+  }
+
+  .doctor-header-chevron {
+    font-size: 9px; color: var(--text-tertiary); margin-left: 2px;
+  }
+
+  .doctor-header-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    min-width: 190px;
+    overflow: hidden;
+    z-index: 200;
+  }
+
+  .doctor-header-profile.open .doctor-header-dropdown { display: block; }
+
+  .doctor-header-dropdown a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 16px; font-size: 13.5px;
+    color: var(--text-primary); text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .doctor-header-dropdown a:hover { background: var(--bg-soft); }
+  .doctor-header-dropdown .dd-divider { height: 1px; background: var(--border-light); margin: 4px 0; }
+  .doctor-header-dropdown .dd-signout { color: #c0392b !important; }
+
+  /* ══════════════════════════════════════════
+     PAGE SHELL
+  ══════════════════════════════════════════ */
+  .page-shell {
+    min-height: calc(100vh - 100px);
+  }
+
+  .page-inner {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 28px 24px 60px;
+  }
+
+  /* ══════════════════════════════════════════
+     WELCOME BANNER
+  ══════════════════════════════════════════ */
+  .welcome-banner {
+    background: linear-gradient(135deg, var(--sidebar-bg-from) 0%, #14373d 60%, #0b2a30 100%);
+    border-radius: var(--radius-card);
+    padding: 40px 48px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow: var(--shadow-md);
+    animation: pageEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(44,122,110,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .welcome-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 25%;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,182,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .welcome-text h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .welcome-text p {
+    color: #8fb2bd;
+    font-size: 15px;
+    font-weight: 400;
+  }
+
+  .welcome-badge {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 60px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #c7e2ec;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    backdrop-filter: blur(6px);
+    flex-shrink: 0;
+  }
+
+  .welcome-badge .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #4be0a8;
+    box-shadow: 0 0 6px rgba(75,224,168,0.6);
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.7; transform: scale(1.3); }
+  }
+
+  /* ══════════════════════════════════════════
+     STATS GRID
+  ══════════════════════════════════════════ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border-radius: 24px;
+    padding: 28px 24px;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: all 0.25s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-teal-light);
+  }
+
+  .stat-icon {
+    width: 48px; height: 48px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .stat-icon.teal   { background: var(--accent-teal-light); }
+  .stat-icon.blue   { background: var(--accent-blue-soft); }
+  .stat-icon.gold   { background: #fdf3df; }
+  .stat-icon.green  { background: #d4f5e9; }
+
+  .stat-info {
+    flex: 1;
+  }
+
+  .stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent-teal);
+    line-height: 1;
+    margin-bottom: 4px;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* ══════════════════════════════════════════
+     SECTION CARDS
+  ══════════════════════════════════════════ */
+  .section {
+    background: var(--bg-card);
+    border-radius: var(--radius-card);
+    padding: 32px;
+    margin-bottom: 28px;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .section-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    background: var(--accent-teal-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+  }
+
+  .section-count {
+    background: var(--accent-teal-light);
+    color: var(--accent-teal);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 30px;
+    margin-left: 8px;
+  }
+
+  .refresh-btn {
+    background: var(--bg-soft);
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .refresh-btn:hover {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+    background: var(--accent-teal-light);
+  }
+
+  /* ══════════════════════════════════════════
+     REQUEST CARDS (prescriptions & consultations)
+  ══════════════════════════════════════════ */
+  .request-card {
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 16px;
+    background: var(--bg-light);
+    transition: all 0.2s ease;
+    animation: fadeInUp 0.35s ease both;
+  }
+
+  .request-card:last-child { margin-bottom: 0; }
+
+  .request-card:hover {
+    border-color: rgba(44,122,110,0.3);
+    box-shadow: 0 4px 16px rgba(44,122,110,0.08);
+  }
+
+  .request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .patient-identity {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .patient-avatar {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .patient-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .patient-email {
+    font-size: 12px;
+    color: var(--text-tertiary);
+  }
+
+  .request-meta {
+    text-align: right;
+  }
+
+  .request-date {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    background: var(--bg-soft);
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+
+  /* Medicines list */
+  .medicines-preview {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+
+  .medicines-preview-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 10px;
+  }
+
+  .medicine-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--bg-soft);
+    font-size: 13.5px;
+  }
+
+  .medicine-row:last-child { border-bottom: none; }
+
+  .medicine-name { color: var(--text-primary); font-weight: 500; }
+
+  .medicine-qty {
+    color: var(--text-tertiary);
+    font-size: 12px;
+    background: var(--bg-soft);
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+
+  .rx-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff3cd;
+    color: #856404;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 8px;
+  }
+
+  /* Info rows (symptom / message) */
+  .info-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--bg-soft);
+    margin: 10px 0;
+    font-size: 13.5px;
+  }
+
+  .info-row-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  .info-row-value { color: var(--text-primary); }
+
+  /* Doctor note textarea */
+  .note-field {
+    width: 100%;
+    margin: 12px 0 0;
+    padding: 12px 16px;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-primary);
+    background: var(--bg-card);
+    resize: vertical;
+    min-height: 72px;
+    transition: border-color 0.2s;
+    line-height: 1.5;
+  }
+
+  .note-field:focus {
+    outline: none;
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 0 3px rgba(44,122,110,0.08);
+  }
+
+  .note-field::placeholder { color: var(--text-tertiary); }
+
+  /* Action buttons */
+  .action-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-approve {
+    background: linear-gradient(135deg, var(--accent-teal), #1e6b61);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-approve:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(44,122,110,0.3);
+  }
+
+  .btn-approve:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-reject {
+    background: var(--bg-soft);
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+    padding: 10px 24px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-reject:hover {
+    border-color: #e74c3c;
+    color: #c0392b;
+    background: #fef5f5;
+  }
+
+  .btn-reject:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* ══════════════════════════════════════════
+     EMPTY / LOADING STATES
+  ══════════════════════════════════════════ */
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-tertiary);
+  }
+
+  .empty-state .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  .empty-state p {
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+
+  .empty-state small {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+    display: block;
+  }
+
+  .loading-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-tertiary);
+    font-size: 14px;
+    padding: 32px 0;
+    justify-content: center;
+  }
+
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border-light);
+    border-top-color: var(--accent-teal);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ══════════════════════════════════════════
+     ACCESS GUARD OVERLAY
+  ══════════════════════════════════════════ */
+  .access-guard {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--bg-light);
+    z-index: 500;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    text-align: center;
+    padding: 40px;
+  }
+
+  .access-guard.visible { display: flex; }
+
+  .access-guard h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--text-primary);
+  }
+
+  .access-guard p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    max-width: 380px;
+  }
+
+  /* ══════════════════════════════════════════
+     STATUS TABS
+  ══════════════════════════════════════════ */
+  .tab-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 7px 18px;
+    border-radius: 30px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-soft);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab-btn.active,
+  .tab-btn:hover {
+    background: var(--accent-teal-light);
+    color: var(--accent-teal);
+    border-color: rgba(44,122,110,0.3);
+  }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .page-inner { padding: 20px 16px 48px; }
+    .doctor-header { padding: 0 16px; }
+    .welcome-banner { padding: 24px 24px; }
+    .welcome-text h1 { font-size: 30px; }
+    .welcome-badge { display: none; }
+    .section { padding: 20px 16px; }
+  }
+
+  @media (max-width: 600px) {
+    .page-inner { padding: 16px 12px 40px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .action-row { flex-direction: column; }
+    .btn-approve, .btn-reject { justify-content: center; }
+    .doctor-header-info { display: none; }
+  }
+  </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="index.html" class="logo">panacea</a>
-        <div class="nav-links">
-            <a href="doctor-dashboard.html">Dashboard</a>
-            <a href="#" onclick="logout()">Logout</a>
-        </div>
-    </nav>
 
-    <div class="container">
-        <div class="welcome-card">
-            <h1 id="doctorName">Doctor Dashboard</h1>
-            <p>Manage consultations and prescription requests</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-number" id="pendingConsults">-</div><div>Pending Consultations</div></div>
-            <div class="stat-card"><div class="stat-number" id="pendingShares">-</div><div>Pending Cart Shares</div></div>
-            <div class="stat-card"><div class="stat-number" id="totalPrescriptions">-</div><div>Total Prescriptions</div></div>
-        </div>
-        
-        <div class="section">
-            <div class="section-title">📋 Pending Prescription Approvals (Cart Shares)</div>
-            <div id="cartSharesContainer">Loading...</div>
-        </div>
-        
-        <div class="section">
-            <div class="section-title">👨‍⚕️ Pending Consultation Requests</div>
-            <div id="consultationsContainer">Loading...</div>
-        </div>
+<!-- Sentinel: prevents script.js from injecting the shared patient top-nav -->
+<nav class="top-nav" id="__docNavSentinel" style="display:none;" aria-hidden="true"></nav>
+
+<!-- Access guard for non-doctor users -->
+<div class="access-guard" id="accessGuard">
+  <div style="font-size:48px;opacity:0.25;font-style:normal;">&#8856;</div>
+  <h2>Doctor Access Only</h2>
+  <p>This dashboard is restricted to verified medical professionals.</p>
+  <a href="index.html" class="btn-primary" style="margin-top:8px;">Return Home</a>
+</div>
+
+<div id="pageContent" style="display:none;">
+
+  <!-- ── Doctor Header ── -->
+  <header class="doctor-header">
+    <a class="doctor-header-logo" href="doctor-dashboard.html">
+      <img src="assets/logo.png" alt="Panacea" onerror="this.style.display='none'">
+      <div class="doctor-header-logo-wrap">
+        <span class="doctor-header-logo-text">panacea</span>
+        <span class="doctor-header-logo-sub">intelligent health companion</span>
+      </div>
+    </a>
+
+    <div class="doctor-header-profile" id="docProfilePill" onclick="toggleDocProfile(event)">
+      <div class="doctor-header-avatar" id="docHeaderAvatar">D</div>
+      <div class="doctor-header-info">
+        <div class="doctor-header-name" id="docHeaderName">Doctor</div>
+        <div class="doctor-header-role">Doctor</div>
+      </div>
+      <span class="doctor-header-chevron">▼</span>
+      <div class="doctor-header-dropdown">
+        <a href="#" onclick="showDocProfile(); return false;">View Profile</a>
+        <div class="dd-divider"></div>
+        <a href="#" class="dd-signout" onclick="doDocLogout(); return false;">Sign Out</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-shell">
+  <div class="page-inner page-transition-wrapper">
+
+    <!-- ── Welcome Banner ── -->
+    <div class="welcome-banner">
+      <div class="welcome-text">
+        <h1 id="doctorName">Doctor Dashboard</h1>
+        <p id="doctorSubtitle">Manage consultations and prescription requests</p>
+      </div>
+      <div class="welcome-badge">
+        <span class="dot"></span>
+        <span id="badgeLabel">On Duty</span>
+      </div>
     </div>
 
-    <script>
-        const API_BASE = 'http://localhost:8000';
-        let sessionToken = localStorage.getItem('panacea_session_token');
-        let currentUser = null;
-        
-        async function loadDoctor() {
-            if (!sessionToken) {
-                showToast('Please login as doctor');
-                setTimeout(() => location.href = 'index.html', 2000);
-                return;
-            }
-            try {
-                const res = await fetch(`${API_BASE}/api/auth/verify`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ session_token: sessionToken })
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.valid && data.user.user_type === 'doctor') {
-                        currentUser = data.user;
-                        document.getElementById('doctorName').innerHTML = `Welcome back, Dr. ${currentUser.name}`;
-                        loadAllData();
-                    } else {
-                        showToast('Doctor access only');
-                        setTimeout(() => location.href = 'index.html', 1500);
-                    }
-                }
-            } catch(e) {}
-        }
-        
-        async function loadAllData() {
-            await Promise.all([
-                loadCartShares(),
-                loadConsultations(),
-                loadStats()
-            ]);
-        }
-        
-        async function loadStats() {
-            try {
-                const consults = await fetch(`${API_BASE}/api/consultations`, {
-                    headers: { 'X-Session-Token': sessionToken }
-                });
-                const shares = await fetch(`${API_BASE}/api/cart/shares/pending`, {
-                    headers: { 'X-Session-Token': sessionToken }
-                });
-                
-                if (consults.ok) {
-                    const cData = await consults.json();
-                    const pending = cData.consultations.filter(c => c.status === 'pending');
-                    document.getElementById('pendingConsults').innerText = pending.length;
-                }
-                if (shares.ok) {
-                    const sData = await shares.json();
-                    document.getElementById('pendingShares').innerText = sData.shares.length;
-                }
-            } catch(e) {}
-        }
-        
-        async function loadCartShares() {
-            try {
-                const res = await fetch(`${API_BASE}/api/cart/shares/pending`, {
-                    headers: { 'X-Session-Token': sessionToken }
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    renderCartShares(data.shares);
-                    document.getElementById('pendingShares').innerText = data.shares.length;
-                }
-            } catch(e) {
-                document.getElementById('cartSharesContainer').innerHTML = '<p>Failed to load</p>';
-            }
-        }
-        
-        function renderCartShares(shares) {
-            const container = document.getElementById('cartSharesContainer');
-            if (!shares.length) {
-                container.innerHTML = '<p>No pending prescription requests</p>';
-                return;
-            }
-            
-            container.innerHTML = shares.map(share => `
-                <div class="request-card">
-                    <div class="request-header">
-                        <div>
-                            <span class="patient-name">${escapeHtml(share.patient_name)}</span>
-                            <span style="font-size:12px; color:#8b9a9e; margin-left:12px;">${escapeHtml(share.patient_email)}</span>
-                        </div>
-                        <div class="request-date">${new Date(share.created_at).toLocaleString()}</div>
-                    </div>
-                    <div class="cart-items-preview">
-                        <strong>Medicines requested:</strong>
-                        <ul style="margin-top: 8px; margin-left: 20px;">
-                            ${share.cart_snapshot.map(item => `
-                                <li>${escapeHtml(item.name)} x ${item.quantity} ${item.requires_prescription ? '🔒' : ''}</li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                    <p><strong>Message:</strong> ${escapeHtml(share.patient_message || 'No message')}</p>
-                    <textarea id="note_${share.id}" placeholder="Add prescription notes... (optional)" 
-                              style="width:100%; margin: 12px 0; padding:10px; border:1px solid #e2e4e0; border-radius:12px;"></textarea>
-                    <div>
-                        <button class="btn-approve" onclick="respondToCartShare(${share.id}, true)">✓ Approve & Issue Prescription</button>
-                        <button class="btn-reject" onclick="respondToCartShare(${share.id}, false)">✗ Reject</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        async function respondToCartShare(shareId, approve) {
-            const note = document.getElementById(`note_${shareId}`)?.value || '';
-            
-            try {
-                const res = await fetch(`${API_BASE}/api/cart/share/respond`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-Session-Token': sessionToken },
-                    body: JSON.stringify({ share_id: shareId, approve, note })
-                });
-                if (res.ok) {
-                    showToast(approve ? 'Prescription issued successfully!' : 'Request rejected');
-                    loadCartShares();
-                    loadStats();
-                } else {
-                    showToast('Failed to respond');
-                }
-            } catch(e) {
-                showToast('Error');
-            }
-        }
-        
-        async function loadConsultations() {
-            try {
-                const res = await fetch(`${API_BASE}/api/consultations`, {
-                    headers: { 'X-Session-Token': sessionToken }
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    const pending = data.consultations.filter(c => c.status === 'pending');
-                    renderConsultations(pending);
-                }
-            } catch(e) {
-                document.getElementById('consultationsContainer').innerHTML = '<p>Failed to load</p>';
-            }
-        }
-        
-        function renderConsultations(consultations) {
-            const container = document.getElementById('consultationsContainer');
-            if (!consultations.length) {
-                container.innerHTML = '<p>No pending consultation requests</p>';
-                return;
-            }
-            
-            container.innerHTML = consultations.map(c => `
-                <div class="request-card">
-                    <div class="request-header">
-                        <div>
-                            <span class="patient-name">${escapeHtml(c.patient_name)}</span>
-                            <span style="font-size:12px; color:#8b9a9e; margin-left:12px;">${escapeHtml(c.patient_email)}</span>
-                        </div>
-                        <div class="request-date">${new Date(c.created_at).toLocaleString()}</div>
-                    </div>
-                    <p><strong>Symptoms/Prediction:</strong> ${escapeHtml(c.top_disease || c.predicted_disease || 'Not specified')}</p>
-                    <p><strong>Message:</strong> ${escapeHtml(c.patient_message || 'No message')}</p>
-                    <textarea id="consult_note_${c.id}" placeholder="Your response to patient..." 
-                              style="width:100%; margin: 12px 0; padding:10px; border:1px solid #e2e4e0; border-radius:12px;"></textarea>
-                    <div>
-                        <button class="btn-approve" onclick="respondToConsultation(${c.id}, true)">✓ Accept Consultation</button>
-                        <button class="btn-reject" onclick="respondToConsultation(${c.id}, false)">✗ Decline</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        async function respondToConsultation(requestId, accept) {
-            const response = document.getElementById(`consult_note_${requestId}`)?.value || '';
-            
-            try {
-                const res = await fetch(`${API_BASE}/api/consultations/respond`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-Session-Token': sessionToken },
-                    body: JSON.stringify({ request_id: requestId, accept, response })
-                });
-                if (res.ok) {
-                    showToast(accept ? 'Consultation accepted!' : 'Consultation declined');
-                    loadConsultations();
-                    loadStats();
-                } else {
-                    showToast('Failed to respond');
-                }
-            } catch(e) {
-                showToast('Error');
-            }
-        }
-        
-        function showToast(msg) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = msg;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-        
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        function logout() {
-            localStorage.removeItem('panacea_session_token');
-            localStorage.removeItem('panacea_user_id');
-            window.location.href = 'index.html';
-        }
-        
-        loadDoctor();
-    </script>
+    <!-- ── Stats ── -->
+    <div class="stats-grid">
+      <div class="stat-card fade-up">
+        <div class="stat-icon teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent-teal)"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg></div>
+        <div class="stat-info">
+          <div class="stat-number" id="pendingConsults">—</div>
+          <div class="stat-label">Pending Consultations</div>
+        </div>
+      </div>
+      <div class="stat-card fade-up delay-100">
+        <div class="stat-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent-blue)"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></div>
+        <div class="stat-info">
+          <div class="stat-number" id="pendingShares">—</div>
+          <div class="stat-label">Pending Prescriptions</div>
+        </div>
+      </div>
+      <div class="stat-card fade-up delay-200">
+        <div class="stat-icon gold"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#b07d2a"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="stat-info">
+          <div class="stat-number" id="totalPrescriptions">—</div>
+          <div class="stat-label">Approved Today</div>
+        </div>
+      </div>
+      <div class="stat-card fade-up delay-300">
+        <div class="stat-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#2d6a4f"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="stat-info">
+          <div class="stat-number" id="totalPatients">—</div>
+          <div class="stat-label">Patients Seen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Prescription Approvals ── -->
+    <div class="section fade-up">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="section-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent-teal)"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></div>
+          <div>
+            <span class="section-title">Prescription Requests</span>
+            <span class="section-count" id="shareCountBadge">0</span>
+          </div>
+        </div>
+        <button class="refresh-btn" onclick="refreshCartShares()">
+          Refresh
+        </button>
+      </div>
+
+      <div class="tab-row" id="shareTabRow">
+        <button class="tab-btn active" onclick="filterShares('pending', this)">Pending</button>
+        <button class="tab-btn" onclick="filterShares('approved', this)">Approved</button>
+        <button class="tab-btn" onclick="filterShares('rejected', this)">Rejected</button>
+        <button class="tab-btn" onclick="filterShares('all', this)">All</button>
+      </div>
+
+      <div id="cartSharesContainer">
+        <div class="loading-row"><div class="spinner"></div> Loading prescription requests…</div>
+      </div>
+    </div>
+
+    <!-- ── Consultation Requests ── -->
+    <div class="section fade-up delay-100">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="section-icon" style="background:var(--accent-blue-soft);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent-blue)"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg></div>
+          <div>
+            <span class="section-title">Consultation Requests</span>
+            <span class="section-count" id="consultCountBadge" style="background:var(--accent-blue-soft);color:var(--accent-blue);">0</span>
+          </div>
+        </div>
+        <button class="refresh-btn" onclick="refreshConsultations()">
+          Refresh
+        </button>
+      </div>
+
+      <div class="tab-row" id="consultTabRow">
+        <button class="tab-btn active" onclick="filterConsultations('pending', this)">Pending</button>
+        <button class="tab-btn" onclick="filterConsultations('accepted', this)">Accepted</button>
+        <button class="tab-btn" onclick="filterConsultations('declined', this)">Declined</button>
+        <button class="tab-btn" onclick="filterConsultations('all', this)">All</button>
+      </div>
+
+      <div id="consultationsContainer">
+        <div class="loading-row"><div class="spinner"></div> Loading consultation requests…</div>
+      </div>
+    </div>
+
+  </div><!-- /page-inner -->
+  </div><!-- /page-shell -->
+</div><!-- /pageContent -->
+
+<!-- Login / Signup modals (injected from shared script if needed) -->
+
+<script src="script.js"></script>
+<script>
+/* ════════════════════════════════════════════
+   DOCTOR DASHBOARD — page-level logic
+   Uses shared: API_BASE, currentSessionToken,
+   sessionReady, showToast, navigateTo, logout
+════════════════════════════════════════════ */
+
+const DOC_API   = typeof API_BASE !== 'undefined' ? API_BASE : 'http://localhost:8000';
+let doctorUser  = null;
+let allShares         = [];
+let allConsultations  = [];
+let activeShareFilter = 'pending';
+let activeConsultFilter = 'pending';
+
+/* ── Boot: wait for shared sessionReady, then guard ── */
+(async () => {
+  // Wait for the shared session check to finish
+  if (typeof sessionReady !== 'undefined') {
+    await sessionReady;
+  }
+
+  const token = localStorage.getItem('panacea_session_token');
+  if (!token) {
+    showAccessGuard();
+    return;
+  }
+
+  try {
+    const res = await fetch(`${DOC_API}/api/auth/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_token: token })
+    });
+
+    if (!res.ok) throw new Error('verify failed');
+
+    const data = await res.json();
+
+    if (data.valid && data.user && data.user.user_type === 'doctor') {
+      doctorUser = data.user;
+      showDashboard();
+    } else {
+      showAccessGuard('Not a doctor account. Please log in with a doctor account.');
+    }
+  } catch (e) {
+    // If server is offline, fall back gracefully
+    const name = localStorage.getItem('panacea_user_name');
+    if (name) {
+      // Optimistic — let doctor in with cached credentials
+      doctorUser = {
+        name,
+        email: localStorage.getItem('panacea_user_email') || '',
+        user_type: 'doctor'
+      };
+      showDashboard();
+      showToast('⚠ Server offline — showing cached data.');
+    } else {
+      showAccessGuard();
+    }
+  }
+})();
+
+/* ── Show / hide access guard ── */
+function showAccessGuard(msg) {
+  document.getElementById('accessGuard').classList.add('visible');
+  document.getElementById('pageContent').style.display = 'none';
+  if (msg) {
+    document.querySelector('#accessGuard p').textContent = msg;
+  }
+}
+
+/* ── Reveal dashboard & load data ── */
+function showDashboard() {
+  document.getElementById('accessGuard').classList.remove('visible');
+  document.getElementById('pageContent').style.display = 'block';
+
+  if (doctorUser) {
+    const name = doctorUser.name || 'Doctor';
+
+    // Welcome banner
+    document.getElementById('doctorName').textContent =
+      `Welcome back, Dr. ${name}`;
+    document.getElementById('doctorSubtitle').textContent =
+      `${new Date().toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long' })} · Manage your consultations and prescriptions`;
+    document.getElementById('badgeLabel').textContent = 'On Duty';
+
+    // Custom header pill
+    const avatarEl = document.getElementById('docHeaderAvatar');
+    const nameEl   = document.getElementById('docHeaderName');
+    if (avatarEl) avatarEl.textContent = name.charAt(0).toUpperCase();
+    if (nameEl)   nameEl.textContent   = `Dr. ${name}`;
+  }
+
+  loadAllData();
+}
+
+/* ── Custom header profile pill ── */
+function toggleDocProfile(e) {
+  e.stopPropagation();
+  document.getElementById('docProfilePill').classList.toggle('open');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', () => {
+  document.getElementById('docProfilePill')?.classList.remove('open');
+});
+
+function showDocProfile() {
+  document.getElementById('docProfilePill')?.classList.remove('open');
+  const name  = doctorUser?.name  || localStorage.getItem('panacea_user_name') || 'Doctor';
+  const email = doctorUser?.email || localStorage.getItem('panacea_user_email') || '—';
+  showToast(`Dr. ${name} · ${email}`);
+}
+
+async function doDocLogout() {
+  document.getElementById('docProfilePill')?.classList.remove('open');
+  if (typeof logout === 'function') {
+    await logout();
+  } else {
+    localStorage.clear();
+    window.location.href = 'index.html';
+  }
+}
+
+/* ── Load everything in parallel ── */
+async function loadAllData() {
+  await Promise.all([
+    loadCartShares(),
+    loadConsultations(),
+  ]);
+  computeStats();
+}
+
+/* ════════════════════════════════════════════
+   STATS
+════════════════════════════════════════════ */
+function computeStats() {
+  const pendingC = allConsultations.filter(c => c.status === 'pending').length;
+  const pendingS = allShares.filter(s => s.status === 'pending').length;
+  const approved = allShares.filter(s => s.status === 'approved').length;
+  // Rough unique patient count
+  const patientSet = new Set([
+    ...allShares.map(s => s.patient_email || s.patient_id),
+    ...allConsultations.map(c => c.patient_email || c.patient_id),
+  ]);
+
+  animateNumber('pendingConsults',    pendingC);
+  animateNumber('pendingShares',      pendingS);
+  animateNumber('totalPrescriptions', approved);
+  animateNumber('totalPatients',      patientSet.size);
+
+  document.getElementById('shareCountBadge').textContent   = pendingS;
+  document.getElementById('consultCountBadge').textContent = pendingC;
+}
+
+function animateNumber(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let current = 0;
+  const step = Math.ceil(target / 20);
+  const t = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current;
+    if (current >= target) clearInterval(t);
+  }, 40);
+}
+
+/* ════════════════════════════════════════════
+   CART SHARES / PRESCRIPTIONS
+════════════════════════════════════════════ */
+async function loadCartShares() {
+  const container = document.getElementById('cartSharesContainer');
+  container.innerHTML = `<div class="loading-row"><div class="spinner"></div> Loading…</div>`;
+
+  try {
+    const data = await apiGet(`${DOC_API}/api/cart/shares/pending`);
+    allShares = Array.isArray(data) ? data : (data.shares || []);
+    renderCartShares(filterByStatus(allShares, activeShareFilter));
+  } catch (e) {
+    container.innerHTML = buildErrorState('prescription requests', () => loadCartShares());
+  }
+}
+
+async function refreshCartShares() {
+  await loadCartShares();
+  computeStats();
+}
+
+function filterShares(status, btn) {
+  activeShareFilter = status;
+  setActiveTab('shareTabRow', btn);
+  renderCartShares(filterByStatus(allShares, status));
+}
+
+function renderCartShares(shares) {
+  const container = document.getElementById('cartSharesContainer');
+
+  if (!shares.length) {
+    container.innerHTML = buildEmptyState(
+      activeShareFilter === 'pending'
+        ? 'No pending prescription requests'
+        : `No ${activeShareFilter} prescriptions`,
+      activeShareFilter === 'pending'
+        ? 'Pending patient prescription requests will appear here.'
+        : ''
+    );
+    return;
+  }
+
+  container.innerHTML = shares.map(share => {
+    const initial = (share.patient_name || 'P').charAt(0).toUpperCase();
+    const dateStr = share.created_at ? new Date(share.created_at).toLocaleString('en-IN', {
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+    }) : '—';
+    const isPending = (share.status || 'pending') === 'pending';
+
+    const medRows = (share.cart_snapshot || []).map(item => `
+      <div class="medicine-row">
+        <span class="medicine-name">
+          ${escapeHtml(item.name || 'Unknown')}
+          ${item.requires_prescription ? '<span class="rx-badge">Rx</span>' : ''}
+        </span>
+        <span class="medicine-qty">×${item.quantity || 1}</span>
+      </div>
+    `).join('');
+
+    return `
+      <div class="request-card" id="share_card_${share.id}">
+        <div class="request-header">
+          <div class="patient-identity">
+            <div class="patient-avatar">${initial}</div>
+            <div>
+              <div class="patient-name">${escapeHtml(share.patient_name || 'Unknown Patient')}</div>
+              <div class="patient-email">${escapeHtml(share.patient_email || '')}</div>
+            </div>
+          </div>
+          <div class="request-meta">
+            <div class="request-date">${dateStr}</div>
+            ${!isPending ? `<div style="margin-top:4px;">
+              <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;${
+                share.status === 'approved'
+                  ? 'background:#d4f5e9;color:#2d6a4f;'
+                  : 'background:#fde8e8;color:#c0392b;'
+              }">${share.status.toUpperCase()}</span>
+            </div>` : ''}
+          </div>
+        </div>
+
+        ${share.cart_snapshot && share.cart_snapshot.length ? `
+        <div class="medicines-preview">
+          <div class="medicines-preview-label">Medicines Requested</div>
+          ${medRows}
+        </div>` : ''}
+
+        ${share.patient_message ? `
+        <div class="info-row">
+          <span class="info-row-label">Message</span>
+          <span class="info-row-value">${escapeHtml(share.patient_message)}</span>
+        </div>` : ''}
+
+        ${isPending ? `
+        <textarea class="note-field" id="note_${share.id}"
+          placeholder="Add prescription notes or instructions… (optional)"></textarea>
+        <div class="action-row">
+          <button class="btn-approve" id="approveShare_${share.id}"
+            onclick="respondToCartShare(${share.id}, true)">
+            Approve Prescription
+          </button>
+          <button class="btn-reject" id="rejectShare_${share.id}"
+            onclick="respondToCartShare(${share.id}, false)">
+            Decline
+          </button>
+        </div>` : `
+        ${share.doctor_note ? `
+        <div class="info-row" style="background:var(--accent-teal-light);">
+          <span class="info-row-label">Your Note</span>
+          <span class="info-row-value">${escapeHtml(share.doctor_note)}</span>
+        </div>` : ''}`}
+      </div>
+    `;
+  }).join('');
+}
+
+async function respondToCartShare(shareId, approve) {
+  const note = document.getElementById(`note_${shareId}`)?.value || '';
+  const approveBtn = document.getElementById(`approveShare_${shareId}`);
+  const rejectBtn  = document.getElementById(`rejectShare_${shareId}`);
+
+  if (approveBtn) { approveBtn.disabled = true; approveBtn.textContent = 'Processing…'; }
+  if (rejectBtn)  { rejectBtn.disabled = true; }
+
+  try {
+    await apiPost(`${DOC_API}/api/cart/share/respond`, { share_id: shareId, approve, note });
+    showToast(approve
+      ? 'Prescription approved and issued.'
+      : 'Request declined.');
+    await loadCartShares();
+    computeStats();
+  } catch (e) {
+    showToast(`Failed: ${e.message}`);
+    if (approveBtn) { approveBtn.disabled = false; approveBtn.textContent = 'Approve Prescription'; }
+    if (rejectBtn)  { rejectBtn.disabled = false; }
+  }
+}
+
+/* ════════════════════════════════════════════
+   CONSULTATIONS
+════════════════════════════════════════════ */
+async function loadConsultations() {
+  const container = document.getElementById('consultationsContainer');
+  container.innerHTML = `<div class="loading-row"><div class="spinner"></div> Loading…</div>`;
+
+  try {
+    const data = await apiGet(`${DOC_API}/api/consultations`);
+    allConsultations = Array.isArray(data) ? data : (data.consultations || []);
+    renderConsultations(filterByStatus(allConsultations, activeConsultFilter));
+  } catch (e) {
+    container.innerHTML = buildErrorState('consultations', () => loadConsultations());
+  }
+}
+
+async function refreshConsultations() {
+  await loadConsultations();
+  computeStats();
+}
+
+function filterConsultations(status, btn) {
+  activeConsultFilter = status;
+  setActiveTab('consultTabRow', btn);
+  renderConsultations(filterByStatus(allConsultations, status));
+}
+
+function renderConsultations(consultations) {
+  const container = document.getElementById('consultationsContainer');
+
+  if (!consultations.length) {
+    container.innerHTML = buildEmptyState(
+      activeConsultFilter === 'pending'
+        ? 'No pending consultation requests'
+        : `No ${activeConsultFilter} consultations`,
+      activeConsultFilter === 'pending'
+        ? 'New consultation requests from patients will appear here.'
+        : ''
+    );
+    return;
+  }
+
+  container.innerHTML = consultations.map(c => {
+    const initial = (c.patient_name || 'P').charAt(0).toUpperCase();
+    const dateStr = c.created_at ? new Date(c.created_at).toLocaleString('en-IN', {
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+    }) : '—';
+    const disease = c.top_disease || c.predicted_disease || '';
+    const isPending = (c.status || 'pending') === 'pending';
+
+    return `
+      <div class="request-card" id="consult_card_${c.id}">
+        <div class="request-header">
+          <div class="patient-identity">
+            <div class="patient-avatar">${initial}</div>
+            <div>
+              <div class="patient-name">${escapeHtml(c.patient_name || 'Unknown Patient')}</div>
+              <div class="patient-email">${escapeHtml(c.patient_email || '')}</div>
+            </div>
+          </div>
+          <div class="request-meta">
+            <div class="request-date">${dateStr}</div>
+            ${!isPending ? `<div style="margin-top:4px;">
+              <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;${
+                c.status === 'accepted'
+                  ? 'background:#d4f5e9;color:#2d6a4f;'
+                  : 'background:#fde8e8;color:#c0392b;'
+              }">${c.status.toUpperCase()}</span>
+            </div>` : ''}
+          </div>
+        </div>
+
+        ${disease ? `
+        <div class="info-row">
+          <span class="info-row-label">Condition</span>
+          <span class="info-row-value">${escapeHtml(disease)}</span>
+        </div>` : ''}
+
+        ${c.patient_message ? `
+        <div class="info-row">
+          <span class="info-row-label">Message</span>
+          <span class="info-row-value">${escapeHtml(c.patient_message)}</span>
+        </div>` : ''}
+
+        ${isPending ? `
+        <textarea class="note-field" id="consult_note_${c.id}"
+          placeholder="Your response to the patient… (required for acceptance)"></textarea>
+        <div class="action-row">
+          <button class="btn-approve" id="acceptConsult_${c.id}"
+            onclick="respondToConsultation(${c.id}, true)">
+            Accept Consultation
+          </button>
+          <button class="btn-reject" id="declineConsult_${c.id}"
+            onclick="respondToConsultation(${c.id}, false)">
+            Decline
+          </button>
+        </div>` : `
+        ${c.doctor_response ? `
+        <div class="info-row" style="background:var(--accent-blue-soft);">
+          <span class="info-row-label">Your Response</span>
+          <span class="info-row-value">${escapeHtml(c.doctor_response)}</span>
+        </div>` : ''}`}
+      </div>
+    `;
+  }).join('');
+}
+
+async function respondToConsultation(requestId, accept) {
+  const response = document.getElementById(`consult_note_${requestId}`)?.value || '';
+  const acceptBtn  = document.getElementById(`acceptConsult_${requestId}`);
+  const declineBtn = document.getElementById(`declineConsult_${requestId}`);
+
+  if (acceptBtn)  { acceptBtn.disabled = true; acceptBtn.textContent = 'Processing…'; }
+  if (declineBtn) { declineBtn.disabled = true; }
+
+  try {
+    await apiPost(`${DOC_API}/api/consultations/respond`, { request_id: requestId, accept, response });
+    showToast(accept
+      ? 'Consultation accepted. Patient has been notified.'
+      : 'Consultation declined.');
+    await loadConsultations();
+    computeStats();
+  } catch (e) {
+    showToast(`Failed: ${e.message}`);
+    if (acceptBtn)  { acceptBtn.disabled = false; acceptBtn.textContent = 'Accept Consultation'; }
+    if (declineBtn) { declineBtn.disabled = false; }
+  }
+}
+
+/* ════════════════════════════════════════════
+   UTILITY HELPERS
+════════════════════════════════════════════ */
+function filterByStatus(arr, status) {
+  if (status === 'all') return arr;
+  return arr.filter(item => {
+    const s = (item.status || 'pending').toLowerCase();
+    if (status === 'pending')  return s === 'pending';
+    if (status === 'approved') return s === 'approved';
+    if (status === 'rejected') return s === 'rejected' || s === 'declined';
+    if (status === 'accepted') return s === 'accepted';
+    if (status === 'declined') return s === 'declined' || s === 'rejected';
+    return true;
+  });
+}
+
+function setActiveTab(rowId, activeBtn) {
+  document.querySelectorAll(`#${rowId} .tab-btn`).forEach(b => b.classList.remove('active'));
+  activeBtn.classList.add('active');
+}
+
+function rotateIcon(iconId) {
+  const el = document.getElementById(iconId);
+  if (!el) return;
+  el.style.transition = 'transform 0.5s ease';
+  el.style.transform  = 'rotate(360deg)';
+  setTimeout(() => {
+    el.style.transition = 'none';
+    el.style.transform  = '';
+  }, 500);
+}
+
+function buildEmptyState(title, subtitle) {
+  return `
+    <div class="empty-state">
+      <div class="empty-icon" style="font-size:36px;opacity:0.2;">—</div>
+      <p>${title}</p>
+      ${subtitle ? `<small>${subtitle}</small>` : ''}
+    </div>`;
+}
+
+function buildErrorState(label, retryFn) {
+  // Attach retry as a global so onclick can call it
+  window._retryFn = retryFn;
+  return `
+    <div class="empty-state">
+      <div class="empty-icon" style="font-size:36px;opacity:0.3;">!</div>
+      <p>Could not load ${label}</p>
+      <small>Server may be offline or you may be unauthorised.</small>
+      <button class="refresh-btn" style="margin:16px auto 0;display:flex;" onclick="window._retryFn()">
+        Retry
+      </button>
+    </div>`;
+}
+
+function escapeHtml(text) {
+  if (text == null) return '';
+  const d = document.createElement('div');
+  d.textContent = String(text);
+  return d.innerHTML;
+}
+
+/* Override the shared showToast if it already exists (harmless fallback) */
+if (typeof showToast === 'undefined') {
+  function showToast(msg, duration = 3500) {
+    const t = document.createElement('div');
+    t.className = 'toast-notification';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), duration);
+  }
+}
+</script>
 </body>
 </html>

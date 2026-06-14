@@ -20,7 +20,85 @@ from datetime import datetime, timedelta
 import secrets
 import sqlite3
 import asyncio
+import os
+import base64
+import hashlib
 from concurrent.futures import ThreadPoolExecutor
+
+# ============================================================
+# AES-256 ENCRYPTION FOR SENSITIVE HEALTH DATA AT REST
+# ============================================================
+try:
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.backends import default_backend
+    _CRYPTO_AVAILABLE = True
+except ImportError:
+    _CRYPTO_AVAILABLE = False
+    print("⚠  cryptography library not installed — run: pip install cryptography")
+    print("   Health data encryption will be DISABLED until installed.")
+
+# Derive a 256-bit key from PANACEA_SECRET_KEY env var (or a dev fallback).
+# In production, always set PANACEA_SECRET_KEY to a long random string.
+_RAW_SECRET = os.environ.get("PANACEA_SECRET_KEY", "panacea-dev-secret-change-in-production-2024!")
+_AES_KEY = hashlib.sha256(_RAW_SECRET.encode()).digest()  # 32 bytes → AES-256
+
+def encrypt_field(plaintext: str) -> str:
+    """AES-256-GCM encrypt a string. Returns base64-encoded 'nonce:ciphertext'."""
+    if not _CRYPTO_AVAILABLE or not plaintext:
+        return plaintext
+    try:
+        aesgcm = AESGCM(_AES_KEY)
+        nonce = os.urandom(12)   # 96-bit nonce (GCM standard)
+        ct = aesgcm.encrypt(nonce, plaintext.encode(), None)
+        return base64.b64encode(nonce + ct).decode()
+    except Exception as e:
+        print(f"Encryption error: {e}")
+        return plaintext
+
+def decrypt_field(ciphertext: str) -> str:
+    """Decrypt a value produced by encrypt_field. Returns original plaintext."""
+    if not _CRYPTO_AVAILABLE or not ciphertext:
+        return ciphertext
+    try:
+        raw = base64.b64decode(ciphertext)
+        nonce, ct = raw[:12], raw[12:]
+        aesgcm = AESGCM(_AES_KEY)
+        return aesgcm.decrypt(nonce, ct, None).decode()
+    except Exception:
+        # If decryption fails the value was stored as plaintext (pre-encryption migration)
+        return ciphertext
+
+def encrypt_sensitive_metrics(metrics: Dict) -> Dict:
+    """Encrypt PII fields in a health metrics dict before persisting."""
+    sensitive = [
+        'allergies', 'chronic_conditions', 'current_medications',
+        'emergency_contact_name', 'emergency_contact_phone'
+    ]
+    out = dict(metrics)
+    for field in sensitive:
+        if out.get(field) is not None:
+            val = out[field]
+            if isinstance(val, (list, dict)):
+                val = json.dumps(val)
+            out[field] = encrypt_field(str(val))
+    return out
+
+def decrypt_sensitive_metrics(metrics: Dict) -> Dict:
+    """Decrypt PII fields after reading from DB."""
+    sensitive = [
+        'allergies', 'chronic_conditions', 'current_medications',
+        'emergency_contact_name', 'emergency_contact_phone'
+    ]
+    out = dict(metrics)
+    for field in sensitive:
+        if out.get(field) is not None:
+            decrypted = decrypt_field(out[field])
+            try:
+                out[field] = json.loads(decrypted)
+            except Exception:
+                out[field] = decrypted
+    return out
 
 # Thread pool for CPU-heavy blocking work
 _THREAD_POOL = ThreadPoolExecutor(max_workers=2)
@@ -177,11 +255,256 @@ def init_database():
         )
     ''')
     
+    # Extended schema for pharmacy & consultation features
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS notifications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            title TEXT NOT NULL,
+            message TEXT,
+            type TEXT DEFAULT 'info',
+            reference_id INTEGER,
+            reference_type TEXT,
+            is_read BOOLEAN DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS categories (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL UNIQUE,
+            description TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            generic_name TEXT,
+            description TEXT,
+            category_id INTEGER,
+            price REAL DEFAULT 0,
+            stock_quantity INTEGER DEFAULT 0,
+            requires_prescription BOOLEAN DEFAULT 0,
+            image_url TEXT,
+            is_active BOOLEAN DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (category_id) REFERENCES categories (id)
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS product_images (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            product_id INTEGER NOT NULL,
+            image_url TEXT NOT NULL,
+            alt_text TEXT,
+            is_primary BOOLEAN DEFAULT 0,
+            sort_order INTEGER DEFAULT 0,
+            FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS cart_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            product_id INTEGER NOT NULL,
+            quantity INTEGER DEFAULT 1,
+            added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+            FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
+            UNIQUE(user_id, product_id)
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS cart_share_requests (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            patient_id INTEGER NOT NULL,
+            doctor_id INTEGER NOT NULL,
+            cart_snapshot TEXT,
+            patient_message TEXT,
+            status TEXT DEFAULT 'pending',
+            doctor_note TEXT,
+            prescription_id INTEGER,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            responded_at TIMESTAMP,
+            FOREIGN KEY (patient_id) REFERENCES users (id),
+            FOREIGN KEY (doctor_id) REFERENCES users (id)
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS prescriptions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            doctor_id INTEGER NOT NULL,
+            patient_id INTEGER NOT NULL,
+            cart_request_id INTEGER,
+            notes TEXT,
+            status TEXT DEFAULT 'active',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (doctor_id) REFERENCES users (id),
+            FOREIGN KEY (patient_id) REFERENCES users (id)
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS prescription_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            prescription_id INTEGER NOT NULL,
+            product_id INTEGER,
+            medicine_name TEXT,
+            dosage TEXT,
+            duration TEXT,
+            quantity INTEGER DEFAULT 1,
+            FOREIGN KEY (prescription_id) REFERENCES prescriptions (id) ON DELETE CASCADE
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            total_amount REAL DEFAULT 0,
+            payment_method TEXT DEFAULT 'COD',
+            shipping_address TEXT,
+            prescription_id INTEGER,
+            status TEXT DEFAULT 'pending',
+            order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS order_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id INTEGER NOT NULL,
+            product_id INTEGER,
+            medicine_name TEXT,
+            quantity INTEGER DEFAULT 1,
+            price REAL DEFAULT 0,
+            FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS doctors_profile (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER UNIQUE NOT NULL,
+            specialization TEXT,
+            qualification TEXT,
+            experience_years INTEGER DEFAULT 0,
+            consultation_fee REAL DEFAULT 0,
+            bio TEXT,
+            rating REAL DEFAULT 0,
+            total_consultations INTEGER DEFAULT 0,
+            available_days TEXT,
+            is_verified BOOLEAN DEFAULT 0,
+            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        )
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS consultation_requests (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            patient_id INTEGER NOT NULL,
+            doctor_id INTEGER NOT NULL,
+            assessment_id INTEGER,
+            symptoms_summary TEXT,
+            predicted_disease TEXT,
+            patient_message TEXT,
+            doctor_response TEXT,
+            status TEXT DEFAULT 'pending',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (patient_id) REFERENCES users (id),
+            FOREIGN KEY (doctor_id) REFERENCES users (id)
+        )
+    ''')
+
+    # Add user_type and phone columns to users if they don't exist (migration)
+    try:
+        cursor.execute("ALTER TABLE users ADD COLUMN user_type TEXT DEFAULT 'patient'")
+    except Exception:
+        pass  # Column already exists
+    try:
+        cursor.execute("ALTER TABLE users ADD COLUMN phone TEXT")
+    except Exception:
+        pass
+
     conn.commit()
     conn.close()
     print("✓ Database initialized successfully")
 
 init_database()
+
+
+# ============================================================
+# NOTIFICATION MANAGER
+# ============================================================
+class NotificationManager:
+    @staticmethod
+    def create(user_id: int, title: str, message: str,
+               notif_type: str = 'info',
+               reference_id: int = None,
+               reference_type: str = None) -> int:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO notifications
+            (user_id, title, message, type, reference_id, reference_type)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (user_id, title, message, notif_type, reference_id, reference_type))
+        nid = cursor.lastrowid
+        conn.commit()
+        conn.close()
+        return nid
+
+    @staticmethod
+    def get_for_user(user_id: int, unread_only: bool = False, limit: int = 50) -> List[Dict]:
+        conn = get_db_connection()
+        q = 'SELECT * FROM notifications WHERE user_id = ?'
+        params = [user_id]
+        if unread_only:
+            q += ' AND is_read = 0'
+        q += ' ORDER BY created_at DESC LIMIT ?'
+        params.append(limit)
+        rows = conn.execute(q, params).fetchall()
+        conn.close()
+        return [dict(r) for r in rows]
+
+    @staticmethod
+    def mark_read(notification_id: int, user_id: int) -> bool:
+        conn = get_db_connection()
+        conn.execute(
+            'UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?',
+            (notification_id, user_id)
+        )
+        conn.commit()
+        conn.close()
+        return True
+
+    @staticmethod
+    def mark_all_read(user_id: int) -> bool:
+        conn = get_db_connection()
+        conn.execute('UPDATE notifications SET is_read = 1 WHERE user_id = ?', (user_id,))
+        conn.commit()
+        conn.close()
+        return True
+
+    @staticmethod
+    def unread_count(user_id: int) -> int:
+        conn = get_db_connection()
+        count = conn.execute(
+            'SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0',
+            (user_id,)
+        ).fetchone()[0]
+        conn.close()
+        return count
 
 # ============================================================
 # DATABASE OPERATIONS CLASSES
@@ -266,6 +589,7 @@ class HealthMetrics:
             'emergency_contact_phone'
         ]
         
+        # Serialize lists to JSON strings first, then encrypt sensitive fields
         for field in ['allergies', 'chronic_conditions', 'current_medications']:
             if field in metrics and metrics[field] is not None:
                 if isinstance(metrics[field], (list, dict)):
@@ -274,6 +598,15 @@ class HealthMetrics:
         updates = {k: v for k, v in metrics.items() if k in allowed_fields}
         if not updates:
             return False
+
+        # Encrypt sensitive PII fields before storing
+        sensitive_fields = [
+            'allergies', 'chronic_conditions', 'current_medications',
+            'emergency_contact_name', 'emergency_contact_phone'
+        ]
+        for field in sensitive_fields:
+            if field in updates and updates[field] is not None:
+                updates[field] = encrypt_field(str(updates[field]))
         
         updates['updated_at'] = datetime.now().isoformat()
         
@@ -307,12 +640,18 @@ class HealthMetrics:
         
         if metrics:
             result = dict(metrics)
-            for field in ['allergies', 'chronic_conditions', 'current_medications']:
+            # Decrypt sensitive fields, then parse JSON lists
+            sensitive_fields = [
+                'allergies', 'chronic_conditions', 'current_medications',
+                'emergency_contact_name', 'emergency_contact_phone'
+            ]
+            for field in sensitive_fields:
                 if result.get(field):
+                    decrypted = decrypt_field(result[field])
                     try:
-                        result[field] = json.loads(result[field])
-                    except:
-                        pass
+                        result[field] = json.loads(decrypted)
+                    except Exception:
+                        result[field] = decrypted
             return result
         return None
 
@@ -408,7 +747,7 @@ class SessionManager:
     @staticmethod
     def create_session(user_id: int, expires_days: int = 7) -> str:
         token = secrets.token_urlsafe(32)
-        expires_at = datetime.now() + timedelta(days=expires_days)
+        expires_at = datetime.utcnow() + timedelta(days=expires_days)  # Use UTC to match SQLite datetime("now")
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute('''
@@ -424,7 +763,8 @@ class SessionManager:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute('''
-            SELECT u.id, u.email, u.name, u.age, u.gender, u.profile_completed
+            SELECT u.id, u.email, u.name, u.age, u.gender, u.profile_completed,
+                   COALESCE(u.user_type, 'patient') AS user_type
             FROM users u
             JOIN sessions s ON u.id = s.user_id
             WHERE s.session_token = ? AND s.expires_at > datetime('now')
@@ -889,7 +1229,7 @@ async def predict(req: PredictRequest):
     }
 
 # ============================================================
-# FAST BAYESIAN CLARIFICATION API ENDPOINTS
+# FAST BAYESIAN CLARIFICATION API ENDPOINTS (REFACTORED)
 # ============================================================
 import uuid as _uuid
 
@@ -985,7 +1325,7 @@ def _make_final_predictions(posterior: np.ndarray, candidates: np.ndarray,
             "disease": disease_name, 
             "confidence": float(post_norm[d]),
             "in_pool": d in cset,
-            "disease_info": get_disease_info(disease_name)  # NEW: Add disease details
+            "disease_info": get_disease_info(disease_name)
         })
     return results
 
@@ -993,12 +1333,12 @@ class ClarifyStartRequest(BaseModel):
     symptoms_present: List[str]
     age_group: str = "adult"
     gender: str = "female"
-    max_questions: int = 12        # frontend can override
-    min_questions: int = 5         # always ask at least this many
-    confidence_stop: float = 0.92  # very high threshold — must be extremely confident to stop early
-    prior_weight: float = 0.10     # lower = XGBoost less dominant = more Bayesian questions
+    max_questions: int = 12
+    min_questions: int = 3          # Ask at least 3 questions by default
+    confidence_stop: float = 0.95   # High threshold to stop early only if past min_questions
+    prior_weight: float = 0.10
     fast_mode: bool = False
-    exhaustive: bool = False       # if True, always ask max_questions regardless of confidence
+    exhaustive: bool = False
 
 class ClarifyAnswerRequest(BaseModel):
     session_id: str
@@ -1010,6 +1350,7 @@ async def clarify_start(req: ClarifyStartRequest):
     if not req.symptoms_present:
         raise HTTPException(400, "symptoms_present cannot be empty")
 
+    # Fast mode: skip clarification entirely
     if req.fast_mode:
         full_vec, matched = build_feature_vector(
             req.symptoms_present, req.age_group, req.gender, {}
@@ -1018,15 +1359,13 @@ async def clarify_start(req: ClarifyStartRequest):
         explanations = await get_feature_contributions_async(full_vec)
         return {
             "session_id": None,
-            "done": True,
-            "question": None,
-            "question_number": 0,
-            "top_confidence": preds[0]["confidence"] if preds else 0,
+            "ready_for_result": True,
             "predictions": preds,
             "explanations": explanations,
             "matched_count": matched
         }
 
+    # Normalize inputs
     age_map = {'teen': 'adolescent', 'teenager': 'adolescent', 'senior': 'elderly',
                'toddler': 'infant', 'baby': 'infant'}
     age_group = age_map.get(req.age_group.strip().lower(), req.age_group.strip().lower())
@@ -1039,36 +1378,33 @@ async def clarify_start(req: ClarifyStartRequest):
     posterior, candidates, answered, matched = _build_initial_posterior(
         req.symptoms_present, age_group, gender, req.prior_weight
     )
-    cand_post = posterior[candidates]
-    top_conf = float((cand_post / (cand_post.sum() + 1e-12)).max())
     session_id = str(_uuid.uuid4())
 
-    async def _done_response(sid, preds, explanations, qnum=0):
-        return {
-            "session_id": sid,
-            "done": True,
-            "question": None,
-            "question_number": qnum,
-            "top_confidence": top_conf,
-            "predictions": preds,
-            "explanations": explanations,
-            "matched_count": matched
-        }
-
-    # Only stop early at start if confidence is very high AND we don't need min_questions
-    # With exhaustive=True, ALWAYS ask questions regardless of confidence
-    if top_conf >= req.confidence_stop and not req.exhaustive and req.min_questions == 0:
-        preds = _make_final_predictions(posterior, candidates)
-        fv, _ = build_feature_vector(req.symptoms_present, age_group, gender, {})
-        explanations = await get_feature_contributions_async(fv)
-        return await _done_response(session_id, preds, explanations)
-
+    # Always ask at least one question (unless min_questions=0 but we set default 3)
     best_s = _best_question(candidates, posterior, answered)
     if best_s == -1:
-        preds = _make_final_predictions(posterior, candidates)
-        fv, _ = build_feature_vector(req.symptoms_present, age_group, gender, {})
-        explanations = await get_feature_contributions_async(fv)
-        return await _done_response(session_id, preds, explanations)
+        # No questions available – signal client to fetch result
+        _CLARIFY_SESSIONS[session_id] = {
+            "posterior": posterior,
+            "candidates": candidates,
+            "answered": answered,
+            "symptoms_present": req.symptoms_present,
+            "age_group": age_group,
+            "gender": gender,
+            "max_questions": req.max_questions,
+            "min_questions": req.min_questions,
+            "confidence_stop": req.confidence_stop,
+            "prior_weight": req.prior_weight,
+            "exhaustive": req.exhaustive,
+            "q_count": 0,
+            "matched_count": matched,
+            "finished": False
+        }
+        return {
+            "session_id": session_id,
+            "ready_for_result": True,
+            "question_number": 0
+        }
 
     answered.add(best_s)
     _CLARIFY_SESSIONS[session_id] = {
@@ -1085,6 +1421,7 @@ async def clarify_start(req: ClarifyStartRequest):
         "exhaustive": req.exhaustive,
         "q_count": 1,
         "matched_count": matched,
+        "finished": False
     }
     
     question_explanation = ""
@@ -1095,14 +1432,11 @@ async def clarify_start(req: ClarifyStartRequest):
     
     return {
         "session_id": session_id,
-        "done": False,
+        "ready_for_result": False,
         "question": SYMPTOM_NAMES[best_s],
         "question_index": best_s,
         "question_explanation": question_explanation,
         "question_number": 1,
-        "top_confidence": top_conf,
-        "predictions": None,
-        "explanations": None,
         "matched_count": matched
     }
 
@@ -1111,6 +1445,8 @@ async def clarify_answer(req: ClarifyAnswerRequest):
     sess = _CLARIFY_SESSIONS.get(req.session_id)
     if not sess:
         raise HTTPException(404, "Clarification session not found or expired")
+    if sess.get("finished"):
+        raise HTTPException(400, "Session already finalized")
 
     posterior = sess["posterior"]
     candidates = sess["candidates"]
@@ -1125,48 +1461,44 @@ async def clarify_answer(req: ClarifyAnswerRequest):
     sess["posterior"] = posterior
     sess["q_count"] += 1
 
-    cand_post = posterior[candidates]
-    top_conf = float((cand_post / (cand_post.sum() + 1e-12)).max())
-
-    async def _done_async(sid):
-        preds = _make_final_predictions(posterior, candidates)
-        fv, _ = build_feature_vector(sess["symptoms_present"], sess["age_group"], sess["gender"], {})
-        explanations = await get_feature_contributions_async(fv)
-        del _CLARIFY_SESSIONS[sid]
-        return {
-            "session_id": sid,
-            "done": True,
-            "question": None,
-            "question_number": sess["q_count"],
-            "top_confidence": top_conf,
-            "predictions": preds,
-            "explanations": explanations,
-            "matched_count": sess["matched_count"]
-        }
-
     q_count = sess["q_count"]
-    min_q = sess.get("min_questions", 5)
+    min_q = sess.get("min_questions", 3)
     max_q = sess["max_questions"]
     conf_stop = sess["confidence_stop"]
     exhaustive = sess.get("exhaustive", False)
 
-    # Determine if we should stop:
-    # - Always continue if we haven't hit min_questions yet
-    # - Always stop if we've hit max_questions
-    # - Stop on confidence only if: past min_questions AND not exhaustive mode
+    cand_post = posterior[candidates]
+    top_conf = float((cand_post / (cand_post.sum() + 1e-12)).max())
+
     past_min = q_count >= min_q
     hit_max  = q_count >= max_q
     hit_conf = top_conf >= conf_stop and past_min and not exhaustive
 
     if hit_max or hit_conf:
-        return await _done_async(req.session_id)
+        # Mark as finished but keep session for result retrieval
+        sess["finished"] = True
+        return {
+            "session_id": req.session_id,
+            "ready_for_result": True,
+            "question_number": q_count
+        }
 
     best_s = _best_question(candidates, posterior, answered)
     if best_s == -1 and past_min:
-        return await _done_async(req.session_id)
+        sess["finished"] = True
+        return {
+            "session_id": req.session_id,
+            "ready_for_result": True,
+            "question_number": q_count
+        }
     elif best_s == -1:
-        # No good question but haven't hit min_questions — return done anyway
-        return await _done_async(req.session_id)
+        # No good question but haven't hit min_questions – still finish
+        sess["finished"] = True
+        return {
+            "session_id": req.session_id,
+            "ready_for_result": True,
+            "question_number": q_count
+        }
 
     answered.add(best_s)
     sess["answered"] = answered
@@ -1179,17 +1511,35 @@ async def clarify_answer(req: ClarifyAnswerRequest):
     
     return {
         "session_id": req.session_id,
-        "done": False,
+        "ready_for_result": False,
         "question": SYMPTOM_NAMES[best_s],
         "question_index": best_s,
         "question_explanation": question_explanation,
         "question_number": sess["q_count"],
-        "top_confidence": top_conf,
-        "predictions": None,
-        "explanations": None,
         "matched_count": sess["matched_count"]
     }
 
+@app.get("/clarify/result/{session_id}")
+async def clarify_result(session_id: str):
+    """Fetch final predictions for a session. Deletes session immediately after."""
+    sess = _CLARIFY_SESSIONS.get(session_id)
+    if not sess:
+        raise HTTPException(404, "Session not found or already finalized")
+    
+    preds = _make_final_predictions(sess["posterior"], sess["candidates"])
+    fv, _ = build_feature_vector(sess["symptoms_present"], sess["age_group"], sess["gender"], {})
+    explanations = await get_feature_contributions_async(fv)
+    
+    # Delete session permanently
+    del _CLARIFY_SESSIONS[session_id]
+    
+    return {
+        "predictions": preds,
+        "explanations": explanations,
+        "matched_count": sess["matched_count"]
+    }
+
+# Keep /clarify/finalize for backward compatibility but mark as deprecated
 @app.post("/clarify/finalize")
 async def clarify_finalize(body: Dict[str, Any]):
     sid = body.get("session_id")
@@ -1201,13 +1551,10 @@ async def clarify_finalize(body: Dict[str, Any]):
     explanations = await get_feature_contributions_async(fv)
     del _CLARIFY_SESSIONS[sid]
     return {
-        "session_id": sid,
-        "done": True,
         "predictions": preds,
         "explanations": explanations,
         "matched_count": sess["matched_count"]
     }
-
 # ============================================================
 # PROFILE API ENDPOINTS
 # ============================================================
@@ -1232,6 +1579,138 @@ async def login(request: LoginRequest):
         "user_id": user_id,
         "session_token": token,
         "profile_completed": profile_completed
+    }
+
+
+# ── Doctor login ──────────────────────────────────────────────
+class DoctorLoginRequest(BaseModel):
+    email: EmailStr
+    license_number: str   # acts as the doctor's password / verification token
+
+
+@app.post("/api/auth/doctor-login")
+async def doctor_login(request: DoctorLoginRequest):
+    """
+    Doctor-specific login.
+    Verifies the user exists, has user_type='doctor', and their license_number matches.
+    Returns a session token on success.
+    """
+    conn = get_db_connection()
+    user_row = conn.execute(
+        "SELECT id, name, email, user_type FROM users WHERE email = ? AND is_active = 1",
+        (request.email.lower(),)
+    ).fetchone()
+
+    if not user_row:
+        conn.close()
+        raise HTTPException(status_code=401, detail="No account found with that email.")
+
+    user = dict(user_row)
+
+    if user.get("user_type") != "doctor":
+        conn.close()
+        raise HTTPException(status_code=403, detail="This account is not registered as a doctor.")
+
+    # Verify license number against doctors_profile
+    profile_row = conn.execute(
+        "SELECT license_number FROM doctors_profile WHERE user_id = ?",
+        (user["id"],)
+    ).fetchone()
+    conn.close()
+
+    if not profile_row or profile_row["license_number"] != request.license_number.strip():
+        raise HTTPException(status_code=401, detail="Invalid license number.")
+
+    token = SessionManager.create_session(user["id"])
+
+    return {
+        "success": True,
+        "user_id": user["id"],
+        "session_token": token,
+        "user_type": "doctor",
+        "name": user["name"],
+    }
+
+
+# ── Doctor registration ───────────────────────────────────────
+class DoctorRegisterRequest(BaseModel):
+    email: EmailStr
+    name: str
+    license_number: str
+    specialization: Optional[str] = None
+    qualification: Optional[str] = None
+    experience_years: Optional[int] = None
+    consultation_fee: Optional[float] = None
+    bio: Optional[str] = None
+    phone: Optional[str] = None
+
+
+@app.post("/api/auth/doctor-register")
+async def doctor_register(request: DoctorRegisterRequest):
+    """
+    Register a new doctor account.
+    Creates a user with user_type='doctor' and populates doctors_profile.
+    The license_number serves as the doctor's login credential.
+    """
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Check for duplicate email
+    existing = conn.execute(
+        "SELECT id FROM users WHERE email = ?", (request.email.lower(),)
+    ).fetchone()
+    if existing:
+        conn.close()
+        raise HTTPException(status_code=409, detail="An account with this email already exists.")
+
+    try:
+        # Create user row with user_type = 'doctor'
+        cursor.execute(
+            """INSERT INTO users (email, name, user_type, phone, profile_completed)
+               VALUES (?, ?, 'doctor', ?, 1)""",
+            (request.email.lower(), request.name, request.phone)
+        )
+        user_id = cursor.lastrowid
+
+        # Add license_number column to doctors_profile if not present (migration guard)
+        try:
+            cursor.execute("ALTER TABLE doctors_profile ADD COLUMN license_number TEXT")
+        except Exception:
+            pass  # Column already exists
+
+        available_days_json = json.dumps(["Mon", "Tue", "Wed", "Thu", "Fri"])
+
+        cursor.execute(
+            """INSERT INTO doctors_profile
+               (user_id, specialization, qualification, experience_years,
+                consultation_fee, bio, license_number, available_days, is_verified)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)""",
+            (
+                user_id,
+                request.specialization or "",
+                request.qualification or "",
+                request.experience_years or 0,
+                request.consultation_fee or 0.0,
+                request.bio or "",
+                request.license_number.strip(),
+                available_days_json,
+            )
+        )
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        conn.close()
+        raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
+
+    token = SessionManager.create_session(user_id)
+    conn.close()
+
+    return {
+        "success": True,
+        "user_id": user_id,
+        "session_token": token,
+        "user_type": "doctor",
+        "name": request.name,
     }
 
 @app.get("/api/profile/{user_id}")
@@ -1305,6 +1784,66 @@ async def get_medical_records(user_id: int, record_type: Optional[str] = None):
     records = MedicalRecords.get_records(user_id, record_type)
     return {"records": records}
 
+@app.delete("/api/profile/{user_id}/assessments/{assessment_id}")
+async def delete_assessment(user_id: int, assessment_id: int):
+    """Delete a specific assessment for a user."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'DELETE FROM assessments WHERE id = ? AND user_id = ?',
+        (assessment_id, user_id)
+    )
+    deleted = cursor.rowcount > 0
+    conn.commit()
+    conn.close()
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Assessment not found")
+    return {"success": True, "deleted_id": assessment_id}
+
+@app.delete("/api/profile/{user_id}/records/{record_id}")
+async def delete_medical_record(user_id: int, record_id: int):
+    """Delete a specific medical record for a user."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'DELETE FROM medical_records WHERE id = ? AND user_id = ?',
+        (record_id, user_id)
+    )
+    deleted = cursor.rowcount > 0
+    conn.commit()
+    conn.close()
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Record not found")
+    return {"success": True, "deleted_id": record_id}
+
+@app.get("/api/profile/{user_id}/summary")
+async def get_profile_summary(user_id: int):
+    """
+    Lightweight summary for the profile page:
+    returns profile, health_metrics, assessment count, and records count.
+    """
+    profile = UserProfile.get_profile(user_id)
+    if not profile:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    metrics = HealthMetrics.get_metrics(user_id)
+
+    conn = get_db_connection()
+    assessment_count = conn.execute(
+        'SELECT COUNT(*) FROM assessments WHERE user_id = ?', (user_id,)
+    ).fetchone()[0]
+    records_count = conn.execute(
+        'SELECT COUNT(*) FROM medical_records WHERE user_id = ?', (user_id,)
+    ).fetchone()[0]
+    conn.close()
+
+    return {
+        "profile": profile,
+        "health_metrics": metrics,
+        "assessment_count": assessment_count,
+        "records_count": records_count,
+    }
+
 @app.post("/api/auth/verify")
 async def verify_session(request: Request):
     body = await request.json()
@@ -1328,6 +1867,120 @@ async def logout(request: Request):
 # ============================================================
 
 # ---------- PRODUCTS (PHARMACY) ----------
+# ============================================================
+# PRODUCT IMAGE ENDPOINTS (ADD TO YOUR api.py)
+# ============================================================
+
+@app.get("/api/products/{product_id}/images")
+async def get_product_images(product_id: int):
+    """Get all images for a product (gallery)"""
+    conn = get_db_connection()
+    rows = conn.execute("""
+        SELECT id, image_url, alt_text, is_primary, sort_order
+        FROM product_images 
+        WHERE product_id = ?
+        ORDER BY is_primary DESC, sort_order ASC, id ASC
+    """, (product_id,)).fetchall()
+    conn.close()
+    
+    images = [dict(row) for row in rows]
+    
+    # If no images in product_images table, fall back to product's image_url
+    if not images:
+        conn = get_db_connection()
+        product = conn.execute(
+            "SELECT id, name, image_url FROM products WHERE id = ?", 
+            (product_id,)
+        ).fetchone()
+        conn.close()
+        
+        if product and product["image_url"]:
+            images = [{
+                "id": 0,
+                "image_url": product["image_url"],
+                "alt_text": product["name"],
+                "is_primary": 1,
+                "sort_order": 0
+            }]
+    
+    return {"product_id": product_id, "images": images, "count": len(images)}
+
+
+@app.get("/api/products/{product_id}/image/primary")
+async def get_product_primary_image(product_id: int):
+    """Get only the primary (main) image URL for a product"""
+    conn = get_db_connection()
+    
+    # First try to get primary from product_images table
+    row = conn.execute("""
+        SELECT image_url, alt_text
+        FROM product_images 
+        WHERE product_id = ? AND is_primary = 1
+        LIMIT 1
+    """, (product_id,)).fetchone()
+    
+    # Fall back to product's image_url
+    if not row:
+        row = conn.execute(
+            "SELECT image_url, name as alt_text FROM products WHERE id = ?",
+            (product_id,)
+        ).fetchone()
+    
+    conn.close()
+    
+    if not row or not row["image_url"]:
+        # Return a placeholder image URL
+        return {
+            "product_id": product_id, 
+            "image_url": "/static/placeholder.png",
+            "has_image": False
+        }
+    
+    return {
+        "product_id": product_id,
+        "image_url": row["image_url"],
+        "alt_text": row["alt_text"],
+        "has_image": True
+    }
+
+
+@app.get("/api/products/batch/images")
+async def get_batch_product_images(product_ids: str = Query(..., description="Comma-separated product IDs")):
+    """Get primary images for multiple products at once (for cart/order listings)"""
+    ids = [int(x.strip()) for x in product_ids.split(",") if x.strip().isdigit()]
+    
+    if not ids:
+        return {"images": {}}
+    
+    placeholders = ",".join(["?"] * len(ids))
+    conn = get_db_connection()
+    
+    # Get primary images from product_images
+    rows = conn.execute(f"""
+        SELECT p.id as product_id, 
+               COALESCE(pi.image_url, p.image_url) as image_url,
+               p.name as product_name
+        FROM products p
+        LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
+        WHERE p.id IN ({placeholders})
+    """, ids).fetchall()
+    
+    conn.close()
+    
+    result = {}
+    for row in rows:
+        result[row["product_id"]] = {
+            "image_url": row["image_url"] or "/static/placeholder.png",
+            "product_name": row["product_name"]
+        }
+    
+    return {"images": result}
+
+
+# ============================================================
+# ALSO UPDATE YOUR EXISTING /api/products ENDPOINT
+# ============================================================
+
 @app.get("/api/products")
 async def get_products(
     category_id: Optional[int] = None,
@@ -1336,14 +1989,16 @@ async def get_products(
     limit: int = 50,
     offset: int = 0
 ):
-    """Get catalog of medicines"""
+    """Get catalog of medicines with primary image URL"""
     conn = get_db_connection()
     cursor = conn.cursor()
     
     query = """
-        SELECT p.*, c.name as category_name 
+        SELECT p.*, c.name as category_name,
+               COALESCE(pi.image_url, p.image_url) as image_url
         FROM products p 
         LEFT JOIN categories c ON p.category_id = c.id 
+        LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
         WHERE p.is_active = 1
     """
     params = []
@@ -1358,28 +2013,65 @@ async def get_products(
         query += " AND p.requires_prescription = ?"
         params.append(1 if prescription_only else 0)
     
-    query += " LIMIT ? OFFSET ?"
+    query += " GROUP BY p.id LIMIT ? OFFSET ?"
     params.extend([limit, offset])
     
     rows = cursor.execute(query, params).fetchall()
     conn.close()
     
-    return {"products": [dict(r) for r in rows], "count": len(rows)}
+    products = []
+    for row in rows:
+        product = dict(row)
+        # Ensure every product has an image_url (fallback to placeholder)
+        if not product.get("image_url"):
+            product["image_url"] = "/static/placeholder.png"
+        products.append(product)
+    
+    return {"products": products, "count": len(products)}
 
 
 @app.get("/api/products/{product_id}")
 async def get_product(product_id: int):
+    """Get single product with its image gallery"""
     conn = get_db_connection()
+    
+    # Get product with primary image
     row = conn.execute("""
-        SELECT p.*, c.name as category_name 
+        SELECT p.*, c.name as category_name,
+               COALESCE(pi.image_url, p.image_url) as image_url
         FROM products p 
         LEFT JOIN categories c ON p.category_id = c.id 
+        LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
         WHERE p.id = ?
     """, (product_id,)).fetchone()
-    conn.close()
+    
     if not row:
+        conn.close()
         raise HTTPException(404, "Product not found")
-    return dict(row)
+    
+    product = dict(row)
+    if not product.get("image_url"):
+        product["image_url"] = "/static/placeholder.png"
+    
+    conn.close()
+    
+    # Get all images for gallery (optional - can be fetched separately)
+    # To avoid extra DB call, you can call get_product_images separately
+    
+    return product
+
+from fastapi.responses import Response
+import base64
+
+@app.get("/static/placeholder.png")
+async def placeholder_image():
+    """Return a simple data:image SVG placeholder"""
+    svg = """<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+        <rect width="200" height="200" fill="#f0f0f0"/>
+        <text x="100" y="110" text-anchor="middle" fill="#999" font-family="Arial" font-size="14">No Image</text>
+        <text x="100" y="130" text-anchor="middle" fill="#ccc" font-family="Arial" font-size="10">Medicine</text>
+    </svg>"""
+    return Response(content=svg, media_type="image/svg+xml")
 
 
 @app.get("/api/categories")
@@ -1450,33 +2142,118 @@ async def add_to_cart(request: Request, body: dict):
     return {"success": True, "message": "Added to cart"}
 
 
+from contextlib import contextmanager
+
+@contextmanager
+def get_db_connection_with_retry(max_retries=3, timeout=20.0):
+    """Context manager for database connections with retry logic"""
+    conn = None
+    for attempt in range(max_retries):
+        try:
+            conn = sqlite3.connect(str(DB_PATH), timeout=timeout)
+            conn.row_factory = sqlite3.Row
+            # Enable WAL mode for better concurrency
+            conn.execute("PRAGMA journal_mode=WAL")
+            conn.execute("PRAGMA synchronous=NORMAL")
+            yield conn
+            conn.commit()
+            break
+        except sqlite3.OperationalError as e:
+            if conn:
+                conn.rollback()
+            if "database is locked" in str(e) and attempt < max_retries - 1:
+                time.sleep(0.1 * (attempt + 1))
+                continue
+            raise
+        finally:
+            if conn:
+                conn.close()
+
+# Update your remove_from_cart to use the context manager
 @app.delete("/api/cart/remove/{item_id}")
 async def remove_from_cart(request: Request, item_id: int):
     user = await get_current_user(request)
     if not user:
         raise HTTPException(401, "Please login")
     
-    conn = get_db_connection()
-    conn.execute("DELETE FROM cart_items WHERE id = ? AND user_id = ?", (item_id, user["id"]))
-    conn.commit()
-    conn.close()
+    with get_db_connection_with_retry() as conn:
+        cursor = conn.cursor()
+        # Try deleting by cart_item.id first
+        cursor.execute(
+            "DELETE FROM cart_items WHERE id = ? AND user_id = ?", 
+            (item_id, user["id"])
+        )
+        
+        # If nothing deleted, try by product_id
+        if cursor.rowcount == 0:
+            cursor.execute(
+                "DELETE FROM cart_items WHERE product_id = ? AND user_id = ?", 
+                (item_id, user["id"])
+            )
+        
+        if cursor.rowcount == 0:
+            raise HTTPException(404, "Cart item not found")
+    
     return {"success": True}
 
 
-@app.put("/api/cart/update/{item_id}")
-async def update_cart_item(request: Request, item_id: int, body: dict):
+@app.delete("/api/cart/clear")
+async def clear_cart(request: Request):
+    """Remove all items from the current user's cart."""
     user = await get_current_user(request)
     if not user:
         raise HTTPException(401, "Please login")
-    
-    quantity = body.get("quantity", 1)
+
     conn = get_db_connection()
-    conn.execute(
-        "UPDATE cart_items SET quantity = ? WHERE id = ? AND user_id = ?",
-        (quantity, item_id, user["id"])
-    )
+    conn.execute("DELETE FROM cart_items WHERE user_id = ?", (user["id"],))
     conn.commit()
     conn.close()
+    return {"success": True, "message": "Cart cleared"}
+
+
+@app.get("/api/orders/{order_id}/items")
+async def get_order_items(order_id: int, request: Request):
+    """Get all items for a specific order."""
+    user = await get_current_user(request)
+    if not user:
+        raise HTTPException(401, "Please login")
+
+    conn = get_db_connection()
+    order = conn.execute(
+        "SELECT id FROM orders WHERE id = ? AND user_id = ?", (order_id, user["id"])
+    ).fetchone()
+    if not order:
+        conn.close()
+        raise HTTPException(404, "Order not found")
+
+    items = conn.execute("""
+        SELECT oi.*, p.image_url, p.generic_name
+        FROM order_items oi
+        LEFT JOIN products p ON oi.product_id = p.id
+        WHERE oi.order_id = ?
+    """, (order_id,)).fetchall()
+    conn.close()
+    return {"order_id": order_id, "items": [dict(i) for i in items]}
+
+
+@app.put("/api/cart/update/{product_id}")
+async def update_cart_item(request: Request, product_id: int, body: dict):
+    """Update quantity of a cart item, keyed by product_id."""
+    user = await get_current_user(request)
+    if not user:
+        raise HTTPException(401, "Please login")
+
+    quantity = body.get("quantity", 1)
+
+    with get_db_connection_with_retry() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE cart_items SET quantity = ? WHERE product_id = ? AND user_id = ?",
+            (quantity, product_id, user["id"])
+        )
+        if cursor.rowcount == 0:
+            raise HTTPException(404, "Cart item not found")
+
     return {"success": True}
 
 
@@ -1520,6 +2297,37 @@ async def share_cart_with_doctor(request: Request, body: dict):
     conn.close()
     
     return {"success": True, "share_id": share_id, "message": "Request sent to doctor"}
+
+
+@app.get("/api/cart/shares")
+async def get_my_cart_shares(request: Request):
+    """For patients — get their own cart share requests and their current status."""
+    user = await get_current_user(request)
+    if not user:
+        raise HTTPException(401, "Please login")
+
+    conn = get_db_connection()
+    rows = conn.execute("""
+        SELECT cs.*, u.name as doctor_name, d.specialization
+        FROM cart_share_requests cs
+        JOIN users u ON cs.doctor_id = u.id
+        LEFT JOIN doctors_profile d ON u.id = d.user_id
+        WHERE cs.patient_id = ?
+        ORDER BY cs.created_at DESC
+        LIMIT 20
+    """, (user["id"],)).fetchall()
+    conn.close()
+
+    shares = []
+    for row in rows:
+        share = dict(row)
+        try:
+            share["cart_snapshot"] = json.loads(share["cart_snapshot"])
+        except Exception:
+            share["cart_snapshot"] = []
+        shares.append(share)
+
+    return {"shares": shares}
 
 
 @app.get("/api/cart/shares/pending")
@@ -1698,11 +2506,21 @@ async def create_order(request: Request, body: dict):
     # Calculate total
     total = sum(item["quantity"] * item["price"] for item in cart_items)
     
-    # Check prescription requirement
+    # Check prescription requirement and ownership
     for item in cart_items:
         if item["requires_prescription"] and not prescription_id:
             conn.close()
             raise HTTPException(400, f"{item['name']} requires a prescription")
+
+    # Verify prescription belongs to this user and is still active
+    if prescription_id:
+        rx = conn.execute(
+            "SELECT id FROM prescriptions WHERE id = ? AND patient_id = ? AND status = 'active'",
+            (prescription_id, user["id"])
+        ).fetchone()
+        if not rx:
+            conn.close()
+            raise HTTPException(400, "Invalid or already-used prescription")
     
     # Create order
     conn.execute("""
@@ -1969,6 +2787,279 @@ async def get_current_user(request: Request):
 
 
 # ============================================================
+# PRESCRIPTION OCR + INVENTORY MATCHING
+# Model: Mistral's Pixtral-12B (free tier via api.mistral.ai)
+#        Best open-weight vision model for handwritten medical text.
+#        Sign up at https://console.mistral.ai → API Keys (free tier available)
+#        Set env var: MISTRAL_API_KEY=your_key
+# ============================================================
+import os
+import re
+import httpx
+import base64 as b64lib
+from fastapi import UploadFile, File
+
+MISTRAL_API_KEY = os.environ.get("MISTRAL_API_KEY", "")
+if not MISTRAL_API_KEY:
+    print("⚠  MISTRAL_API_KEY is not set — prescription OCR will return 503 until the key is provided.")
+    print("   Set it with: export MISTRAL_API_KEY=your_key_here")
+MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"
+MISTRAL_OCR_URL = "https://api.mistral.ai/v1/ocr"
+MISTRAL_VISION_MODEL = "mistral-small-latest"   # Mistral Small 3.1 (2503) — current vision model, free tier
+
+PRESCRIPTION_SYSTEM_PROMPT = """You are a clinical pharmacist AI specialising in deciphering doctor prescriptions — including heavily cursive or messy handwriting.
+
+Given an image of a prescription, extract EVERY medicine name written on it.
+For each medicine output a JSON array of objects with these exact keys:
+  - "name": the medicine name as written (best guess, corrected for obvious misspellings)
+  - "generic": generic/INN name if you can infer it, else null
+  - "dosage": dosage string if visible (e.g. "500mg"), else null
+  - "frequency": frequency if visible (e.g. "twice daily"), else null
+  - "duration": duration if visible (e.g. "5 days"), else null
+
+Return ONLY the raw JSON array — no markdown, no explanation, no preamble.
+If you cannot read the prescription at all return: []"""
+
+
+import asyncio
+import json
+from fastapi import HTTPException
+
+async def call_mistral_vision(image_bytes: bytes, mime_type: str, max_retries: int = 3) -> list[dict]:
+    """Send prescription image to Mistral Pixtral with rate limit handling."""
+    if not MISTRAL_API_KEY:
+        raise HTTPException(503, "MISTRAL_API_KEY environment variable is not set.")
+
+    b64_image = b64lib.b64encode(image_bytes).decode("utf-8")
+    payload = {
+        "model": MISTRAL_VISION_MODEL,
+        "max_tokens": 1024,
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:{mime_type};base64,{b64_image}"}
+                    },
+                    {
+                        "type": "text",
+                        "text": PRESCRIPTION_SYSTEM_PROMPT
+                    }
+                ]
+            }
+        ]
+    }
+
+    for attempt in range(max_retries):
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            resp = await client.post(
+                MISTRAL_API_URL,
+                headers={
+                    "Authorization": f"Bearer {MISTRAL_API_KEY}",
+                    "Content-Type": "application/json"
+                },
+                json=payload
+            )
+
+        if resp.status_code == 200:
+            break  # Success, exit retry loop
+        
+        # Handle rate limit (429) specifically
+        if resp.status_code == 429:
+            wait_time = (2 ** attempt) + 1  # Exponential: 1, 3, 7 seconds
+            print(f"Rate limited (attempt {attempt + 1}/{max_retries}). Waiting {wait_time}s...")
+            await asyncio.sleep(wait_time)
+            continue
+        
+        # Other errors: don't retry
+        error_body = resp.text[:500]
+        print(f"Mistral API error {resp.status_code}: {error_body}")
+        raise HTTPException(502, f"Mistral API error {resp.status_code}: {error_body}")
+    else:
+        # All retries exhausted
+        raise HTTPException(429, "Rate limit exceeded. Please try again in a few minutes.")
+
+    raw_text = resp.json()["choices"][0]["message"]["content"].strip()
+    
+    # Strip any accidental markdown fences
+    raw_text = re.sub(r"^```[a-z]*\n?", "", raw_text)
+    raw_text = re.sub(r"\n?```$", "", raw_text)
+
+    try:
+        medicines = json.loads(raw_text)
+        if not isinstance(medicines, list):
+            medicines = []
+    except json.JSONDecodeError:
+        medicines = []
+
+    return medicines
+
+
+def match_medicines_in_inventory(medicines: list[dict]) -> list[dict]:
+    """
+    For each extracted medicine, search the products table for the best matches.
+    Uses multi-strategy fuzzy matching: exact name, generic name, partial LIKE.
+    Returns enriched list with matched inventory products.
+    """
+    conn = get_db_connection()
+    results = []
+
+    for med in medicines:
+        name_query = (med.get("name") or "").strip()
+        generic_query = (med.get("generic") or "").strip()
+
+        matched_products = []
+
+        # Strategy 1: exact name match (case-insensitive)
+        for search_term in [name_query, generic_query]:
+            if not search_term:
+                continue
+            rows = conn.execute("""
+                SELECT p.*, c.name as category_name
+                FROM products p
+                LEFT JOIN categories c ON p.category_id = c.id
+                WHERE p.is_active = 1
+                  AND (LOWER(p.name) = LOWER(?) OR LOWER(p.generic_name) = LOWER(?))
+                LIMIT 3
+            """, (search_term, search_term)).fetchall()
+            for r in rows:
+                matched_products.append({"match_type": "exact", **dict(r)})
+            if matched_products:
+                break
+
+        # Strategy 2: partial / substring match
+        if not matched_products:
+            for search_term in [name_query, generic_query]:
+                if not search_term or len(search_term) < 3:
+                    continue
+                # Try progressively shorter prefixes to handle messy handwriting
+                for prefix_len in [len(search_term), max(4, len(search_term) - 3)]:
+                    prefix = search_term[:prefix_len]
+                    rows = conn.execute("""
+                        SELECT p.*, c.name as category_name
+                        FROM products p
+                        LEFT JOIN categories c ON p.category_id = c.id
+                        WHERE p.is_active = 1
+                          AND (p.name LIKE ? OR p.generic_name LIKE ?)
+                        LIMIT 5
+                    """, (f"{prefix}%", f"{prefix}%")).fetchall()
+                    if rows:
+                        for r in rows:
+                            matched_products.append({"match_type": "partial", **dict(r)})
+                        break
+                if matched_products:
+                    break
+
+        # Strategy 3: word-by-word search (handles "Amox 500" → "Amoxicillin")
+        if not matched_products:
+            words = [w for w in name_query.split() if len(w) >= 4]
+            for word in words:
+                rows = conn.execute("""
+                    SELECT p.*, c.name as category_name
+                    FROM products p
+                    LEFT JOIN categories c ON p.category_id = c.id
+                    WHERE p.is_active = 1
+                      AND (p.name LIKE ? OR p.generic_name LIKE ?)
+                    LIMIT 5
+                """, (f"%{word}%", f"%{word}%")).fetchall()
+                if rows:
+                    for r in rows:
+                        matched_products.append({"match_type": "keyword", **dict(r)})
+                    break
+
+        # Deduplicate by product id
+        seen_ids = set()
+        unique_matches = []
+        for p in matched_products:
+            if p["id"] not in seen_ids:
+                seen_ids.add(p["id"])
+                # Clean up image fallback
+                if not p.get("image_url"):
+                    p["image_url"] = "/static/placeholder.png"
+                unique_matches.append(p)
+
+        results.append({
+            "prescribed": med,
+            "inventory_matches": unique_matches[:3],   # top 3 per medicine
+            "found": len(unique_matches) > 0
+        })
+
+    conn.close()
+    return results
+
+
+@app.get("/api/prescription/test-key")
+async def test_mistral_key():
+    """Quick check that the Mistral API key is valid and Pixtral model is accessible."""
+    if not MISTRAL_API_KEY:
+        return {"ok": False, "error": "MISTRAL_API_KEY is not set"}
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.post(
+                MISTRAL_API_URL,
+                headers={"Authorization": f"Bearer {MISTRAL_API_KEY}", "Content-Type": "application/json"},
+                json={"model": MISTRAL_VISION_MODEL, "max_tokens": 10,
+                      "messages": [{"role": "user", "content": "Hi"}]}
+            )
+        if resp.status_code == 200:
+            return {"ok": True, "model": MISTRAL_VISION_MODEL, "status": "API key valid ✓ (Mistral Small 3.1 vision)"}
+        else:
+            return {"ok": False, "status_code": resp.status_code, "error": resp.text[:300]}
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
+
+@app.post("/api/prescription/analyze")
+async def analyze_prescription(file: UploadFile = File(...)):
+    """
+    Upload a prescription image (JPG/PNG/WEBP/PDF-first-page).
+    1. Mistral Pixtral-12B reads the handwritten text and extracts medicines.
+    2. Each medicine is matched against the local inventory (products table).
+    Returns extracted medicines + best inventory matches for each.
+
+    Requires env var: MISTRAL_API_KEY
+    """
+    allowed_types = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+    content_type = file.content_type or "image/jpeg"
+    if content_type not in allowed_types:
+        raise HTTPException(400, f"Unsupported file type: {content_type}. Use JPEG, PNG, or WEBP.")
+
+    image_bytes = await file.read()
+    if len(image_bytes) > 10 * 1024 * 1024:  # 10 MB limit
+        raise HTTPException(400, "Image too large. Maximum 10 MB.")
+
+    # Step 1: Extract medicines via Mistral Pixtral
+    medicines = await call_mistral_vision(image_bytes, content_type)
+
+    if not medicines:
+        return {
+            "success": True,
+            "medicines_extracted": [],
+            "inventory_results": [],
+            "message": "No medicines could be extracted from this image. "
+                       "Please ensure the prescription is clearly photographed."
+        }
+
+    # Step 2: Match against inventory
+    inventory_results = match_medicines_in_inventory(medicines)
+
+    total_found = sum(1 for r in inventory_results if r["found"])
+
+    return {
+        "success": True,
+        "medicines_extracted": medicines,
+        "inventory_results": inventory_results,
+        "summary": {
+            "total_medicines": len(medicines),
+            "found_in_inventory": total_found,
+            "not_found": len(medicines) - total_found
+        },
+        "model_used": MISTRAL_VISION_MODEL
+    }
+
+
+# ============================================================
 # RUN SERVER
 # ============================================================
 if __name__ == "__main__":
@@ -1986,5 +3077,12 @@ if __name__ == "__main__":
     print(f"  GET  /api/diseases/{{name}}       - Get complete disease details")
     print(f"  GET  /api/diseases/{{name}}/summary - Get simplified summary")
     print(f"\n📊 Prediction now includes disease_info field")
+    print(f"\n👤 Profile Page Endpoints (NEW):")
+    print(f"  GET  /api/profile/{{user_id}}/summary    - Profile + metrics + counts")
+    print(f"  DELETE /api/profile/{{user_id}}/assessments/{{id}} - Delete assessment")
+    print(f"  DELETE /api/profile/{{user_id}}/records/{{id}}     - Delete medical record")
+    print(f"\n🔬 Prescription Analysis (NEW):")
+    print(f"  POST /api/prescription/analyze  - Upload Rx image → Mistral Small 3.1 vision OCR → inventory match")
+    print(f"  Model: mistral-small-latest  (Mistral Small 3.1, current free-tier vision model)")
     print("="*50 + "\n")
     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
